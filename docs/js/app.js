@@ -24,7 +24,7 @@ new Vue({
     methods: {
         async loadDatasets() {
             try {
-                const response = await fetch('./docs/assets/NeuroDataHub.csv');
+                const response = await fetch('./docs/assets/NeuroDataHub.tsv');
                 const data = await response.text();
                 this.datasets = this.parseCSV(data);
             } catch (error) {
@@ -34,7 +34,7 @@ new Vue({
         parseCSV(data) {
             const rows = data.split('\n').slice(1).filter(row => row.trim() !== '');
             return rows.map(row => {
-                const columns = row.split(',');
+                const columns = row.split('\t');
                 if (columns.length < 13) {
                     console.warn('Skipping malformed row:', row);
                     return null;

@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neuroimaging Datasets | Clarity</title>
+    <title>NeuroDataHub</title>
     <link rel="stylesheet" href="docs/css/style.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+    <link rel="icon" href="./docs/assets/images/favicon.ico" type="image/x-icon" />
 
 
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
@@ -37,10 +37,12 @@
                     <h1>🧠 NeuroDataHub</h1>
                     <p>
                         An open-access platform to explore, compare, and analyze neuroimaging datasets.
-                        Built for researchers, clinicians, and students in neuroscience and AI.
+                        Built for researchers, clinicians, and students in neuroscience and AI. Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley 
+                        of type and scrambled it to make a type specimen book. 
                     </p>
                     <p>
-                        Dive into brain scans with detailed metadata, subject demographics, and downloadable resources.
+                        Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.
                     </p>
                 </div>
                 <div class="hero-image">
@@ -55,19 +57,22 @@
             <div class="card">
                 <h3>🧠 Explore Brain Datasets</h3>
                 <p>
-                    Access curated datasets from multiple studies—3T MRI, fMRI, sMRI—and across various cognitive scores.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley 
+                        of type and scrambled it to make a type specimen book.
                 </p>
             </div>
             <div class="card">
                 <h3>👨‍🔬 For Research & Learning</h3>
                 <p>
-                    Ideal for neuroscience research, medical imaging, machine learning models, and academic projects.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley 
+                        of type and scrambled it to make a type specimen book.
                 </p>
             </div>
             <div class="card">
                 <h3>📊 Stats, Scans & Links</h3>
                 <p>
-                    Each dataset includes age distributions, gender splits, cognitive scores, and links to download or cite.
+                    Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley 
+                        of type and scrambled it to make a type specimen book.
                 </p>
             </div>
         </div>
@@ -130,38 +135,7 @@
             </div>
         </div>
 
-        <!-- Dataset Modal -->
-        <!-- <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
-            <div class="modal">
-                <h3>{{ selectedDataset.name }}</h3>
-                <div class="columns-2">
-                    <div>
-                        <ul>
-                            <li><b>Subjects:</b> {{ selectedDataset.subject }}</li>
-                            <li><b>Scans:</b> {{ selectedDataset.scans }}</li>
-                            <li><b>Gender:</b> {{ selectedDataset.males }} males, {{ selectedDataset.females }} females</li>
-                            <li><b>CDR Global:</b> {{ selectedDataset.cdrGlobal }}</li>
-                            <li><b>Age Stats:</b> Mean {{ selectedDataset.meanAge }}, Median {{ selectedDataset.median }}<br>
-                                Range: {{ selectedDataset.minAge }} – {{ selectedDataset.maxAge }}<br>
-                                Q25: {{ selectedDataset.q25 }} | Q75: {{ selectedDataset.q75 }}</li>
-                        </ul>
-                        <a :href="selectedDataset.link" target="_blank" class="button icon">Download</a>
-                        <div style="margin-top:1rem;">
-                            <h4>Related Publications</h4>
-                            <ul>
-                                <li v-for="pub in selectedDataset.publications || []">
-                                    <a :href="pub.link" target="_blank">{{ pub.title }}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                     <div>
-                        <img :src="getThumbnail(selectedDataset)" alt="Sample Scan" style="width:100%; border-radius:8px;">
-                    </div>
-                </div>
-                <button @click="closeModal" style="margin-top:1rem;">Close</button>
-            </div>
-        </div> -->
+
         <!-- Dataset Modal -->
         <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
             <div class="modal">
@@ -186,11 +160,11 @@
                 <i class="fas fa-globe"></i> Website
                 </a>
                 <!-- <a :href="#" target="_blank" class="action-button">
-                    <i class="fas fa-code"></i> How to ?
+                    <i class="fas fa-code"></i> How to
                 </a> -->
-                <button class="action-button" @click="alert('Download code coming soon!')">
+                <!-- <button class="action-button" @click="alert('Download code coming soon!')">
                 <i class="fas fa-code"></i> How to ?
-                </button>
+                </button> -->
             </div>
         
             <!-- Columns -->
@@ -198,7 +172,7 @@
                 <!-- Left: Dataset Details -->
                 <div>
                 <ul>
-                    <li><strong>Description:</strong> {{ selectedDataset.description || 'N/A' }}</li>
+                    <li><strong>Description:</strong> <span style="word-wrap: break-word;">{{ selectedDataset.description || 'N/A' }}</span></li>
                     <li><strong>Population:</strong> {{ selectedDataset.population || 'N/A' }}</li>
                     <li><strong>Group:</strong> {{ selectedDataset.group || 'N/A' }}</li>
                     <li><strong>Subjects:</strong> {{ selectedDataset.subject }}</li>
@@ -210,6 +184,8 @@
                     Range: {{ selectedDataset.minAge }} – {{ selectedDataset.maxAge }}<br>
                     Q25: {{ selectedDataset.q25 }} | Q75: {{ selectedDataset.q75 }}
                     </li>
+                    <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype }}</li>
+                    <li><strong>Dataset Consists of :</strong> {{ selectedDataset.data }}</li>
                 </ul>
         
                 <!-- Related Publications -->
@@ -223,10 +199,10 @@
                 </div>
                 </div>
         
-                <!-- Right Column: Full-size Scan -->
+                <!-- Right Column: Full-size Scan
                 <div>
-                <img :src="getThumbnail(selectedDataset)" alt="Sample Scan" style="width: 100%; border-radius: 8px;" />
-                </div>
+                    <img :src="getThumbnail(selectedDataset)" alt="Sample Scan" style="width: 100%; border-radius: 8px;" />
+                </div> -->
             </div>
         
             <button @click="closeModal" class="close-button">Close</button>
