@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neuroimaging Datasets | Clarity</title>
+    <link rel="stylesheet" href="docs/css/style.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="icon" href="assets/images/favicon.ico" type="image/x-icon" />
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+</head>
+<body>
+<div id="app">
+    <!-- Navbar -->
+    <!-- Navbar -->
+    <header class="navbar clarity-navbar">
+        <a class="logo clarity-logo" href="#">🧠 NeuroDataHub</a>
+        <!-- <nav class="clarity-nav">
+            <ul>
+                <li><a href="#" class="clarity-link">Home</a></li>
+                <li><a href="#" class="clarity-link">Datasets</a></li>
+                <li><a href="#" class="clarity-link">Publications</a></li>
+                <li><a href="#" class="clarity-link">Contact</a></li>
+            </ul>
+        </nav> -->
+    </header>
+
+    <!-- Hero Section -->
+    <main>
+        <section class="hero">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <h1>🧠 NeuroDataHub</h1>
+                    <p>
+                        An open-access platform to explore, compare, and analyze neuroimaging datasets.
+                        Built for researchers, clinicians, and students in neuroscience and AI.
+                    </p>
+                    <p>
+                        Dive into brain scans with detailed metadata, subject demographics, and downloadable resources.
+                    </p>
+                </div>
+                <div class="hero-image">
+                    <img src="./docs/assets/images/brain_hero.png" alt="Brain MRI Illustration" />
+                </div>
+            </div>
+        </section>
+
+    <!-- Intro Cards Section -->
+    <section class="intro-cards" style="background: #e9e4e4;">
+        <div class="container grid-3" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
+            <div class="card">
+                <h3>🧠 Explore Brain Datasets</h3>
+                <p>
+                    Access curated datasets from multiple studies—3T MRI, fMRI, sMRI—and across various cognitive scores.
+                </p>
+            </div>
+            <div class="card">
+                <h3>👨‍🔬 For Research & Learning</h3>
+                <p>
+                    Ideal for neuroscience research, medical imaging, machine learning models, and academic projects.
+                </p>
+            </div>
+            <div class="card">
+                <h3>📊 Stats, Scans & Links</h3>
+                <p>
+                    Each dataset includes age distributions, gender splits, cognitive scores, and links to download or cite.
+                </p>
+            </div>
+        </div>
+    </section>
+
+
+    <!-- Dataset Viewer Section -->
+    <section class="container main" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
+        <h2>🧬 Available Datasets</h2>
+        <div class="filters">
+            <div style="grid-column: span 1; text-align: left; font-size: 1.25rem; margin-top: 1rem;">
+                <input type="text" v-model="searchQuery" placeholder="Search datasets..." style="width: 100%;" />
+            </div>
+            <!-- <select v-model="selectedModality">
+                <option value="">All Modalities</option>
+                <option value="T1">T1</option>
+                <option value="fMRI">fMRI</option>
+                <option value="DWI">DWI</option>
+            </select> -->
+        </div>
+        <div class="dataset-grid">
+            <div
+                v-for="dataset in filteredDatasets"
+                :key="dataset.name"
+                class="dataset-card"
+                @mouseenter="toggleHover(dataset, true)"
+                @mouseleave="toggleHover(dataset, false)"
+            >
+            <img 
+                :src="`./docs/assets/images/${dataset.name}.png`" 
+                :alt="dataset.name" 
+                @error="$event.target.src='./docs/assets/images/indi.png'" 
+                style="width: 100%; height: auto; object-fit: contain;" />
+            
+                <h3>{{ dataset.name }}</h3>
+                <p>{{ dataset.subject }} subjects, {{ dataset.scans }} scans</p>
+                <div class="tags">
+                    <span class="tag">CDR: {{ dataset.cdrGlobal }}</span>
+                    <span class="tag">Age: {{ dataset.minAge }}–{{ dataset.maxAge }}</span>
+                </div>
+                <button 
+                    @click="viewDetails(dataset)" 
+                    style="
+                        background-color: #4CAF50; 
+                        color: white; 
+                        border: none; 
+                        padding: 10px 20px; 
+                        text-align: center; 
+                        text-decoration: none; 
+                        display: inline-block; 
+                        font-size: 16px; 
+                        margin-top: 10px; 
+                        border-radius: 5px; 
+                        cursor: pointer; 
+                        transition: background-color 0.3s ease;"
+                    @mouseover="event.target.style.backgroundColor='#45a049'"
+                    @mouseout="event.target.style.backgroundColor='#4CAF50'"
+                > More Info
+                </button>
+            </div>
+        </div>
+
+        <!-- Dataset Modal -->
+        <!-- <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+            <div class="modal">
+                <h3>{{ selectedDataset.name }}</h3>
+                <div class="columns-2">
+                    <div>
+                        <ul>
+                            <li><b>Subjects:</b> {{ selectedDataset.subject }}</li>
+                            <li><b>Scans:</b> {{ selectedDataset.scans }}</li>
+                            <li><b>Gender:</b> {{ selectedDataset.males }} males, {{ selectedDataset.females }} females</li>
+                            <li><b>CDR Global:</b> {{ selectedDataset.cdrGlobal }}</li>
+                            <li><b>Age Stats:</b> Mean {{ selectedDataset.meanAge }}, Median {{ selectedDataset.median }}<br>
+                                Range: {{ selectedDataset.minAge }} – {{ selectedDataset.maxAge }}<br>
+                                Q25: {{ selectedDataset.q25 }} | Q75: {{ selectedDataset.q75 }}</li>
+                        </ul>
+                        <a :href="selectedDataset.link" target="_blank" class="button icon">Download</a>
+                        <div style="margin-top:1rem;">
+                            <h4>Related Publications</h4>
+                            <ul>
+                                <li v-for="pub in selectedDataset.publications || []">
+                                    <a :href="pub.link" target="_blank">{{ pub.title }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                     <div>
+                        <img :src="getThumbnail(selectedDataset)" alt="Sample Scan" style="width:100%; border-radius:8px;">
+                    </div>
+                </div>
+                <button @click="closeModal" style="margin-top:1rem;">Close</button>
+            </div>
+        </div> -->
+        <!-- Dataset Modal -->
+        <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
+            <div class="modal">
+        
+            <!-- Top Row: Title + Image -->
+            <div class="modal-header">
+                <h3>{{ selectedDataset.name }}</h3>
+                <img
+                :src="`./docs/assets/images/${selectedDataset.name}.png`"
+                :alt="selectedDataset.name"
+                @error="$event.target.src='./docs/assets/images/indi.png'"
+                class="top-right-thumb"
+                />
+            </div>
+        
+            <!-- Buttons -->
+            <div class="modal-buttons">
+                <a v-if="selectedDataset.publication" :href="selectedDataset.publication" target="_blank" class="action-button">
+                <i class="fas fa-link"></i> Publication
+                </a>
+                <a :href="selectedDataset.link" target="_blank" class="action-button">
+                <i class="fas fa-globe"></i> Website
+                </a>
+                <!-- <a :href="#" target="_blank" class="action-button">
+                    <i class="fas fa-code"></i> How to ?
+                </a> -->
+                <button class="action-button" @click="alert('Download code coming soon!')">
+                <i class="fas fa-code"></i> How to ?
+                </button>
+            </div>
+        
+            <!-- Columns -->
+            <div class="columns-2">
+                <!-- Left: Dataset Details -->
+                <div>
+                <ul>
+                    <li><strong>Description:</strong> {{ selectedDataset.description || 'N/A' }}</li>
+                    <li><strong>Population:</strong> {{ selectedDataset.population || 'N/A' }}</li>
+                    <li><strong>Group:</strong> {{ selectedDataset.group || 'N/A' }}</li>
+                    <li><strong>Subjects:</strong> {{ selectedDataset.subject }}</li>
+                    <li><strong>Scans:</strong> {{ selectedDataset.scans }}</li>
+                    <li><strong>Gender:</strong> {{ selectedDataset.males }} males, {{ selectedDataset.females }} females</li>
+                    <li><strong>CDR Global:</strong> {{ selectedDataset.cdrGlobal }}</li>
+                    <li><strong>Age Stats:</strong><br>
+                    Mean: {{ selectedDataset.meanAge }} | Median: {{ selectedDataset.median }}<br>
+                    Range: {{ selectedDataset.minAge }} – {{ selectedDataset.maxAge }}<br>
+                    Q25: {{ selectedDataset.q25 }} | Q75: {{ selectedDataset.q75 }}
+                    </li>
+                </ul>
+        
+                <!-- Related Publications -->
+                <div v-if="selectedDataset.publications?.length" style="margin-top: 2rem;">
+                    <h4>Related Publications</h4>
+                    <ul>
+                    <li v-for="pub in selectedDataset.publications" :key="pub.title">
+                        <a :href="pub.link" target="_blank">{{ pub.title }}</a>
+                    </li>
+                    </ul>
+                </div>
+                </div>
+        
+                <!-- Right Column: Full-size Scan -->
+                <div>
+                <img :src="getThumbnail(selectedDataset)" alt="Sample Scan" style="width: 100%; border-radius: 8px;" />
+                </div>
+            </div>
+        
+            <button @click="closeModal" class="close-button">Close</button>
+            </div>
+        </div>
+
+    </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-container">
+        <!-- Left Side -->
+        <div class="footer-left">
+            <p>© 2025 <strong>NeuroDataHub</strong>. Built using the 
+            <a href="https://github.com/lorenmt/clarity-template" target="_blank">Clarity Template</a>.
+            </p>
+            <p>Contact: <a href="mailto:contact@neurodatahub.org">mailid@something.org</a></p>
+        </div>
+    
+        <!-- Right Side -->
+        <div class="footer-right">
+            <h4>Cite Us</h4>
+    
+            <details>
+            <summary><strong>Vancouver</strong></summary>
+            <p class="citation">
+                Your Name, Collaborators. NeuroDataHub: Curated Multi-Modal Brain Imaging Repository. arXiv preprint arXiv:2504.12345. 2025.
+            </p>
+            </details>
+    
+            <details>
+            <summary><strong>APA</strong></summary>
+            <p class="citation">
+                Your Name, & Collaborators. (2025). <em>NeuroDataHub: Curated Multi-Modal Brain Imaging Repository</em>. arXiv:2504.12345.
+            </p>
+            </details>
+    
+            <details open>
+            <summary><strong>BibTeX</strong></summary>
+            <pre class="bibtex">
+    @article{your2025paper,
+        title={NeuroDataHub: Curated Multi-Modal Brain Imaging Repository},
+        author={Your Name and Collaborators},
+        journal={arXiv preprint arXiv:2504.12345},
+        year={2025}
+    }
+            </pre>
+            </details>
+        </div>
+        </div>
+    </footer>
+  
+    
+</div>
+<script src="docs/js/app.js"></script>
+</body>
+</html>
