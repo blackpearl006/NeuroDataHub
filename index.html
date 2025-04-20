@@ -52,7 +52,10 @@
         </section>
 
     <!-- Intro Cards Section -->
-    <section class="intro-cards" style="background: #e9e4e4;">
+    <section 
+        class="intro-cards" 
+        style="background: #e9e4e4;" 
+        v-if="window.innerWidth > 768">
         <div class="container grid-3" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
             <div class="card">
                 <h3>🧠 Explore Brain Datasets</h3>
@@ -108,10 +111,10 @@
                 style="width: 100%; height: auto; object-fit: contain;" />
             
                 <h3>{{ dataset.name }}</h3>
-                <p>{{ dataset.subject }} subjects, {{ dataset.scans }} scans</p>
+                <p>{{ dataset.subjects }} subjects, {{ dataset.scans }} scans</p>
                 <div class="tags">
-                    <span class="tag">CDR: {{ dataset.cdrGlobal }}</span>
-                    <span class="tag">Age: {{ dataset.minAge }}–{{ dataset.maxAge }}</span>
+                    <span class="tag">PATHOLOGY: {{ dataset.pathology }}</span>
+                    <span class="tag" style="margin-top: 0.5em;">Age: {{ dataset.minAge }} -- {{ dataset.maxAge }} Years</span>
                 </div>
                 <button 
                     @click="viewDetails(dataset)" 
@@ -159,53 +162,60 @@
                 <a :href="selectedDataset.link" target="_blank" class="action-button">
                 <i class="fas fa-globe"></i> Website
                 </a>
-                <!-- <a :href="#" target="_blank" class="action-button">
-                    <i class="fas fa-code"></i> How to
-                </a> -->
-                <!-- <button class="action-button" @click="alert('Download code coming soon!')">
-                <i class="fas fa-code"></i> How to ?
-                </button> -->
             </div>
-        
-            <!-- Columns -->
-            <div class="columns-2">
-                <!-- Left: Dataset Details -->
-                <div>
-                <ul>
-                    <li><strong>Description:</strong> <span style="word-wrap: break-word;">{{ selectedDataset.description || 'N/A' }}</span></li>
-                    <li><strong>Population:</strong> {{ selectedDataset.population || 'N/A' }}</li>
-                    <li><strong>Group:</strong> {{ selectedDataset.group || 'N/A' }}</li>
-                    <li><strong>Subjects:</strong> {{ selectedDataset.subject }}</li>
-                    <li><strong>Scans:</strong> {{ selectedDataset.scans }}</li>
-                    <li><strong>Gender:</strong> {{ selectedDataset.males }} males, {{ selectedDataset.females }} females</li>
-                    <li><strong>CDR Global:</strong> {{ selectedDataset.cdrGlobal }}</li>
-                    <li><strong>Age Stats:</strong><br>
-                    Mean: {{ selectedDataset.meanAge }} | Median: {{ selectedDataset.median }}<br>
-                    Range: {{ selectedDataset.minAge }} – {{ selectedDataset.maxAge }}<br>
-                    Q25: {{ selectedDataset.q25 }} | Q75: {{ selectedDataset.q75 }}
-                    </li>
-                    <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype }}</li>
-                    <li><strong>Dataset Consists of :</strong> {{ selectedDataset.data }}</li>
-                </ul>
-        
-                <!-- Related Publications -->
-                <div v-if="selectedDataset.publications?.length" style="margin-top: 2rem;">
-                    <h4>Related Publications</h4>
-                    <ul>
-                    <li v-for="pub in selectedDataset.publications" :key="pub.title">
-                        <a :href="pub.link" target="_blank">{{ pub.title }}</a>
-                    </li>
-                    </ul>
+                <!-- Columns -->
+                <div class="columns-2">
+                    <!-- Left: Dataset Details -->
+                    <div>
+                        <ul>
+                            <li><strong>Description:</strong> <span style="word-wrap: break-word;">{{ selectedDataset.description || 'N/A' }}</span></li>
+                            <li><strong>Population:</strong> {{ selectedDataset.population || 'N/A' }}</li>
+                            <li><strong>Pathology:</strong> {{ selectedDataset.pathology || 'N/A' }}</li>
+                            <li><strong>Subjects:</strong> {{ selectedDataset.subjects || 'N/A' }}</li>
+                            <li><strong>Scans:</strong> {{ selectedDataset.scans || 'N/A' }}</li>
+                            <li>
+                                <strong>Gender:</strong> 
+                                {{ selectedDataset.males || 'N/A' }} males, 
+                                {{ selectedDataset.females || 'N/A' }} females
+                                <span v-if="selectedDataset.genderRatio">({{ selectedDataset.genderRatio }} M/F)</span>
+                            </li>
+                            <li><strong>CDR Global:</strong> {{ selectedDataset.cdrGlobal || 'N/A' }}</li>
+                            <li>
+                                <strong>Age Stats:</strong><br>
+                                Mean: {{ selectedDataset.meanAge || 'N/A' }} | Median: {{ selectedDataset.median || 'N/A' }}<br>
+                                Range: 
+                                <span v-if="selectedDataset.ageRange && selectedDataset.ageRange !== 'N/A'">
+                                    {{ selectedDataset.ageRange }}
+                                </span>
+                                <span v-else>
+                                    {{ selectedDataset.minAge || 'N/A' }} – {{ selectedDataset.maxAge || 'N/A' }}
+                                </span><br>
+                                Q25: {{ selectedDataset.q25 || 'N/A' }} | Q75: {{ selectedDataset.q75 || 'N/A' }}
+                            </li>
+                            <li><strong>Std Dev (Age):</strong> {{ selectedDataset.stdDev || 'N/A' }}</li>
+                            <li><strong>Number of Sites:</strong> {{ selectedDataset.numberOfSites || 'N/A' }}</li>
+                            <li><strong>Design:</strong> {{ selectedDataset.design || 'N/A' }}</li>
+                            <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype || 'N/A' }}</li>
+                        </ul>
+
+                        <!-- Related Publications -->
+                        <div v-if="selectedDataset.publications?.length" style="margin-top: 2rem;">
+                            <h4>Related Publications</h4>
+                            <ul>
+                                <li v-for="pub in selectedDataset.publications" :key="pub.title">
+                                    <a :href="pub.link" target="_blank">{{ pub.title }}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
-                </div>
-        
                 <!-- Right Column: Full-size Scan
                 <div>
                     <img :src="getThumbnail(selectedDataset)" alt="Sample Scan" style="width: 100%; border-radius: 8px;" />
                 </div> -->
-            </div>
-        
-            <button @click="closeModal" class="close-button">Close</button>
+                <div>
+                    <button @click="closeModal" class="close-button">Close</button>
+                </div>
             </div>
         </div>
 
