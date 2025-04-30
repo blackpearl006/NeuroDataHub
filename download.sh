@@ -12,3 +12,15 @@ done
 # Download the OASIS-2 dataset
 aria2c -x 10 -j 10 -s 10 https://download.nrg.wustl.edu/data/OAS2_RAW_PART1.tar.gz
 aria2c -x 10 -j 10 -s 10 https://download.nrg.wustl.edu/data/OAS2_RAW_PART2.tar.gz
+
+# Download AOMIC-ID1000 data
+aws s3 sync --no-sign-request s3://openneuro.org/ds003097 . --exclude "*" --include "sub-*/anat/*T1w*"
+
+# Download AOMIC-PIOP1 data
+aws s3 sync --no-sign-request s3://openneuro.org/ds002790 . --exclude "*" --include "sub-*/anat/*T1w*"
+
+# Download AOMIC-PIOP2 data
+aws s3 sync --no-sign-request s3://openneuro.org/ds002785 . --exclude "*" --include "sub-*/anat/*T1w*"
+
+# Download MPI-brain body data
+aws s3 sync --no-sign-request s3://openneuro.org/ds000221/ . --exclude * --include "**/*T1w.nii.gz"

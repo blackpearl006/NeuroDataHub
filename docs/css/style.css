@@ -464,3 +464,103 @@ body {
 .close-button:hover {
   background-color: #dc2626;
 }
+
+/* ...existing code... */
+
+/* --- Enhanced Table Styles --- */
+.dataset-table-container {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
+  padding: 1.5rem 1rem;
+  margin-bottom: 2rem;
+}
+
+.dataset-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: #fff;
+  border-radius: 1rem;
+  overflow: hidden;
+  font-size: 1rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.dataset-table thead {
+  background: #f3f4f6;
+}
+
+.dataset-table th, .dataset-table td {
+  padding: 1rem 0.75rem;
+  text-align: left;
+}
+
+.dataset-table th {
+  color: #374151;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-bottom: 2px solid #e5e7eb;
+  background: #f3f4f6;
+}
+
+.dataset-table tbody tr {
+  transition: background 0.2s;
+}
+
+.dataset-table tbody tr:hover {
+  background: #f1f5f9;
+}
+
+.dataset-table td {
+  border-bottom: 1px solid #e5e7eb;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.dataset-table td img {
+  border-radius: 0.4rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+  background: #f9fafb;
+  margin-right: 0.5em;
+  vertical-align: middle;
+}
+
+.dataset-table tbody tr:last-child td {
+  border-bottom: none;
+}
+
+.dataset-table button {
+  background: #4f46e5;
+  color: white;
+  padding: 0.4rem 1rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background 0.2s;
+}
+
+.dataset-table button:hover {
+  background: #3730a3;
+}
+
+/* Responsive Table */
+@media (max-width: 900px) {
+  .dataset-table th, .dataset-table td {
+    padding: 0.7rem 0.4rem;
+    font-size: 0.95rem;
+  }
+}
+
+@media (max-width: 600px) {
+  .dataset-table-container {
+    padding: 0.5rem 0.1rem;
+  }
+  .dataset-table th, .dataset-table td {
+    padding: 0.5rem 0.2rem;
+    font-size: 0.9rem;
+  }
+}
+
+/* ...existing code... */

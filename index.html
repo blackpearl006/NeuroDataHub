@@ -87,16 +87,74 @@
         <h2>🧬 Available Datasets</h2>
         <div class="filters">
             <div style="grid-column: span 1; text-align: left; font-size: 1.25rem; margin-top: 1rem;">
+                <label for="pathologyFilter">Search:</label>
                 <input type="text" v-model="searchQuery" placeholder="Search datasets..." style="width: 100%;" />
             </div>
-            <!-- <select v-model="selectedModality">
-                <option value="">All Modalities</option>
-                <option value="T1">T1</option>
-                <option value="fMRI">fMRI</option>
-                <option value="DWI">DWI</option>
-            </select> -->
+            <div style="grid-column: span 1; text-align: left; font-size: 1.25rem; margin-top: 1rem;">
+                <label for="pathologyFilter">Pathology:</label>
+                <select v-model="selectedPathology" id="pathologyFilter" style="width: 100%;">
+                    <option value="">All</option>
+                    <option value="AD">AD</option>
+                    <option value="MCI">MCI</option>
+                    <option value="Controls">Controls</option>
+                    <option value="Healthy controls">Healthy controls</option>
+                    <option value="Others">Others</option>
+                </select>
+            </div>
+            <div>
+                <label for="ageRange">Age Range:</label>
+                <div style="display: flex; align-items: center; gap: 0.5em;">
+                    <input
+                        type="range"
+                        id="ageRangeMin"
+                        :min="minPossibleAge"
+                        :max="ageRange[1]"
+                        :value="ageRange[0]"
+                        @input="updateAgeRangeMin($event.target.value)"
+                        style="flex: 1;"
+                    />
+                    <input
+                        type="range"
+                        id="ageRangeMax"
+                        :min="ageRange[0]"
+                        :max="maxPossibleAge"
+                        :value="ageRange[1]"
+                        @input="updateAgeRangeMax($event.target.value)"
+                        style="flex: 1; margin-left: -1.5em;"
+                    />
+                    <span>{{ ageRange[0] }}</span>
+                    <span>–</span>
+                    <span>{{ ageRange[1] }}</span>
+                </div>
+            </div>
+            <button 
+                @click="toggleView"
+                title="Switch View"
+                style="
+                    background: #f3f4f6;
+                    color: #374151;
+                    border: 1px solid #d1d5db;
+                    padding: 0.4rem 0.9rem;
+                    border-radius: 6px;
+                    font-size: 1.15rem;
+                    margin-top: 1.2rem;
+                    margin-left: 0.5rem;
+                    cursor: pointer;
+                    display: flex;
+                    align-items: center;
+                    gap: 0.5em;
+                    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+                    transition: background 0.2s, border 0.2s;
+                "
+                @mouseover="event.target.style.background='#e5e7eb'"
+                @mouseout="event.target.style.background='#f3f4f6'"
+            >
+                <i :class="isGridView ? 'fas fa-table' : 'fas fa-th-large'" style="font-size: 1.1em;"></i>
+                <span style="font-size: 1em;">{{ isGridView ? 'Table' : 'Grid' }}</span>
+            </button>
         </div>
-        <div class="dataset-grid">
+
+        <div v-if="isGridView" class="dataset-grid">
             <div
                 v-for="dataset in filteredDatasets"
                 :key="dataset.name"
@@ -104,12 +162,11 @@
                 @mouseenter="toggleHover(dataset, true)"
                 @mouseleave="toggleHover(dataset, false)"
             >
-            <img 
-                :src="`./docs/assets/images/${dataset.name}.png`" 
-                :alt="dataset.name" 
-                @error="$event.target.src='./docs/assets/images/indi.png'" 
-                style="width: 100%; height: auto; object-fit: contain;" />
-            
+                <img 
+                    :src="`./docs/assets/images/${dataset.name}.png`" 
+                    :alt="dataset.name" 
+                    @error="$event.target.src='./docs/assets/images/indi.png'" 
+                    style="width: 100%; height: auto; object-fit: contain;" />
                 <h3>{{ dataset.name }}</h3>
                 <p>{{ dataset.subjects }} subjects, {{ dataset.scans }} scans</p>
                 <div class="tags">
@@ -138,31 +195,97 @@
             </div>
         </div>
 
+        <div v-else class="dataset-table-container">
+            <div style="display: flex; justify-content: center;">
+                <table class="dataset-table" style="width:90%; border-collapse: collapse; margin: 0 auto;">
+                    <thead>
+                        <tr>
+                            <th style="text-align: center;">Name</th>
+                            <th style="text-align: center;">Subjects</th>
+                            <th style="text-align: center;">Scans</th>
+                            <th style="text-align: center;">Pathology</th>
+                            <th style="text-align: center;">Age Range</th>
+                            <th style="text-align: center;">More Info</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr v-for="dataset in filteredDatasets" :key="dataset.name">
+                            <td style="text-align: center;">
+                                <img 
+                                    :src="`./docs/assets/images/${dataset.name}.png`" 
+                                    :alt="dataset.name" 
+                                    @error="$event.target.src='./docs/assets/images/indi.png'" 
+                                    style="width: 40px; height: 40px; object-fit: contain; vertical-align: middle; margin-right: 0.5em;" 
+                                />
+                                {{ dataset.name }}
+                            </td>
+                            <td style="text-align: center;">{{ dataset.subjects }}</td>
+                            <td style="text-align: center;">{{ dataset.scans }}</td>
+                            <td style="text-align: center;">{{ dataset.pathology }}</td>
+                            <td style="text-align: center;">{{ dataset.minAge }} – {{ dataset.maxAge }}</td>
+                            <td style="text-align: center;">
+                                <button 
+                                    @click="viewDetails(dataset)" 
+                                    style="
+                                        background-color: #4CAF50; 
+                                        color: white; 
+                                        border: none; 
+                                        padding: 6px 14px; 
+                                        border-radius: 5px; 
+                                        cursor: pointer; 
+                                        font-size: 14px;
+                                        transition: background-color 0.3s ease;"
+                                    @mouseover="event.target.style.backgroundColor='#45a049'"
+                                    @mouseout="event.target.style.backgroundColor='#4CAF50'"
+                                >More Info</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
 
         <!-- Dataset Modal -->
         <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
             <div class="modal">
-        
-            <!-- Top Row: Title + Image -->
-            <div class="modal-header">
-                <h3>{{ selectedDataset.name }}</h3>
-                <img
-                :src="`./docs/assets/images/${selectedDataset.name}.png`"
-                :alt="selectedDataset.name"
-                @error="$event.target.src='./docs/assets/images/indi.png'"
-                class="top-right-thumb"
-                />
-            </div>
-        
-            <!-- Buttons -->
-            <div class="modal-buttons">
-                <a v-if="selectedDataset.publication" :href="selectedDataset.publication" target="_blank" class="action-button">
-                <i class="fas fa-link"></i> Publication
-                </a>
-                <a :href="selectedDataset.link" target="_blank" class="action-button">
-                <i class="fas fa-globe"></i> Website
-                </a>
-            </div>
+                <!-- Top Row: Title + Image -->
+                <div class="modal-header" style="display: flex; align-items: flex-start; justify-content: space-between; position: relative;">
+                    <h3 style="margin: 0; flex: 1;">{{ selectedDataset.name }}</h3>
+                    <img
+                        :src="`./docs/assets/images/${selectedDataset.name}.png`"
+                        :alt="selectedDataset.name"
+                        @error="$event.target.src='./docs/assets/images/indi.png'"
+                        class="top-right-thumb"
+                        style="width: 80px; height: 80px; object-fit: contain; border-radius: 8px; margin-left: 1rem;"
+                    />
+                    <button 
+                        @click="closeModal" 
+                        class="close-button" 
+                        style="
+                            position: absolute;
+                            top: -4rem;
+                            right: -2.3rem;
+                            background: transparent;
+                            border: none;
+                            font-size: 2rem;
+                            color: #888;
+                            cursor: pointer;
+                            z-index: 2;
+                        "
+                        aria-label="Close"
+                        title="Close"
+                    >&times;</button>
+                </div>
+                <!-- Buttons -->
+                <div class="modal-buttons">
+                    <a v-if="selectedDataset.publication" :href="selectedDataset.publication" target="_blank" class="action-button">
+                    <i class="fas fa-link"></i> Publication
+                    </a>
+                    <a :href="selectedDataset.link" target="_blank" class="action-button">
+                    <i class="fas fa-globe"></i> Website
+                    </a>
+                </div>
                 <!-- Columns -->
                 <div class="columns-2">
                     <!-- Left: Dataset Details -->
@@ -218,7 +341,6 @@
                 </div>
             </div>
         </div>
-
     </section>
     </main>
 
