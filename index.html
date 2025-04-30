@@ -9,9 +9,8 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="icon" href="./docs/assets/images/favicon.ico" type="image/x-icon" />
-
-
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script src="https://unpkg.com/niivue@latest/dist/niivue.umd.js"></script>
 </head>
 <body>
 <div id="app">
@@ -154,6 +153,16 @@
             </button>
         </div>
 
+        <!-- <div v-if="isLoading" style="text-align: center; padding: 3rem; font-size: 1.2em; color: #555;">
+            <i class="fas fa-spinner fa-spin"></i> Loading datasets...
+        </div>
+        <div v-else-if="errorLoading" style="text-align: center; padding: 3rem; color: #d9534f; border: 1px solid #d9534f; border-radius: 4px; background-color: #f2dede;">
+            <i class="fas fa-exclamation-triangle"></i> {{ errorLoading }}
+        </div>
+        <div v-else-if="filteredDatasets.length === 0" style="text-align: center; padding: 3rem; font-size: 1.1em; color: #777;">
+            <i class="fas fa-search"></i> No datasets match the current filters.
+        </div> -->
+
         <div v-if="isGridView" class="dataset-grid">
             <div
                 v-for="dataset in filteredDatasets"
@@ -197,7 +206,7 @@
 
         <div v-else class="dataset-table-container">
             <div style="display: flex; justify-content: center;">
-                <table class="dataset-table" style="width:90%; border-collapse: collapse; margin: 0 auto;">
+                <table class="dataset-table" >
                     <thead>
                         <tr>
                             <th style="text-align: center;">Name</th>
@@ -321,6 +330,25 @@
                             <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype || 'N/A' }}</li>
                         </ul>
 
+                        <!-- <div class="modal-visualization">
+                            <h4><i class="fas fa-brain" aria-hidden="true"></i> Neuroimage Viewer</h4>
+                            <div class="niivue-container">
+                                <canvas 
+                                    id="niivue-canvas" 
+                                    class="niivue-canvas" 
+                                    aria-label="Neuroimage visualization"
+                                    v-show="selectedDataset.niftiPath"
+                                ></canvas>
+                                <div v-if="niivueLoading || niivueError" class="niivue-overlay" aria-live="polite">
+                                    <span v-if="niivueLoading"><i class="fas fa-spinner fa-spin"></i> Loading image...</span>
+                                    <span v-if="niivueError" style="color: #ffdddd;"><i class="fas fa-exclamation-triangle"></i> {{ niivueError }}</span>
+                                </div>
+                            </div>
+                            <div v-if="!selectedDataset.niftiPath && !niivueLoading && !niivueError" style="margin-top: 0.5rem; font-style: italic; color: #aaa; font-size: 0.9em;">
+                                <i class="fas fa-eye-slash"></i> No neuroimage preview available for this dataset.
+                            </div>
+                            
+                        </div> -->
                         <!-- Related Publications -->
                         <div v-if="selectedDataset.publications?.length" style="margin-top: 2rem;">
                             <h4>Related Publications</h4>

@@ -564,3 +564,63 @@ body {
 }
 
 /* ...existing code... */
+
+.niivue-container {
+    position: relative; /* For overlay positioning */
+    width: 100%;
+    height: 400px; /* Default height, adjust as needed */
+    background-color: #222; /* Dark background for contrast */
+    border: 1px solid #444;
+    margin-top: 0.5rem; /* Spacing from title */
+    border-radius: 4px;
+    overflow: hidden; /* Hide potential canvas overflow */
+}
+.niivue-canvas { /* Canvas itself */
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+.niivue-overlay { /* Loading/Error state */
+    position: absolute;
+    inset: 0; /* Covers the container */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7); /* Dark overlay */
+    color: #eee;
+    font-size: 1.1em;
+    padding: 1em;
+    text-align: center;
+    z-index: 5; /* Above canvas */
+}
+
+.filter-item label {
+    display: block;
+    margin-bottom: 0.3rem;
+    font-weight: 600;
+    color: #333;
+}
+  .filter-item input[type="text"],
+  .filter-item select {
+    width: 100%;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Include padding in width */
+}
+.filter-item .age-slider-container {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 5px;
+}
+.filter-item input[type="range"] {
+    flex-grow: 1; /* Allow sliders to take available space */
+    cursor: pointer;
+}
+.filter-item .age-value {
+    min-width: 25px; /* Fixed width for age numbers */
+    text-align: center;
+    font-size: 0.9em;
+    color: #555;
+}
