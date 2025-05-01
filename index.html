@@ -82,7 +82,7 @@
 
 
     <!-- Dataset Viewer Section -->
-    <section class="container main" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
+    <section class="container main dataset-viewer-section" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
         <h2>🧬 Available Datasets</h2>
         <div class="filters">
             <div style="grid-column: span 1; text-align: left; font-size: 1.25rem; margin-top: 1rem;">
@@ -94,9 +94,9 @@
                 <select v-model="selectedPathology" id="pathologyFilter" style="width: 100%;">
                     <option value="">All</option>
                     <option value="AD">AD</option>
-                    <option value="MCI">MCI</option>
-                    <option value="Controls">Controls</option>
-                    <option value="Healthy controls">Healthy controls</option>
+                    <option value="Autism">Autism</option>
+                    <option value="Shiz">Shiz</option>
+                    <option value="HC">HC</option>
                     <option value="Others">Others</option>
                 </select>
             </div>
@@ -127,6 +127,7 @@
                 </div>
             </div>
             <button 
+                name="grid_table_button"
                 @click="toggleView"
                 title="Switch View"
                 style="
@@ -300,6 +301,7 @@
                     <!-- Left: Dataset Details -->
                     <div>
                         <ul>
+                            <li><strong>Abbreviation:</strong> {{ selectedDataset.abbreviation || 'N/A' }}</li>
                             <li><strong>Description:</strong> <span style="word-wrap: break-word;">{{ selectedDataset.description || 'N/A' }}</span></li>
                             <li><strong>Population:</strong> {{ selectedDataset.population || 'N/A' }}</li>
                             <li><strong>Pathology:</strong> {{ selectedDataset.pathology || 'N/A' }}</li>
@@ -311,7 +313,11 @@
                                 {{ selectedDataset.females || 'N/A' }} females
                                 <span v-if="selectedDataset.genderRatio">({{ selectedDataset.genderRatio }} M/F)</span>
                             </li>
-                            <li><strong>CDR Global:</strong> {{ selectedDataset.cdrGlobal || 'N/A' }}</li>
+                            <li><strong>CDR Distribution:</strong> {{ selectedDataset.cdrGlobal || 'N/A' }} (0/0.5/1/2/3)</li>
+                            <li><strong>Race:</strong> {{ selectedDataset.race || 'N/A' }}</li>
+                            <li><strong>Ethnicity:</strong> {{ selectedDataset.ethnicity || 'N/A' }}</li>
+                            <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype || 'N/A' }}</li>
+
                             <li>
                                 <strong>Age Stats:</strong><br>
                                 Mean: {{ selectedDataset.meanAge || 'N/A' }} | Median: {{ selectedDataset.median || 'N/A' }}<br>
@@ -330,25 +336,6 @@
                             <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype || 'N/A' }}</li>
                         </ul>
 
-                        <!-- <div class="modal-visualization">
-                            <h4><i class="fas fa-brain" aria-hidden="true"></i> Neuroimage Viewer</h4>
-                            <div class="niivue-container">
-                                <canvas 
-                                    id="niivue-canvas" 
-                                    class="niivue-canvas" 
-                                    aria-label="Neuroimage visualization"
-                                    v-show="selectedDataset.niftiPath"
-                                ></canvas>
-                                <div v-if="niivueLoading || niivueError" class="niivue-overlay" aria-live="polite">
-                                    <span v-if="niivueLoading"><i class="fas fa-spinner fa-spin"></i> Loading image...</span>
-                                    <span v-if="niivueError" style="color: #ffdddd;"><i class="fas fa-exclamation-triangle"></i> {{ niivueError }}</span>
-                                </div>
-                            </div>
-                            <div v-if="!selectedDataset.niftiPath && !niivueLoading && !niivueError" style="margin-top: 0.5rem; font-style: italic; color: #aaa; font-size: 0.9em;">
-                                <i class="fas fa-eye-slash"></i> No neuroimage preview available for this dataset.
-                            </div>
-                            
-                        </div> -->
                         <!-- Related Publications -->
                         <div v-if="selectedDataset.publications?.length" style="margin-top: 2rem;">
                             <h4>Related Publications</h4>
@@ -360,10 +347,6 @@
                         </div>
                     </div>
                 </div>
-                <!-- Right Column: Full-size Scan
-                <div>
-                    <img :src="getThumbnail(selectedDataset)" alt="Sample Scan" style="width: 100%; border-radius: 8px;" />
-                </div> -->
                 <div>
                     <button @click="closeModal" class="close-button">Close</button>
                 </div>
@@ -380,7 +363,7 @@
             <p>© 2025 <strong>NeuroDataHub</strong>. Built using the 
             <a href="https://github.com/lorenmt/clarity-template" target="_blank">Clarity Template</a>.
             </p>
-            <p>Contact: <a href="mailto:contact@neurodatahub.org">mailid@something.org</a></p>
+            <p>Contact: <a href="mailto:ninadaithal@iisc.ac.in">ninadaithal@iisc.ac.in</a></p>
         </div>
     
         <!-- Right Side -->
@@ -390,14 +373,14 @@
             <details>
             <summary><strong>Vancouver</strong></summary>
             <p class="citation">
-                Your Name, Collaborators. NeuroDataHub: Curated Multi-Modal Brain Imaging Repository. arXiv preprint arXiv:2504.12345. 2025.
+                preprint out soon
             </p>
             </details>
     
             <details>
             <summary><strong>APA</strong></summary>
             <p class="citation">
-                Your Name, & Collaborators. (2025). <em>NeuroDataHub: Curated Multi-Modal Brain Imaging Repository</em>. arXiv:2504.12345.
+                Ninad Aithal et al., (2025). <em>NeuroDataHub: Curated Multi-Modal Brain Imaging Repository</em>. arXiv:2504.12345.
             </p>
             </details>
     

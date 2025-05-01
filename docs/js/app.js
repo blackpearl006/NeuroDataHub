@@ -46,7 +46,7 @@ new Vue({
     methods: {
         async loadDatasets() {
             try {
-                const response = await fetch('./docs/assets/NeuroDataHub2.tsv');
+                const response = await fetch('./docs/assets/data.tsv');
                 const data = await response.text();
                 this.datasets = this.parseCSV(data);
             } catch (error) {
@@ -57,44 +57,56 @@ new Vue({
             const rows = data.split('\n').slice(1).filter(row => row.trim() !== '');
             return rows.map(row => {
                 const columns = row.split('\t');
-                if (columns.length < 13) {
+                if (columns.length < 33) { // Updated column count
                     console.warn('Skipping malformed row:', row);
                     return null;
                 }
                 const [
-                    DATASET, PATHOLOGY, CDRGLOB, SUBJECTS, SCANS, MALES, FEMALES, GENDER_RATIO, 
-                    MIN_AGE, MAX_AGE, MEAN_AGE, STD_AGE, MEDIAN_AGE, Q25_AGE, Q75_AGE, AGE_RANGE, NUMBER_OF_SITES, 
-                    LINK, Publication, Description, Population, Design, Datatype
+                    DATASET, ABBREVIATION, SITES, SUBJECT, SCANS, MALES, FEMALES, MINAGE, MAXAGE, MEANAGE, STD, MEDIAN, Q25, Q75, 
+                    CDR0_0, CDR0_5, CDR1_0, CDR2_0, CDR3_0, RACE, ETHNICITY, PATHOLOGY, LINK, DESCRIPTION, POPULATION, DATA, DESIGN, 
+                    PUBLICATION, RESEARCH_ARTICLE_1_LINK, RESEARCH_ARTICLE_1_TITLE, RESEARCH_ARTICLE_1_DESCRIPTION, 
+                    RESEARCH_ARTICLE_2_LINK, RESEARCH_ARTICLE_2_TITLE, RESEARCH_ARTICLE_2_DESCRIPTION
                 ] = columns;
                 
                 return {
                     name: DATASET?.trim() || 'Unknown',
-                    pathology: PATHOLOGY?.trim() || 'N/A',
-                    cdrGlobal: CDRGLOB?.trim() || 'N/A',
-                    subjects: SUBJECTS?.trim() || 'N/A',
+                    abbreviation: ABBREVIATION?.trim() || 'N/A',
+                    sites: SITES?.trim() || 'N/A',
+                    subjects: SUBJECT?.trim() || 'N/A',
                     scans: SCANS?.trim() || 'N/A',
                     males: MALES?.trim() || 'N/A',
                     females: FEMALES?.trim() || 'N/A',
-                    genderRatio: GENDER_RATIO?.trim() || 'N/A',
-                    minAge: parseFloat(MIN_AGE)?.toFixed(0) || 'N/A',
-                    maxAge: parseFloat(MAX_AGE)?.toFixed(0) || 'N/A',
-                    meanAge: parseFloat(MEAN_AGE)?.toFixed(2) || 'N/A',
-                    stdDev: parseFloat(STD_AGE)?.toFixed(2) || 'N/A',
-                    median: parseFloat(MEDIAN_AGE)?.toFixed(2) || 'N/A',
-                    q25: parseFloat(Q25_AGE)?.toFixed(2) || 'N/A',
-                    q75: parseFloat(Q75_AGE)?.toFixed(2) || 'N/A',
-                    ageRange: AGE_RANGE?.trim() || 'N/A',
-                    numberOfSites: NUMBER_OF_SITES?.trim() || 'N/A',
+                    minAge: parseFloat(MINAGE)?.toFixed(0) || 'N/A',
+                    maxAge: parseFloat(MAXAGE)?.toFixed(0) || 'N/A',
+                    meanAge: parseFloat(MEANAGE)?.toFixed(2) || 'N/A',
+                    stdDev: parseFloat(STD)?.toFixed(2) || 'N/A',
+                    median: parseFloat(MEDIAN)?.toFixed(2) || 'N/A',
+                    q25: parseFloat(Q25)?.toFixed(2) || 'N/A',
+                    q75: parseFloat(Q75)?.toFixed(2) || 'N/A',
+                    cdr0_0: CDR0_0?.trim() || 'N/A',
+                    cdr0_5: CDR0_5?.trim() || 'N/A',
+                    cdr1_0: CDR1_0?.trim() || 'N/A',
+                    cdr2_0: CDR2_0?.trim() || 'N/A',
+                    cdr3_0: CDR3_0?.trim() || 'N/A',
+                    race: RACE?.trim() || 'N/A',
+                    ethnicity: ETHNICITY?.trim() || 'N/A',
+                    pathology: PATHOLOGY?.trim() || 'N/A',
                     link: LINK?.trim() || 'N/A',
-                    publication: Publication?.trim() || 'N/A',
-                    description: Description?.trim() || 'N/A',
-                    population: Population?.trim() || 'N/A',
-                    design: Design?.trim() || 'N/A',
-                    datatype: Datatype?.trim() || 'N/A',
+                    description: DESCRIPTION?.trim() || 'N/A',
+                    population: POPULATION?.trim() || 'N/A',
+                    data: DATA?.trim() || 'N/A',
+                    design: DESIGN?.trim() || 'N/A',
+                    publication: PUBLICATION?.trim() || 'N/A',
+                    researchArticle1Link: RESEARCH_ARTICLE_1_LINK?.trim() || 'N/A',
+                    researchArticle1Title: RESEARCH_ARTICLE_1_TITLE?.trim() || 'N/A',
+                    researchArticle1Description: RESEARCH_ARTICLE_1_DESCRIPTION?.trim() || 'N/A',
+                    researchArticle2Link: RESEARCH_ARTICLE_2_LINK?.trim() || 'N/A',
+                    researchArticle2Title: RESEARCH_ARTICLE_2_TITLE?.trim() || 'N/A',
+                    researchArticle2Description: RESEARCH_ARTICLE_2_DESCRIPTION?.trim() || 'N/A',
                     hovered: false
-                }
-                
+                };
             }).filter(dataset => dataset !== null);
+        
         },
         viewDetails(dataset) {
             this.selectedDataset = dataset;

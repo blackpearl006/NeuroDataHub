@@ -624,3 +624,68 @@ body {
     font-size: 0.9em;
     color: #555;
 }
+
+/* --- Dataset Viewer Section --- */
+.dataset-viewer-section {
+  background: linear-gradient(120deg, #f8fafc 60%, #e0e7ef 100%);
+  border-radius: 1.2rem;
+  box-shadow: 0 8px 32px rgba(60, 72, 88, 0.07);
+  padding: 2.5rem 1.5rem 2rem 1.5rem;
+  margin: 2rem auto 2.5rem auto;
+  max-width: 1600px;
+  transition: box-shadow 0.2s;
+}
+
+.dataset-viewer-section h2 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  /* color: #3730a3; */
+  margin-bottom: 1.2rem;
+  letter-spacing: 0.01em;
+  text-align: center;
+}
+
+.filters {
+  display: flex;
+  gap: 1.2rem;
+  margin-bottom: 2.2rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  background: #f3f4f6;
+  padding: 1.2rem 1rem;
+  border-radius: 0.8rem;
+  box-shadow: 0 2px 8px rgba(60, 72, 88, 0.04);
+}
+
+.filters input, .filters select {
+  padding: 0.6rem 1rem;
+  font-size: 1.05rem;
+  border-radius: 8px;
+  border: 1px solid #c7d2fe;
+  background: #fff;
+  color: #374151;
+  min-width: 180px;
+  transition: border 0.2s;
+}
+
+.filters input:focus, .filters select:focus {
+  border: 1.5px solid #6366f1;
+  outline: none;
+}
+
+.grid_table_button {
+    background: #f3f4f6;
+  color: #374151;
+  border: 1px solid #d1d5db;
+  padding: 0.4rem 0.9rem;
+  border-radius: 6px;
+  font-size: 1.15rem;
+  margin-top: 1.2rem;
+  margin-left: 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  transition: background 0.2s, border 0.2s;
+}
