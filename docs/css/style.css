@@ -176,7 +176,7 @@
   padding: 2rem;
   border-radius: 1rem;
   width: 90%;
-  max-width: 800px;
+  max-width: 1000px;
   max-height: 90vh;
   overflow-y: auto;
   box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
@@ -229,20 +229,53 @@
 }
 
 /* Columns Layout */
+
 .columns-2 {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap; /* force side-by-side unless screen is too narrow */
   gap: 1.5rem;
 }
 
 .columns-2 > div {
-  flex: 1 1 45%;
+  flex: 1; /* equal width columns */
+  min-width: 0; /* prevent overflow */
 }
 
 .columns-2 img {
   max-width: 100%;
   border-radius: 8px;
   object-fit: cover;
+}
+
+.chart-container {
+  width: 100%;
+  max-width: 520px;
+  margin: 0 auto;
+  padding: 1rem 0;
+}
+@media (max-width: 1000px) {
+  .modal {
+    max-width: 98vw;
+    padding: 1.2rem 0.5rem;
+  }
+  .chart-container {
+    max-width: 98vw;
+  }
+}
+
+#ageChart {
+  width: 100% !important;  /* makes it responsive */
+  max-width: 500px;        /* limit max width */
+  height: auto !important; /* maintain aspect ratio */
+  margin: 1rem auto 0 auto; /* Increased top margin for spacing */
+}
+
+#genderChart {
+  width: 100% !important;  /* makes it responsive */
+  display: block;
+  margin: 1rem auto 0 auto; /* Increased top margin for spacing */
+  max-width: 250px;
+  max-height: 250px;
 }
 
 /* Close Button */

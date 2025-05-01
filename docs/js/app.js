@@ -22,6 +22,8 @@ new Vue({
           niivueError: null,
           niivueLoading: false,
           niivueInstance: null,
+          ageChartInstance: null,
+          genderChartInstance: null,
         };
     },      
     mounted() {
@@ -129,10 +131,16 @@ new Vue({
               : 'docs/assets/images/sample1.png';
         },
         updateAgeRangeMin(val) {
-        this.ageRange = [Number(val), this.ageRange[1]];
+            val = parseInt(val);
+            if (val <= this.ageRange[1]) {
+            this.ageRange[0] = val;
+            }
         },
         updateAgeRangeMax(val) {
-            this.ageRange = [this.ageRange[0], Number(val)];
+            val = parseInt(val);
+            if (val >= this.ageRange[0]) {
+            this.ageRange[1] = val;
+            }
         },
         toggleView() {
             this.isGridView = !this.isGridView;
@@ -143,6 +151,176 @@ new Vue({
             // if (this.niivueInstance && this.showModal) {
             //     this.niivueInstance.resizeCanvas();
             // }
+        },
+            async viewDetails(dataset) {
+        this.selectedDataset = dataset;
+        this.showModal = true;
+        this.$nextTick(async () => {
+            // this.initializeNiivue();
+            await this.plotAgeChart(dataset.name);
+            await this.plotGenderChart(dataset.name);
+        });
+        },
+        async plotAgeChart(datasetName) {
+            // Remove previous chart if exists
+            if (this.ageChartInstance) {
+                this.ageChartInstance.destroy();
+                this.ageChartInstance = null;
+            }
+            const csvPath = `docs/assets/metadata/${datasetName}.csv`;
+            try {
+                const resp = await fetch(csvPath);
+                if (!resp.ok) {
+                    console.warn("No metadata CSV found for", datasetName);
+                    return;
+                }
+                const text = await resp.text();
+                // Parse CSV
+                const rows = text.split('\n').map(row => row.trim()).filter(row => row);
+                const header = rows[0].split(',');
+                const ageIdx = header.findIndex(h => h.trim().toLowerCase() === 'age');
+                if (ageIdx === -1) {
+                    console.warn("No 'Age' column in metadata for", datasetName);
+                    return;
+                }
+                const ages = rows.slice(1)
+                    .map(row => {
+                        const cols = row.split(',');
+                        const val = parseFloat(cols[ageIdx]);
+                        return isNaN(val) ? null : val;
+                    })
+                    .filter(val => val !== null);
+
+                // Bin ages in 5-year intervals
+                if (ages.length === 0) return;
+                const minAge = Math.floor(Math.min(...ages) / 5) * 5;
+                const maxAge = Math.ceil(Math.max(...ages) / 5) * 5;
+                const bins = [];
+                const labels = [];
+                for (let start = minAge; start < maxAge; start += 5) {
+                    bins.push(0);
+                    labels.push(`${start}-${start+4}`);
+                }
+                ages.forEach(age => {
+                    const binIdx = Math.floor((age - minAge) / 5);
+                    if (binIdx >= 0 && binIdx < bins.length) bins[binIdx]++;
+                });
+
+                // Draw chart
+                const ctx = document.getElementById('ageChart').getContext('2d');
+                this.ageChartInstance = new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'Number of Subjects',
+                            data: bins,
+                            backgroundColor: '#6366f1',
+                        }]
+                    },
+                    options: {
+                    responsive: true,
+                    plugins: {
+                        legend: { display: false },
+                        title: { display: false },
+                        tooltip: {
+                        backgroundColor: '#6366f1',
+                        titleColor: '#fff',
+                        bodyColor: '#fff',
+                        borderColor: '#818cf8',
+                        borderWidth: 1,
+                        padding: 12,
+                        cornerRadius: 8,
+                        }
+                    },
+                    scales: {
+                        x: {
+                        title: { display: true, text: 'Age (years)', color: '#3730a3', font: { weight: 'bold', size: 15 } },
+                        ticks: { color: '#334155', font: { size: 13 } },
+                        grid: { color: '#e0e7ef' }
+                        },
+                        y: {
+                        title: { display: true, text: 'Count', color: '#3730a3', font: { weight: 'bold', size: 15 } },
+                        ticks: { color: '#334155', font: { size: 13 } },
+                        grid: { color: '#e0e7ef' },
+                        beginAtZero: true
+                        }
+                    }
+                    }
+                });
+            } catch (err) {
+                console.warn("Error loading or plotting age chart:", err);
+            }
+        },
+        async plotGenderChart(datasetName) {
+            // Remove previous chart if exists
+            if (this.genderChartInstance) {
+                this.genderChartInstance.destroy();
+                this.genderChartInstance = null;
+            }
+            const csvPath = `docs/assets/metadata/${datasetName}.csv`;
+            try {
+                const resp = await fetch(csvPath);
+                if (!resp.ok) {
+                    console.warn("No metadata CSV found for", datasetName);
+                    return;
+                }
+                const text = await resp.text();
+                const rows = text.split('\n').map(row => row.trim()).filter(row => row);
+                const header = rows[0].split(',');
+                const subjectIdx = header.findIndex(h => h.trim().toLowerCase() === 'subjectid');
+                const genderIdx = header.findIndex(h => h.trim().toLowerCase() === 'gender');
+                if (subjectIdx === -1 || genderIdx === -1) {
+                    console.warn("No 'SubjectID' or 'Gender' column in metadata for", datasetName);
+                    return;
+                }
+
+                const seenSubjects = new Set();
+                const genders = [];
+
+                rows.slice(1).forEach(row => {
+                    const cols = row.split(',');
+                    const subject = cols[subjectIdx]?.trim();
+                    const genderRaw = cols[genderIdx]?.trim().toLowerCase();
+                    if (!subject || seenSubjects.has(subject)) return;
+                    seenSubjects.add(subject);
+                    if (genderRaw === 'm' || genderRaw === 'male') genders.push('male');
+                    else if (genderRaw === 'f' || genderRaw === 'female') genders.push('female');
+                });
+
+                const maleCount = genders.filter(g => g === 'male').length;
+                const femaleCount = genders.filter(g => g === 'female').length;
+
+                const ctx = document.getElementById('genderChart').getContext('2d');
+                this.genderChartInstance = new Chart(ctx, {
+                    type: 'pie',
+                    data: {
+                        labels: ['Male', 'Female'],
+                        datasets: [{
+                            data: [maleCount, femaleCount],
+                            backgroundColor: ['#60a5fa', '#f472b6'],
+                            borderColor: '#fff',
+                            borderWidth: 2,
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        plugins: {
+                            legend: {
+                                display: true,
+                                position: 'bottom',
+                                labels: {
+                                    color: '#334155',
+                                    font: { size: 15 }
+                                }
+                            },
+                            title: { display: false }
+                        }
+                    }
+                });
+            } catch (err) {
+                console.warn("Error loading or plotting gender chart:", err);
+            }
         },
         // --- Niivue Methods --- 
         async initializeNiivue() {
@@ -235,9 +413,74 @@ new Vue({
         } else {
             console.error("Niivue CDN NOT loaded! Check your <script> tag in index.html.");
         }
+
         this.loadDatasets();
         window.addEventListener('resize', this.handleResize);
         this.handleResize();
+
+        // Initialize noUiSlider
+        if (this.$refs.ageSlider && typeof noUiSlider !== "undefined") {
+            noUiSlider.create(this.$refs.ageSlider, {
+            start: this.ageRange,
+            connect: true,
+            step: 1,
+            range: {
+                min: this.minPossibleAge,
+                max: this.maxPossibleAge,
+            },
+            tooltips: true,
+            orientation: 'horizontal',
+            format: {
+                to: value => Math.round(value),
+                from: value => Number(value)
+            }
+            });
+
+            // Center the slider using flexbox
+            this.$refs.ageSlider.style.display = 'flex';
+            this.$refs.ageSlider.style.justifyContent = 'center';
+            this.$refs.ageSlider.style.alignItems = 'center';
+            this.$refs.ageSlider.style.margin = '0 auto';
+
+            // Change the color of the slider fill (connect bar)
+            this.$nextTick(() => {
+            const connect = this.$refs.ageSlider.querySelector('.noUi-connect');
+            if (connect) {
+                connect.style.background = '#3b82f6'; // Change to your desired color (e.g., Tailwind blue-500)
+            }
+            // Move tooltips below the slider
+            const tooltips = this.$refs.ageSlider.querySelectorAll('.noUi-tooltip');
+            tooltips.forEach(tooltip => {
+                tooltip.style.top = '32px'; // move below the slider
+                tooltip.style.bottom = 'auto';
+            });
+            });
+
+            // Show tooltip for 3 seconds on update, then hide
+            this.$refs.ageSlider.noUiSlider.on('update', (values, handle) => {
+            this.ageRange = [parseInt(values[0]), parseInt(values[1])];
+            const tooltips = this.$refs.ageSlider.querySelectorAll('.noUi-tooltip');
+            tooltips.forEach(tooltip => {
+                tooltip.style.opacity = '1';
+            });
+            clearTimeout(this._tooltipTimeout);
+            this._tooltipTimeout = setTimeout(() => {
+                tooltips.forEach(tooltip => {
+                tooltip.style.opacity = '0';
+                });
+            }, 3000);
+            });
+
+            // Initially hide tooltips after 3 seconds
+            setTimeout(() => {
+            const tooltips = this.$refs.ageSlider.querySelectorAll('.noUi-tooltip');
+            tooltips.forEach(tooltip => {
+                tooltip.style.opacity = '0';
+            });
+            }, 3000);
+        } else {
+            console.warn("noUiSlider not loaded or missing ref.");
+        }
     },
     beforeDestroy() {
          // Clean up listener when the Vue instance is destroyed

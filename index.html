@@ -11,13 +11,18 @@
     <link rel="icon" href="./docs/assets/images/favicon.ico" type="image/x-icon" />
     <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
     <script src="https://unpkg.com/niivue@latest/dist/niivue.umd.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
 <div id="app">
     <!-- Navbar -->
     <!-- Navbar -->
     <header class="navbar clarity-navbar">
-        <a class="logo clarity-logo" href="#">🧠 NeuroDataHub</a>
+
+        <a class="logo clarity-logo" href="#">
+            <img src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub Logo" width="40" height="42" style="vertical-align: middle; margin-right: 0.5em;"> NeuroDataHub</a>
         <!-- <nav class="clarity-nav">
             <ul>
                 <li><a href="#" class="clarity-link">Home</a></li>
@@ -33,7 +38,8 @@
         <section class="hero">
             <div class="hero-grid">
                 <div class="hero-text">
-                    <h1>🧠 NeuroDataHub</h1>
+                    <img src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub Logo" width="120" height="125" style="vertical-align: middle; margin-right: 0.5em;">
+                    <h1 style="display: inline; vertical-align: middle;">NeuroDataHub</h1>
                     <p>
                         An open-access platform to explore, compare, and analyze neuroimaging datasets.
                         Built for researchers, clinicians, and students in neuroscience and AI. Lorem Ipsum is simply dummy text of the printing and typesetting industry. 
@@ -100,32 +106,11 @@
                     <option value="Others">Others</option>
                 </select>
             </div>
-            <div>
-                <label for="ageRange">Age Range:</label>
-                <div style="display: flex; align-items: center; gap: 0.5em;">
-                    <input
-                        type="range"
-                        id="ageRangeMin"
-                        :min="minPossibleAge"
-                        :max="ageRange[1]"
-                        :value="ageRange[0]"
-                        @input="updateAgeRangeMin($event.target.value)"
-                        style="flex: 1;"
-                    />
-                    <input
-                        type="range"
-                        id="ageRangeMax"
-                        :min="ageRange[0]"
-                        :max="maxPossibleAge"
-                        :value="ageRange[1]"
-                        @input="updateAgeRangeMax($event.target.value)"
-                        style="flex: 1; margin-left: -1.5em;"
-                    />
-                    <span>{{ ageRange[0] }}</span>
-                    <span>–</span>
-                    <span>{{ ageRange[1] }}</span>
-                </div>
+            <div style="grid-column: span 2; text-align: left; font-size: 1.25rem; margin-top: 1rem;">
+                <label for="pathologyFilter">Age Range:</label>
+                <div id="slider-age" ref="ageSlider" style="min-width: 300px; height: 36px;"></div>
             </div>
+
             <button 
                 name="grid_table_button"
                 @click="toggleView"
@@ -172,11 +157,14 @@
                 @mouseenter="toggleHover(dataset, true)"
                 @mouseleave="toggleHover(dataset, false)"
             >
-                <img 
-                    :src="`./docs/assets/images/${dataset.name}.png`" 
-                    :alt="dataset.name" 
-                    @error="$event.target.src='./docs/assets/images/indi.png'" 
-                    style="width: 100%; height: auto; object-fit: contain;" />
+                <div style="width: 100%; height: 140px; display: flex; align-items: center; justify-content: center; border-radius: 8px; overflow: hidden; margin-bottom: 0.5em;">
+                    <img 
+                        :src="`./docs/assets/images/${dataset.name}.png`" 
+                        :alt="dataset.name" 
+                        @error="$event.target.src='./docs/assets/images/indi.png'" 
+                        style="max-width: 100%; max-height: 100%; object-fit: contain;" 
+                    />
+                </div>
                 <h3>{{ dataset.name }}</h3>
                 <p>{{ dataset.subjects }} subjects, {{ dataset.scans }} scans</p>
                 <div class="tags">
@@ -267,7 +255,7 @@
                         :alt="selectedDataset.name"
                         @error="$event.target.src='./docs/assets/images/indi.png'"
                         class="top-right-thumb"
-                        style="width: 80px; height: 80px; object-fit: contain; border-radius: 8px; margin-left: 1rem;"
+                        style="width: 80px; height: 80px; object-fit: contain; border-radius: 8px; margin-left: 5rem;"
                     />
                     <button 
                         @click="closeModal" 
@@ -331,7 +319,7 @@
                                 Q25: {{ selectedDataset.q25 || 'N/A' }} | Q75: {{ selectedDataset.q75 || 'N/A' }}
                             </li>
                             <li><strong>Std Dev (Age):</strong> {{ selectedDataset.stdDev || 'N/A' }}</li>
-                            <li><strong>Number of Sites:</strong> {{ selectedDataset.numberOfSites || 'N/A' }}</li>
+                            <li><strong>Number of Sites:</strong> {{ selectedDataset.sites || 'N/A' }}</li>
                             <li><strong>Design:</strong> {{ selectedDataset.design || 'N/A' }}</li>
                             <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype || 'N/A' }}</li>
                         </ul>
@@ -345,6 +333,15 @@
                                 </li>
                             </ul>
                         </div>
+                    </div>
+                    <!-- Right side details -->
+                    <div class="chart-container">
+                        <h4 style="margin-top: 0; text-align: center;">Age Distribution</h4>
+                        <canvas id="ageChart" width="500" height="320"></canvas>
+                        <span></span>
+                        <span></span>
+                        <h4 style="margin-top: 2rem; text-align: center;">Gender Distribution</h4>
+                            <canvas id="genderChart" width="100" height="100"></canvas>
                     </div>
                 </div>
                 <div>
@@ -387,12 +384,12 @@
             <details open>
             <summary><strong>BibTeX</strong></summary>
             <pre class="bibtex">
-    @article{your2025paper,
-        title={NeuroDataHub: Curated Multi-Modal Brain Imaging Repository},
-        author={Your Name and Collaborators},
-        journal={arXiv preprint arXiv:2504.12345},
-        year={2025}
-    }
+                @article{your2025paper,
+                    title={NeuroDataHub: Curated Multi-Modal Brain Imaging Repository},
+                    author={Your Name and Collaborators},
+                    journal={arXiv preprint arXiv:2504.12345},
+                    year={2025}
+                }
             </pre>
             </details>
         </div>
