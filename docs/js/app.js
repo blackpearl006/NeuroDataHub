@@ -43,6 +43,15 @@ new Vue({
                     minAge <= this.ageRange[1] && maxAge >= this.ageRange[0];
                 return matchesSearch && matchesPathology && matchesAge;
             });
+        },
+        hasCDRDistribution() {
+        if (!this.selectedDataset) return false;
+        const cdr0 = Number(this.selectedDataset.cdr0_0 || 0);
+        const cdr05 = Number(this.selectedDataset.cdr0_5 || 0);
+        const cdr1 = Number(this.selectedDataset.cdr1_0 || 0);
+        const cdr2 = Number(this.selectedDataset.cdr2_0 || 0);
+        const cdr3 = Number(this.selectedDataset.cdr3_0 || 0);
+        return (cdr0 + cdr05 + cdr1 + cdr2 + cdr3) > 0;
         }
     },
     methods: {
@@ -152,7 +161,7 @@ new Vue({
             //     this.niivueInstance.resizeCanvas();
             // }
         },
-            async viewDetails(dataset) {
+        async viewDetails(dataset) {
         this.selectedDataset = dataset;
         this.showModal = true;
         this.$nextTick(async () => {
@@ -167,7 +176,7 @@ new Vue({
                 this.ageChartInstance.destroy();
                 this.ageChartInstance = null;
             }
-            const csvPath = `docs/assets/metadata/${datasetName}.csv`;
+            const csvPath = `docs/assets/Encrypt/${datasetName}.csv`;
             try {
                 const resp = await fetch(csvPath);
                 if (!resp.ok) {
@@ -258,7 +267,7 @@ new Vue({
                 this.genderChartInstance.destroy();
                 this.genderChartInstance = null;
             }
-            const csvPath = `docs/assets/metadata/${datasetName}.csv`;
+            const csvPath = `docs/assets/Encrypt/${datasetName}.csv`;
             try {
                 const resp = await fetch(csvPath);
                 if (!resp.ok) {
@@ -446,7 +455,7 @@ new Vue({
             this.$nextTick(() => {
             const connect = this.$refs.ageSlider.querySelector('.noUi-connect');
             if (connect) {
-                connect.style.background = '#3b82f6'; // Change to your desired color (e.g., Tailwind blue-500)
+                connect.style.background = '#4caf50'; // Change to your desired color (e.g., Tailwind blue-500)
             }
             // Move tooltips below the slider
             const tooltips = this.$refs.ageSlider.querySelectorAll('.noUi-tooltip');

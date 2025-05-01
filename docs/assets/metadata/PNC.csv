@@ -1,6 +1,0 @@
-SubjectID,UniqueScanID,Phase,Site,Gender,Age,Pathology/Diagnosis,MagneticWeighting,MRSequence,CDGLOBAL,MMSE,MOCA,Handedness,Ethnicity,Race,Education,Visit
-22040b32a3e6dd26610b423649f87be2d454ce0022a552a99dd32bf408a35e39,0f24f9374c46f2b1cb8694d84ef3a672f3b7f65eb1e784e81ba94f7aff71c7be,Wave1,PNC1,M,15.58333333,,3T,MPRAGE,,,,right,not Hispanic or Latino,Black,9th Grade,PNC1
-f3210accfe8203b35ee75b5cd3abaa10a587b8b9303e98878872a5bec651ca5d,12331121e6c641575ef4193fcc4e1ace4f94080235c7a8a891ef2edb1ee17241,Wave1,PNC1,M,14.91666667,,3T,MPRAGE,,,,right,not Hispanic or Latino,Black,7th Grade,PNC1
-a88f239bb65277c4a56d68c7d62bbcb27a0f6bda24d2318f2eca2797e7c07fed,f47cfef0f141e883c1eb3b66ef10593340babcc6110bbff7d6d226ec80eba036,Wave1,PNC1,M,17.83333333,,3T,MPRAGE,,,,right,Hispanic or Latino,Other,11th Grade,PNC1
-7a879f82ba296adc8bdf61093f39f9aaac765c6fe60a187b0501c20c651535d8,506c17b7953b9a60159d3502579d6403f42efcea1563ed867324ed4a9dda2d4b,Wave1,PNC1,M,8.25,,3T,MPRAGE,,,,ambidextrous,not Hispanic or Latino,Black,1st Grade,PNC1
-93f16c45a4d8bed8b6fd75a2da605525c89fe4148c004b6368795fb3d50eeffa,f3fac505eb83eb031e0c5ac99462188be84465a0d9d7a038c2717c3606de3370,Wave1,PNC1,F,21.5,,3T,MPRAGE,,,,right,not Hispanic or Latino,Other,12th Grade,PNC1

@@ -299,10 +299,17 @@
                                 {{ selectedDataset.females || 'N/A' }} females
                                 <span v-if="selectedDataset.genderRatio">({{ selectedDataset.genderRatio }} M/F)</span>
                             </li>
-                            <li><strong>CDR Distribution:</strong> {{ selectedDataset.cdrGlobal || 'N/A' }} (0/0.5/1/2/3)</li>
+                            <li v-if="hasCDRDistribution">
+                                <strong>CDR Distribution:</strong>
+                                <strong>0:</strong> {{ selectedDataset.cdr0_0 || 'N/A' }},
+                                <strong>0.5:</strong> {{ selectedDataset.cdr0_5 || 'N/A' }},
+                                <strong>1:</strong> {{ selectedDataset.cdr1_0 || 'N/A' }},
+                                <strong>2:</strong> {{ selectedDataset.cdr2_0 || 'N/A' }},
+                                <strong>3:</strong> {{ selectedDataset.cdr3_0 || 'N/A' }}
+                            </li>
                             <li><strong>Race:</strong> {{ selectedDataset.race || 'N/A' }}</li>
                             <li><strong>Ethnicity:</strong> {{ selectedDataset.ethnicity || 'N/A' }}</li>
-                            <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype || 'N/A' }}</li>
+                            <li><strong>Dataset Type:</strong> {{ selectedDataset.data || 'N/A' }}</li>
 
                             <li>
                                 <strong>Age Stats:</strong><br>
