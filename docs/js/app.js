@@ -1,7 +1,3 @@
-// Make sure Niivue is available globally
-// If using a CDN, add the following line at the top of your HTML file before this script:
-// <script src="https://unpkg.com/niivue/dist/niivue.umd.js"></script>
-
 new Vue({
     el: '#app',
     data() {
@@ -16,6 +12,7 @@ new Vue({
           maxPossibleAge:100,
           minPossibleAge: 0,
           isGridView: true,
+          hoveredPubIdx: null,
           windowWidth: window.innerWidth,
           isLoading: true, // Flag for loading state
           errorLoading: null, // Store loading errors
@@ -24,6 +21,7 @@ new Vue({
           niivueInstance: null,
           ageChartInstance: null,
           genderChartInstance: null,
+          hoveredModality: null,
         };
     },      
     mounted() {
@@ -52,33 +50,57 @@ new Vue({
         const cdr2 = Number(this.selectedDataset.cdr2_0 || 0);
         const cdr3 = Number(this.selectedDataset.cdr3_0 || 0);
         return (cdr0 + cdr05 + cdr1 + cdr2 + cdr3) > 0;
-        }
+        },
+        publicationCards() {
+        if (!this.selectedDataset) return [];
+        return [
+            {
+                link: this.selectedDataset.researchArticle1Link,
+                title: this.selectedDataset.researchArticle1Title,
+                description: this.selectedDataset.researchArticle1Description,
+                _hover: false
+            },
+            {
+                link: this.selectedDataset.researchArticle2Link,
+                title: this.selectedDataset.researchArticle2Title,
+                description: this.selectedDataset.researchArticle2Description,
+                _hover: false
+            }
+        ].filter(pub => pub.link && pub.link !== 'N/A' && pub.title && pub.title !== 'N/A');
+    },
     },
     methods: {
         async loadDatasets() {
             try {
-                const response = await fetch('./docs/assets/data.tsv');
+                const response = await fetch('./docs/assets/data_updated.tsv');
                 const data = await response.text();
                 this.datasets = this.parseCSV(data);
             } catch (error) {
                 console.error('Error loading datasets:', error);
+            } finally {
+                this.isLoading = false;
             }
+            
         },
         parseCSV(data) {
+            this.isLoading = true;
             const rows = data.split('\n').slice(1).filter(row => row.trim() !== '');
             return rows.map(row => {
                 const columns = row.split('\t');
-                if (columns.length < 33) { // Updated column count
+                if (columns.length < 48) { // Updated total column count
                     console.warn('Skipping malformed row:', row);
                     return null;
                 }
+
                 const [
                     DATASET, ABBREVIATION, SITES, SUBJECT, SCANS, MALES, FEMALES, MINAGE, MAXAGE, MEANAGE, STD, MEDIAN, Q25, Q75, 
                     CDR0_0, CDR0_5, CDR1_0, CDR2_0, CDR3_0, RACE, ETHNICITY, PATHOLOGY, LINK, DESCRIPTION, POPULATION, DATA, DESIGN, 
                     PUBLICATION, RESEARCH_ARTICLE_1_LINK, RESEARCH_ARTICLE_1_TITLE, RESEARCH_ARTICLE_1_DESCRIPTION, 
-                    RESEARCH_ARTICLE_2_LINK, RESEARCH_ARTICLE_2_TITLE, RESEARCH_ARTICLE_2_DESCRIPTION
+                    RESEARCH_ARTICLE_2_LINK, RESEARCH_ARTICLE_2_TITLE, RESEARCH_ARTICLE_2_DESCRIPTION,
+                    PLATFORM, TIP1, TIP2, ANAT, RS_FMRI, T_FMRI, DWI, EEG, PET,
+                    COGNITIVE, BEHAVIOURAL, GENETICS, FLUID_BIOMARKERS, OTHERS, DRAWBACK
                 ] = columns;
-                
+
                 return {
                     name: DATASET?.trim() || 'Unknown',
                     abbreviation: ABBREVIATION?.trim() || 'N/A',
@@ -114,10 +136,24 @@ new Vue({
                     researchArticle2Link: RESEARCH_ARTICLE_2_LINK?.trim() || 'N/A',
                     researchArticle2Title: RESEARCH_ARTICLE_2_TITLE?.trim() || 'N/A',
                     researchArticle2Description: RESEARCH_ARTICLE_2_DESCRIPTION?.trim() || 'N/A',
+                    platform: PLATFORM?.trim() || 'N/A',
+                    tip1: TIP1?.trim() || 'N/A',
+                    tip2: TIP2?.trim() || 'N/A',
+                    anat: ANAT === '1' ? 1 : 0,
+                    rs_fmri: RS_FMRI === '1' ? 1 : 0,
+                    t_fmri: T_FMRI === '1' ? 1 : 0,
+                    dwi: DWI === '1' ? 1 : 0,
+                    eeg: EEG === '1' ? 1 : 0,
+                    pet: PET === '1' ? 1 : 0,
+                    cognitive: COGNITIVE === '1' ? 1 : 0,
+                    behavioural: BEHAVIOURAL === '1' ? 1 : 0,
+                    genetics: GENETICS === '1' ? 1 : 0,
+                    fluid_biomarkers: FLUID_BIOMARKERS === '1' ? 1 : 0,
+                    others: OTHERS?.trim() || 'N/A',
+                    drawback: DRAWBACK?.trim() || 'N/A',
                     hovered: false
                 };
             }).filter(dataset => dataset !== null);
-        
         },
         viewDetails(dataset) {
             this.selectedDataset = dataset;
@@ -156,16 +192,11 @@ new Vue({
         },
         handleResize() {
             this.windowWidth = window.innerWidth;
-            // Optional: Resize Niivue if needed (often handles automatically)
-            // if (this.niivueInstance && this.showModal) {
-            //     this.niivueInstance.resizeCanvas();
-            // }
         },
         async viewDetails(dataset) {
         this.selectedDataset = dataset;
         this.showModal = true;
         this.$nextTick(async () => {
-            // this.initializeNiivue();
             await this.plotAgeChart(dataset.name);
             await this.plotGenderChart(dataset.name);
         });
@@ -331,103 +362,11 @@ new Vue({
                 console.warn("Error loading or plotting gender chart:", err);
             }
         },
-        // --- Niivue Methods --- 
-        async initializeNiivue() {
-            console.log("initializeNiivue called");
-            if (!this.showModal) {
-                console.warn("Modal is not open.");
-                return;
-            }
-            if (!this.selectedDataset) {
-                console.warn("No dataset selected.");
-                return;
-            }
-            const canvas = document.getElementById('niivue-canvas');
-            if (!canvas) {
-                console.warn("Canvas element #niivue-canvas not found.");
-                return;
-            }
-
-            // Clean up any previous instance
-            this.destroyNiivue();
-
-            this.niivueLoading = true;
-            this.niivueError = null;
-
-            // Dynamically set the NIfTI path based on the selected dataset
-            // Example: assumes dataset.name matches the NIfTI filename
-            const niftiPath = `docs/assets/nifti/${this.selectedDataset.name}.nii.gz`;
-            console.log("Attempting to load NIfTI file:", niftiPath);
-
-            // Optionally, check if the file exists (fetch HEAD request)
-            try {
-                const headResp = await fetch(niftiPath, { method: 'HEAD' });
-                if (!headResp.ok) {
-                    this.niivueError = `NIfTI file not found: ${niftiPath}`;
-                    console.error(this.niivueError);
-                    this.niivueLoading = false;
-                    return;
-                }
-            } catch (fetchErr) {
-                this.niivueError = `Error checking NIfTI file: ${fetchErr}`;
-                console.error(this.niivueError);
-                this.niivueLoading = false;
-                return;
-            }
-
-            try {
-                console.log("Initializing Niivue instance...");
-                const nv = new Niivue({
-                    show3Dcrosshair: true,
-                    backColor: [0.1, 0.1, 0.1, 1],
-                });
-                this.niivueInstance = nv;
-
-                await nv.attachTo('niivue-canvas');
-                console.log("Niivue attached to canvas.");
-
-                const volumeList = [
-                    { url: niftiPath }
-                ];
-                await nv.loadVolumes(volumeList);
-                console.log("Niivue volume loaded successfully.");
-
-            } catch (error) {
-                this.niivueError = `Failed to load image: ${error.message || error}`;
-                console.error("Niivue Error:", error);
-                this.destroyNiivue();
-            } finally {
-                this.niivueLoading = false;
-            }
-        },
-        destroyNiivue() {
-            if (this.niivueInstance) {
-                try {
-                    console.log("Detaching Niivue instance.");
-                    this.niivueInstance.detach(); // Release resources
-                 } catch (error) {
-                    console.error("Error detaching Niivue:", error);
-                 } finally {
-                    this.niivueInstance = null; // Clear the stored instance
-                 }
-            }
-             // Reset state flags
-            this.niivueLoading = false;
-            this.niivueError = null;
-        },
     },
     mounted() {
-        if (typeof Niivue !== "undefined") {
-            console.log("Niivue CDN loaded successfully:", Niivue);
-        } else {
-            console.error("Niivue CDN NOT loaded! Check your <script> tag in index.html.");
-        }
-
         this.loadDatasets();
-        window.addEventListener('resize', this.handleResize);
         this.handleResize();
 
-        // Initialize noUiSlider
         if (this.$refs.ageSlider && typeof noUiSlider !== "undefined") {
             noUiSlider.create(this.$refs.ageSlider, {
             start: this.ageRange,
@@ -491,19 +430,4 @@ new Vue({
             console.warn("noUiSlider not loaded or missing ref.");
         }
     },
-    beforeDestroy() {
-         // Clean up listener when the Vue instance is destroyed
-        window.removeEventListener('resize', this.handleResize);
-        // Ensure Niivue is cleaned up if the component is destroyed unexpectedly
-        this.destroyNiivue();
-    }
-});
-
-window.addEventListener('resize', () => {
-    const app = new Vue({
-        el: '#app',
-        data: {
-            windowWidth: window.innerWidth
-        }
-    });
 });

@@ -722,3 +722,108 @@ body {
   box-shadow: 0 1px 3px rgba(0,0,0,0.04);
   transition: background 0.2s, border 0.2s;
 }
+
+.fade-expand-enter-active, .fade-expand-leave-active {
+    transition: opacity 0.25s, max-height 0.32s cubic-bezier(.4,2,.6,1);
+}
+.fade-expand-enter, .fade-expand-leave-to {
+    opacity: 0;
+    max-height: 0;
+}
+.fade-expand-enter-to, .fade-expand-leave {
+    opacity: 1;
+    max-height: 200px;
+}
+
+/* Publication Cards in Modal */
+.explainable-publication-card {
+  flex: 1 1 0;
+  min-width: 0;
+  background: #f7f7fa;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  padding: 0;
+  overflow: hidden;
+  transition: box-shadow 0.2s;
+  margin-bottom: 0; /* Remove if you want spacing between cards */
+}
+
+.explainable-publication-card a {
+  display: flex;
+  align-items: center;
+  gap: 0.8em;
+  text-decoration: none;
+  color: inherit;
+  padding: 1.2em;
+  transition: background 0.2s;
+}
+
+.explainable-publication-card a:hover,
+.explainable-publication-card a.active {
+  background: #e6f2ff;
+}
+
+.explainable-publication-card i.fas.fa-link {
+  font-size: 1.5em;
+  color: #1976d2;
+  flex-shrink: 0;
+}
+
+.explainable-publication-card .pub-title {
+  font-weight: 600;
+  font-size: 1.08em;
+  transition: transform 0.22s cubic-bezier(.4,2,.6,1), box-shadow 0.22s;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+.explainable-publication-card .pub-title.active {
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 4px 16px rgba(25,118,210,0.08);
+}
+
+.fade-expand-enter-active, .fade-expand-leave-active {
+  transition: opacity 0.25s, max-height 0.32s cubic-bezier(.4,2,.6,1);
+}
+.fade-expand-enter, .fade-expand-leave-to {
+  opacity: 0;
+  max-height: 0;
+}
+.fade-expand-enter-to, .fade-expand-leave {
+  opacity: 1;
+  max-height: 200px;
+}
+
+.explainable-publication-card .pub-description {
+  margin-top: 0.7em;
+  color: #444;
+  font-size: 0.98em;
+  background: #f0f6ff;
+  border-radius: 7px;
+  padding: 0.7em 1em;
+  box-shadow: 0 2px 8px rgba(25,118,210,0.06);
+}
+
+.explainable-publication-card a,
+.explainable-publication-card a:hover,
+.explainable-publication-card a.active {
+  text-decoration: none;
+}
+
+.modality-tooltip {
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #222;
+  color: #fff;
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.95em;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.95;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+}

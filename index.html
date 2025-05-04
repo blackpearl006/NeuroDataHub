@@ -113,22 +113,7 @@
                 name="grid_table_button"
                 @click="toggleView"
                 title="Switch View"
-                style="
-                    background: #f3f4f6;
-                    color: #374151;
-                    border: 1px solid #d1d5db;
-                    padding: 0.4rem 0.9rem;
-                    border-radius: 6px;
-                    font-size: 1.15rem;
-                    margin-top: 1.2rem;
-                    margin-left: 0.5rem;
-                    cursor: pointer;
-                    display: flex;
-                    align-items: center;
-                    gap: 0.5em;
-                    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-                    transition: background 0.2s, border 0.2s;
-                "
+                style="background: #f3f4f6;color: #374151;border: 1px solid #d1d5db;padding: 0.4rem 0.9rem;border-radius: 6px;font-size: 1.15rem;margin-top: 1.2rem;margin-left: 0.5rem;cursor: pointer;display: flex;align-items: center;gap: 0.5em;box-shadow: 0 1px 3px rgba(0,0,0,0.04);transition: background 0.2s, border 0.2s;"
                 @mouseover="event.target.style.background='#e5e7eb'"
                 @mouseout="event.target.style.background='#f3f4f6'"
             >
@@ -171,19 +156,7 @@
                 </div>
                 <button 
                     @click="viewDetails(dataset)" 
-                    style="
-                        background-color: #4CAF50; 
-                        color: white; 
-                        border: none; 
-                        padding: 10px 20px; 
-                        text-align: center; 
-                        text-decoration: none; 
-                        display: inline-block; 
-                        font-size: 16px; 
-                        margin-top: 10px; 
-                        border-radius: 5px; 
-                        cursor: pointer; 
-                        transition: background-color 0.3s ease;"
+                    style="background-color: #4CAF50; color: white; border: none; padding: 10px 20px; text-align: center; text-decoration: none; display: inline-block; font-size: 16px; margin-top: 10px; border-radius: 5px; cursor: pointer;  transition: background-color 0.3s ease;"
                     @mouseover="event.target.style.backgroundColor='#45a049'"
                     @mouseout="event.target.style.backgroundColor='#4CAF50'"
                 > More Info
@@ -222,15 +195,7 @@
                             <td style="text-align: center;">
                                 <button 
                                     @click="viewDetails(dataset)" 
-                                    style="
-                                        background-color: #4CAF50; 
-                                        color: white; 
-                                        border: none; 
-                                        padding: 6px 14px; 
-                                        border-radius: 5px; 
-                                        cursor: pointer; 
-                                        font-size: 14px;
-                                        transition: background-color 0.3s ease;"
+                                    style="background-color: #4CAF50; color: white; border: none; padding: 6px 14px; border-radius: 5px; cursor: pointer; font-size: 14px;transition: background-color 0.3s ease;"
                                     @mouseover="event.target.style.backgroundColor='#45a049'"
                                     @mouseout="event.target.style.backgroundColor='#4CAF50'"
                                 >More Info</button>
@@ -258,17 +223,7 @@
                     <button 
                         @click="closeModal" 
                         class="close-button" 
-                        style="
-                            position: absolute;
-                            top: -4rem;
-                            right: -2.3rem;
-                            background: transparent;
-                            border: none;
-                            font-size: 2rem;
-                            color: #888;
-                            cursor: pointer;
-                            z-index: 2;
-                        "
+                        style="position: absolute;top: -4rem;right: -2.3rem;background: transparent;border: none;font-size: 2rem;color: #888;cursor: pointer;z-index: 2;"
                         aria-label="Close"
                         title="Close"
                     >&times;</button>
@@ -281,8 +236,158 @@
                     <a :href="selectedDataset.link" target="_blank" class="action-button">
                     <i class="fas fa-globe"></i> Website
                     </a>
+                <div style="display: flex; gap: 0.7rem; align-items: center; margin-top: 0.5rem;">
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.anat === 1"
+                            src="./docs/assets/images/logos/anat.png"
+                            alt="Anatomical MRI"
+                            title="Anatomical MRI"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'Anatomical MRI'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'Anatomical MRI'"
+                            class="modality-tooltip"
+                        >Anatomical MRI</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.rs_fmri === 1"
+                            src="./docs/assets/images/logos/rs_fmri.png"
+                            alt="Resting-state fMRI"
+                            title="Resting-state fMRI"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'Resting-state fMRI'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'Resting-state fMRI'"
+                            class="modality-tooltip"
+                        >Resting-state fMRI</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.t_fmri === 1"
+                            src="./docs/assets/images/logos/t_fmri.png"
+                            alt="Task fMRI"
+                            title="Task fMRI"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'Task fMRI'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'Task fMRI'"
+                            class="modality-tooltip"
+                        >Task fMRI</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.dwi === 1"
+                            src="./docs/assets/images/logos/dwi.png"
+                            alt="Diffusion MRI"
+                            title="Diffusion MRI"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'Diffusion MRI'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'Diffusion MRI'"
+                            class="modality-tooltip"
+                        >Diffusion MRI</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.eeg === 1"
+                            src="./docs/assets/images/logos/eeg.png"
+                            alt="EEG"
+                            title="EEG"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'EEG'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'EEG'"
+                            class="modality-tooltip"
+                        >EEG</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.pet === 1"
+                            src="./docs/assets/images/logos/pet.png"
+                            alt="PET"
+                            title="PET"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'PET'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'PET'"
+                            class="modality-tooltip"
+                        >PET</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.cognitive === 1"
+                            src="./docs/assets/images/logos/cognitive.png"
+                            alt="Cognitive"
+                            title="Cognitive"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'Cognitive'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'Cognitive'"
+                            class="modality-tooltip"
+                        >Cognitive</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.behavioural === 1"
+                            src="./docs/assets/images/logos/behavioural.png"
+                            alt="Behavioural"
+                            title="Behavioural"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'Behavioural'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'Behavioural'"
+                            class="modality-tooltip"
+                        >Behavioural</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.genetics === 1"
+                            src="./docs/assets/images/logos/genetics.png"
+                            alt="Genetics"
+                            title="Genetics"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'Genetics'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'Genetics'"
+                            class="modality-tooltip"
+                        >Genetics</span>
+                    </div>
+                    <div style="position: relative; display: inline-block;">
+                        <img
+                            v-if="selectedDataset.fluid_biomarkers === 1"
+                            src="./docs/assets/images/logos/fluid.png"
+                            alt="Fluid Biomarkers"
+                            title="Fluid Biomarkers"
+                            style="height: 32px; cursor: pointer;"
+                            @mouseenter="hoveredModality = 'Fluid Biomarkers'"
+                            @mouseleave="hoveredModality = null"
+                        />
+                        <span
+                            v-if="hoveredModality === 'Fluid Biomarkers'"
+                            class="modality-tooltip"
+                        >Fluid Biomarkers</span>
+                    </div>
                 </div>
-                <!-- Columns -->
                 <div class="columns-2">
                     <!-- Left: Dataset Details -->
                     <div>
@@ -326,20 +431,12 @@
                             <li><strong>Std Dev (Age):</strong> {{ selectedDataset.stdDev || 'N/A' }}</li>
                             <li><strong>Number of Sites:</strong> {{ selectedDataset.sites || 'N/A' }}</li>
                             <li><strong>Design:</strong> {{ selectedDataset.design || 'N/A' }}</li>
+                            <li><strong>Platform:</strong> {{ selectedDataset.platform || 'N/A' }}</li>
                             <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype || 'N/A' }}</li>
+                            <li><strong>Tip 1:</strong> {{ selectedDataset.tip1 || 'N/A' }}</li>
+                            <li><strong>Tip 2:</strong> {{ selectedDataset.tip2 || 'N/A' }}</li>
                         </ul>
-
-                        <!-- Related Publications -->
-                        <div v-if="selectedDataset.publications?.length" style="margin-top: 2rem;">
-                            <h4>Related Publications</h4>
-                            <ul>
-                                <li v-for="pub in selectedDataset.publications" :key="pub.title">
-                                    <a :href="pub.link" target="_blank">{{ pub.title }}</a>
-                                </li>
-                            </ul>
-                        </div>
                     </div>
-                    <!-- Right side details -->
                     <div class="chart-container">
                         <h4 style="margin-top: 0; text-align: center;">Age Distribution</h4>
                         <canvas id="ageChart" width="500" height="320"></canvas>
@@ -347,6 +444,38 @@
                         <span></span>
                         <h4 style="margin-top: 2rem; text-align: center;">Gender Distribution</h4>
                             <canvas id="genderChart" width="100" height="100"></canvas>
+                    </div>
+                </div>
+                <div style="margin-top: 2rem; display: flex; gap: 1.5rem;">
+                    <div
+                        v-for="(pub, idx) in publicationCards"
+                        :key="idx"
+                        class="explainable-publication-card"
+                        @mouseenter="hoveredPubIdx = idx"
+                        @mouseleave="hoveredPubIdx = null"
+                    >
+                        <a
+                        :href="pub.link"
+                        target="_blank"
+                        :class="{ active: hoveredPubIdx === idx }"
+                        >
+                        <i class="fas fa-link"></i>
+                        <div style="flex: 1; position: relative;">
+                            <div
+                            :class="['pub-title', { active: hoveredPubIdx === idx }]"
+                            >
+                            {{ pub.title }}
+                            </div>
+                            <transition name="fade-expand">
+                            <div
+                                v-if="hoveredPubIdx === idx && pub.description && pub.description !== 'N/A'"
+                                class="pub-description"
+                            >
+                                {{ pub.description }}
+                            </div>
+                            </transition>
+                        </div>
+                        </a>
                     </div>
                 </div>
                 <div>
