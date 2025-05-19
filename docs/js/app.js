@@ -86,76 +86,73 @@ new Vue({
             this.isLoading = true;
             const rows = data.split('\n').slice(1).filter(row => row.trim() !== '');
             return rows.map(row => {
-            const columns = row.split('\t');
-            if (columns.length < 54) { // Updated total column count
-                console.warn('Skipping malformed row:', row);
-                return null;
-            }
+                const columns = row.split('\t');
+                if (columns.length < 48) { // Updated total column count
+                    console.warn('Skipping malformed row:', row);
+                    return null;
+                }
 
-            const [
-                DATASET, ABBREVIATION, GOAL, LAUNCHYEAR, POPULATION, SITES, SUBJECT, SCANS, MALES, FEMALES, MINAGE, MAXAGE, MEANAGE, STD, MEDIAN, Q25, Q75,
-                CDR0_0, CDR0_5, CDR1_0, CDR2_0, CDR3_0, RACE, ETHNICITY, PATHOLOGY, LINK, DESCRIPTION, DATA, DESIGN, PUBLICATION,
-                RESEARCH_ARTICLE_1_LINK, RESEARCH_ARTICLE_1_TITLE, RESEARCH_ARTICLE_1_DESCRIPTION,
-                RESEARCH_ARTICLE_2_LINK, RESEARCH_ARTICLE_2_TITLE, RESEARCH_ARTICLE_2_DESCRIPTION,
-                PLATFORM, TIP1, TIP2, ANAT, RS_FMRI, T_FMRI, DWI, EEG, PET,
-                COGNITIVE, BEHAVIOURAL, GENETICS, FLUID_BIOMARKERS, OTHERS, DRAWBACK, OTHER_LINKS
-            ] = columns;
+                const [
+                    DATASET, ABBREVIATION, SITES, SUBJECT, SCANS, MALES, FEMALES, MINAGE, MAXAGE, MEANAGE, STD, MEDIAN, Q25, Q75, 
+                    CDR0_0, CDR0_5, CDR1_0, CDR2_0, CDR3_0, RACE, ETHNICITY, PATHOLOGY, LINK, DESCRIPTION, POPULATION, DATA, DESIGN, 
+                    PUBLICATION, RESEARCH_ARTICLE_1_LINK, RESEARCH_ARTICLE_1_TITLE, RESEARCH_ARTICLE_1_DESCRIPTION, 
+                    RESEARCH_ARTICLE_2_LINK, RESEARCH_ARTICLE_2_TITLE, RESEARCH_ARTICLE_2_DESCRIPTION,
+                    PLATFORM, TIP1, TIP2, ANAT, RS_FMRI, T_FMRI, DWI, EEG, PET,
+                    COGNITIVE, BEHAVIOURAL, GENETICS, FLUID_BIOMARKERS, OTHERS, DRAWBACK
+                ] = columns;
 
-            return {
-                name: DATASET?.trim() || 'Unknown',
-                abbreviation: ABBREVIATION?.trim() || 'N/A',
-                goal: GOAL?.trim() || 'N/A',
-                launchYear: LAUNCHYEAR?.trim() || 'N/A',
-                population: POPULATION?.trim() || 'N/A',
-                sites: SITES?.trim() || 'N/A',
-                subjects: SUBJECT?.trim() || 'N/A',
-                scans: SCANS?.trim() || 'N/A',
-                males: MALES?.trim() || 'N/A',
-                females: FEMALES?.trim() || 'N/A',
-                minAge: parseFloat(MINAGE)?.toFixed(0) || 'N/A',
-                maxAge: parseFloat(MAXAGE)?.toFixed(0) || 'N/A',
-                meanAge: parseFloat(MEANAGE)?.toFixed(2) || 'N/A',
-                stdDev: parseFloat(STD)?.toFixed(2) || 'N/A',
-                median: parseFloat(MEDIAN)?.toFixed(2) || 'N/A',
-                q25: parseFloat(Q25)?.toFixed(2) || 'N/A',
-                q75: parseFloat(Q75)?.toFixed(2) || 'N/A',
-                cdr0_0: CDR0_0?.trim() || 'N/A',
-                cdr0_5: CDR0_5?.trim() || 'N/A',
-                cdr1_0: CDR1_0?.trim() || 'N/A',
-                cdr2_0: CDR2_0?.trim() || 'N/A',
-                cdr3_0: CDR3_0?.trim() || 'N/A',
-                race: RACE?.trim() || 'N/A',
-                ethnicity: ETHNICITY?.trim() || 'N/A',
-                pathology: PATHOLOGY?.trim() || 'N/A',
-                link: LINK?.trim() || 'N/A',
-                description: DESCRIPTION?.trim() || 'N/A',
-                data: DATA?.trim() || 'N/A',
-                design: DESIGN?.trim() || 'N/A',
-                publication: PUBLICATION?.trim() || 'N/A',
-                researchArticle1Link: RESEARCH_ARTICLE_1_LINK?.trim() || 'N/A',
-                researchArticle1Title: RESEARCH_ARTICLE_1_TITLE?.trim() || 'N/A',
-                researchArticle1Description: RESEARCH_ARTICLE_1_DESCRIPTION?.trim() || 'N/A',
-                researchArticle2Link: RESEARCH_ARTICLE_2_LINK?.trim() || 'N/A',
-                researchArticle2Title: RESEARCH_ARTICLE_2_TITLE?.trim() || 'N/A',
-                researchArticle2Description: RESEARCH_ARTICLE_2_DESCRIPTION?.trim() || 'N/A',
-                platform: PLATFORM?.trim() || 'N/A',
-                tip1: TIP1?.trim() || 'N/A',
-                tip2: TIP2?.trim() || 'N/A',
-                anat: ANAT === '1' ? 1 : 0,
-                rs_fmri: RS_FMRI === '1' ? 1 : 0,
-                t_fmri: T_FMRI === '1' ? 1 : 0,
-                dwi: DWI === '1' ? 1 : 0,
-                eeg: EEG === '1' ? 1 : 0,
-                pet: PET === '1' ? 1 : 0,
-                cognitive: COGNITIVE === '1' ? 1 : 0,
-                behavioural: BEHAVIOURAL === '1' ? 1 : 0,
-                genetics: GENETICS === '1' ? 1 : 0,
-                fluid_biomarkers: FLUID_BIOMARKERS === '1' ? 1 : 0,
-                others: OTHERS?.trim() || 'N/A',
-                drawback: DRAWBACK?.trim() || 'N/A',
-                other_links: OTHER_LINKS?.trim() || 'N/A',
-                hovered: false
-            };
+                return {
+                    name: DATASET?.trim() || 'Unknown',
+                    abbreviation: ABBREVIATION?.trim() || 'N/A',
+                    sites: SITES?.trim() || 'N/A',
+                    subjects: SUBJECT?.trim() || 'N/A',
+                    scans: SCANS?.trim() || 'N/A',
+                    males: MALES?.trim() || 'N/A',
+                    females: FEMALES?.trim() || 'N/A',
+                    minAge: parseFloat(MINAGE)?.toFixed(0) || 'N/A',
+                    maxAge: parseFloat(MAXAGE)?.toFixed(0) || 'N/A',
+                    meanAge: parseFloat(MEANAGE)?.toFixed(2) || 'N/A',
+                    stdDev: parseFloat(STD)?.toFixed(2) || 'N/A',
+                    median: parseFloat(MEDIAN)?.toFixed(2) || 'N/A',
+                    q25: parseFloat(Q25)?.toFixed(2) || 'N/A',
+                    q75: parseFloat(Q75)?.toFixed(2) || 'N/A',
+                    cdr0_0: CDR0_0?.trim() || 'N/A',
+                    cdr0_5: CDR0_5?.trim() || 'N/A',
+                    cdr1_0: CDR1_0?.trim() || 'N/A',
+                    cdr2_0: CDR2_0?.trim() || 'N/A',
+                    cdr3_0: CDR3_0?.trim() || 'N/A',
+                    race: RACE?.trim() || 'N/A',
+                    ethnicity: ETHNICITY?.trim() || 'N/A',
+                    pathology: PATHOLOGY?.trim() || 'N/A',
+                    link: LINK?.trim() || 'N/A',
+                    description: DESCRIPTION?.trim() || 'N/A',
+                    population: POPULATION?.trim() || 'N/A',
+                    data: DATA?.trim() || 'N/A',
+                    design: DESIGN?.trim() || 'N/A',
+                    publication: PUBLICATION?.trim() || 'N/A',
+                    researchArticle1Link: RESEARCH_ARTICLE_1_LINK?.trim() || 'N/A',
+                    researchArticle1Title: RESEARCH_ARTICLE_1_TITLE?.trim() || 'N/A',
+                    researchArticle1Description: RESEARCH_ARTICLE_1_DESCRIPTION?.trim() || 'N/A',
+                    researchArticle2Link: RESEARCH_ARTICLE_2_LINK?.trim() || 'N/A',
+                    researchArticle2Title: RESEARCH_ARTICLE_2_TITLE?.trim() || 'N/A',
+                    researchArticle2Description: RESEARCH_ARTICLE_2_DESCRIPTION?.trim() || 'N/A',
+                    platform: PLATFORM?.trim() || 'N/A',
+                    tip1: TIP1?.trim() || 'N/A',
+                    tip2: TIP2?.trim() || 'N/A',
+                    anat: ANAT === '1' ? 1 : 0,
+                    rs_fmri: RS_FMRI === '1' ? 1 : 0,
+                    t_fmri: T_FMRI === '1' ? 1 : 0,
+                    dwi: DWI === '1' ? 1 : 0,
+                    eeg: EEG === '1' ? 1 : 0,
+                    pet: PET === '1' ? 1 : 0,
+                    cognitive: COGNITIVE === '1' ? 1 : 0,
+                    behavioural: BEHAVIOURAL === '1' ? 1 : 0,
+                    genetics: GENETICS === '1' ? 1 : 0,
+                    fluid_biomarkers: FLUID_BIOMARKERS === '1' ? 1 : 0,
+                    others: OTHERS?.trim() || 'N/A',
+                    drawback: DRAWBACK?.trim() || 'N/A',
+                    hovered: false
+                };
             }).filter(dataset => dataset !== null);
         },
         viewDetails(dataset) {
