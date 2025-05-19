@@ -24,3 +24,4 @@ aws s3 sync --no-sign-request s3://openneuro.org/ds002785 . --exclude "*" --incl
 
 # Download MPI-brain body data
 aws s3 sync --no-sign-request s3://openneuro.org/ds000221/ . --exclude * --include "**/*T1w.nii.gz"
+
