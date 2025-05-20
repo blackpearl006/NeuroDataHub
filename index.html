@@ -388,14 +388,16 @@
                         >Fluid Biomarkers</span>
                     </div>
                 </div>
+                
                 <div class="columns-2">
                     <!-- Left: Dataset Details -->
                     <div>
                         <ul>
                             <li><strong>Abbreviation:</strong> {{ selectedDataset.abbreviation || 'N/A' }}</li>
                             <li><strong>Description:</strong> <span style="word-wrap: break-word;">{{ selectedDataset.description || 'N/A' }}</span></li>
-                            <li><strong>Population:</strong> {{ selectedDataset.population || 'N/A' }}</li>
-                            <li><strong>Pathology:</strong> {{ selectedDataset.pathology || 'N/A' }}</li>
+                            <li><strong>Goal:</strong> <span style="word-wrap: break-word;">{{ selectedDataset.goal || 'N/A' }}</span></li>
+                            <li><strong>Nationality:</strong> {{ selectedDataset.population || 'N/A' }}</li>
+                            <li><strong>Condition:</strong> {{ selectedDataset.pathology || 'N/A' }}</li>
                             <li><strong>Subjects:</strong> {{ selectedDataset.subjects || 'N/A' }}</li>
                             <li><strong>Scans:</strong> {{ selectedDataset.scans || 'N/A' }}</li>
                             <li>
@@ -412,32 +414,30 @@
                                 <strong>2:</strong> {{ selectedDataset.cdr2_0 || 'N/A' }},
                                 <strong>3:</strong> {{ selectedDataset.cdr3_0 || 'N/A' }}
                             </li>
-                            <li><strong>Race:</strong> {{ selectedDataset.race || 'N/A' }}</li>
-                            <li><strong>Ethnicity:</strong> {{ selectedDataset.ethnicity || 'N/A' }}</li>
+                            <li><strong>Race:</strong> {{ selectedDataset.race || 'N/A' }} || <strong>Ethnicity:</strong> {{ selectedDataset.ethnicity || 'N/A' }}</li>
                             <li><strong>Dataset Type:</strong> {{ selectedDataset.data || 'N/A' }}</li>
 
                             <li>
                                 <strong>Age Stats:</strong><br>
-                                Mean: {{ selectedDataset.meanAge || 'N/A' }} | Median: {{ selectedDataset.median || 'N/A' }}<br>
+                                Mean: {{ selectedDataset.meanAge || 'N/A' }} | Median: {{ selectedDataset.median || 'N/A' }} | Q25: {{ selectedDataset.q25 || 'N/A' }} | Q75: {{ selectedDataset.q75 || 'N/A' }}<br>
                                 Range: 
                                 <span v-if="selectedDataset.ageRange && selectedDataset.ageRange !== 'N/A'">
                                     {{ selectedDataset.ageRange }}
                                 </span>
                                 <span v-else>
                                     {{ selectedDataset.minAge || 'N/A' }} – {{ selectedDataset.maxAge || 'N/A' }}
-                                </span><br>
-                                Q25: {{ selectedDataset.q25 || 'N/A' }} | Q75: {{ selectedDataset.q75 || 'N/A' }}
+                                </span>
                             </li>
                             <li><strong>Std Dev (Age):</strong> {{ selectedDataset.stdDev || 'N/A' }}</li>
                             <li><strong>Number of Sites:</strong> {{ selectedDataset.sites || 'N/A' }}</li>
                             <li><strong>Design:</strong> {{ selectedDataset.design || 'N/A' }}</li>
                             <li><strong>Platform:</strong> {{ selectedDataset.platform || 'N/A' }}</li>
-                            <li><strong>Dataset Type:</strong> {{ selectedDataset.datatype || 'N/A' }}</li>
                             <li><strong>Tip 1:</strong> {{ selectedDataset.tip1 || 'N/A' }}</li>
                             <li><strong>Tip 2:</strong> {{ selectedDataset.tip2 || 'N/A' }}</li>
                         </ul>
                     </div>
                     <div class="chart-container">
+                        <div style="text-align: right; margin-bottom: 0.5em;"><strong>Year:</strong> {{ selectedDataset.launchyear || '' }}</div>
                         <h4 style="margin-top: 0; text-align: center;">Age Distribution</h4>
                         <canvas id="ageChart" width="500" height="320"></canvas>
                         <span></span>

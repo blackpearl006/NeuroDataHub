@@ -87,7 +87,7 @@ new Vue({
             const rows = data.split('\n').slice(1).filter(row => row.trim() !== '');
             return rows.map(row => {
                 const columns = row.split('\t');
-                if (columns.length < 48) { // Updated total column count
+                if (columns.length < 50) { // Updated total column count
                     console.warn('Skipping malformed row:', row);
                     return null;
                 }
@@ -98,7 +98,7 @@ new Vue({
                     PUBLICATION, RESEARCH_ARTICLE_1_LINK, RESEARCH_ARTICLE_1_TITLE, RESEARCH_ARTICLE_1_DESCRIPTION, 
                     RESEARCH_ARTICLE_2_LINK, RESEARCH_ARTICLE_2_TITLE, RESEARCH_ARTICLE_2_DESCRIPTION,
                     PLATFORM, TIP1, TIP2, ANAT, RS_FMRI, T_FMRI, DWI, EEG, PET,
-                    COGNITIVE, BEHAVIOURAL, GENETICS, FLUID_BIOMARKERS, OTHERS, DRAWBACK
+                    COGNITIVE, BEHAVIOURAL, GENETICS, FLUID_BIOMARKERS, OTHERS, DRAWBACK, GOAL, LAUNCHYEAR
                 ] = columns;
 
                 return {
@@ -151,6 +151,8 @@ new Vue({
                     fluid_biomarkers: FLUID_BIOMARKERS === '1' ? 1 : 0,
                     others: OTHERS?.trim() || 'N/A',
                     drawback: DRAWBACK?.trim() || 'N/A',
+                    goal: GOAL?.trim() || 'N/A',
+                    launchyear: LAUNCHYEAR?.trim() || 'N/A',
                     hovered: false
                 };
             }).filter(dataset => dataset !== null);
