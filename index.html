@@ -22,7 +22,15 @@
     <header class="navbar clarity-navbar">
 
         <a class="logo clarity-logo" href="#">
-            <img src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub Logo" width="40" height="42" style="vertical-align: middle; margin-right: 0.5em;"> Neuro Imaging Navigation And Datahub</a>
+            <img 
+                src="./docs/assets/images/logo_nobg.png" 
+                alt="NeuroDataHub Logo" 
+                width="40" 
+                height="42" 
+                style="vertical-align: middle; margin-right: 0.5em;" 
+            > 
+            Neuro Imaging Navigation And Datahub
+        </a>
         <!-- <nav class="clarity-nav">
             <ul>
                 <li><a href="#" class="clarity-link">Home</a></li>
@@ -38,8 +46,8 @@
         <section class="hero">
             <div class="hero-grid">
                 <div class="hero-text">
-                    <img src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub Logo" width="120" height="125" style="vertical-align: middle; margin-right: 0.5em;">
-                    <h1 style="display: inline; vertical-align: middle;">Neuro Imaging Navigation And Datahub</h1>
+                    <img class="hide-on-mobile" src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub Logo" width="120" height="125" style="vertical-align: middle; margin-right: 0.5em;">
+                    <h1 class="hide-on-mobile" style="display: inline; vertical-align: middle;">Neuro Imaging Navigation And Datahub</h1>
                     <!-- <p style="margin: 1rem auto 0 auto;">
                         An open-access platform to explore, compare, and analyze neuroimaging datasets.
                         Built for researchers, clinicians, and students in neuroscience and AI.
@@ -51,7 +59,7 @@
 
                     <p style="margin: 3rem auto 0 auto;"> <strong> ** preprint out soon ** </strong></p>
                 </div>
-                <div class="hero-image">
+                <div class="hero-image hide-on-mobile">
                     <img src="./docs/assets/images/brain_hero.png" alt="Brain MRI Illustration" />
                 </div>
             </div>
@@ -59,7 +67,7 @@
 
     <!-- Intro Cards Section -->
     <section 
-        class="intro-cards" 
+        class="intro-cards hide-on-mobile"
         style="background: #e9e4e4;" 
         v-if="window.innerWidth > 768">
         <div class="container grid-3" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
@@ -83,6 +91,13 @@
             </div>
         </div>
     </section>
+        <style>
+    @media (max-width: 768px) {
+        .hide-on-mobile {
+            display: none !important;
+        }
+    }
+    </style>
 
 
     <!-- Dataset Viewer Section -->
@@ -495,12 +510,12 @@
             <a href="https://github.com/lorenmt/clarity-template" target="_blank">Clarity Template</a>.
             </p>
             <p>Contact: <a href="mailto:ninadaithal@iisc.ac.in">ninadaithal@iisc.ac.in</a></p>
-            <div class="visitor-count">
+            <!-- <div class="visitor-count">
                 <p>
                     Total Visitors: 
-                    <img src="https://visitor-badge.glitch.me/badge?page_id=NeuroDataHub.visitor-count" alt="Visitor Count" title="This badge shows the total number of visitors to the NeuroDataHub page." />
+                    <img src="https://komarev.com/ghpvc/?username=NeuroDataHub&color=blue" alt="Visitor Count" title="This badge shows the total number of visitors to the NeuroDataHub page." onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<span style=\'color:#888;\'>Unavailable</span>');" />
                 </p>
-            </div>
+            </div> -->
         </div>
 
     

@@ -735,6 +735,12 @@ body {
     max-height: 200px;
 }
 
+@media (max-width: 768px) {
+    .hide-on-mobile {
+        display: none !important;
+    }
+}
+
 /* Publication Cards in Modal */
 .explainable-publication-card {
   flex: 1 1 0;
