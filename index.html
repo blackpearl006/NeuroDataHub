@@ -14,14 +14,82 @@
     <link href="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
 </head>
 <body>
 <div id="app">
-    <!-- Navbar -->
-    <!-- Navbar -->
-    <header class="navbar clarity-navbar">
+    <!-- Sidebar Toggle Button -->
+    <button 
+        class="sidebar-toggle"
+        @click="toggleSidebar"
+        :class="{ active: sidebarOpen }"
+        aria-label="Toggle navigation menu"
+    >
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+        <span class="hamburger-line"></span>
+    </button>
 
-        <a class="logo clarity-logo" href="#">
+    <!-- Sidebar -->
+    <nav class="sidebar" :class="{ open: sidebarOpen, closing: sidebarClosing }">
+        <div class="sidebar-header">
+            <img 
+                src="./docs/assets/images/logo_nobg.png" 
+                alt="NeuroDataHub Logo" 
+                width="32" 
+                height="34" 
+            >
+            <h3>NeuroDataHub</h3>
+        </div>
+        
+        <ul class="sidebar-nav">
+            <li>
+                <a @click="setCurrentPage('home')" :class="{ active: currentPage === 'home' }">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a @click="setCurrentPage('dataset-helper')" :class="{ active: currentPage === 'dataset-helper' }">
+                    <i class="fas fa-compass"></i>
+                    <span>Dataset Helper</span>
+                </a>
+            </li>
+            <li>
+                <a @click="setCurrentPage('submit-dataset')" :class="{ active: currentPage === 'submit-dataset' }">
+                    <i class="fas fa-plus-circle"></i>
+                    <span>Submit Dataset</span>
+                </a>
+            </li>
+            <li class="nav-divider"></li>
+            <li class="nav-section-title">Articles</li>
+            <li>
+                <a @click="setCurrentPage('article-1')" :class="{ active: currentPage === 'article-1' }">
+                    <i class="fas fa-newspaper"></i>
+                    <span>Neuroimaging Best Practices</span>
+                </a>
+            </li>
+            <li>
+                <a @click="setCurrentPage('article-2')" :class="{ active: currentPage === 'article-2' }">
+                    <i class="fas fa-brain"></i>
+                    <span>AI in Neuroscience</span>
+                </a>
+            </li>
+            <li>
+                <a @click="setCurrentPage('article-3')" :class="{ active: currentPage === 'article-3' }">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Data Harmonization Guide</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" :class="{ active: sidebarOpen }" @click="closeSidebar"></div>
+
+    <!-- Main Navigation Header -->
+    <header class="navbar clarity-navbar" :class="{ 'sidebar-open': sidebarOpen }">
+        <a class="logo clarity-logo" href="#" @click="setCurrentPage('home')">
             <img 
                 src="./docs/assets/images/logo_nobg.png" 
                 alt="NeuroDataHub Logo" 
@@ -31,33 +99,40 @@
             > 
             NeuroDataHub
         </a>
-        <!-- <nav class="clarity-nav">
+        <!-- Navigation Menu (Currently Disabled)
+        <nav class="clarity-nav">
             <ul>
                 <li><a href="#" class="clarity-link">Home</a></li>
                 <li><a href="#" class="clarity-link">Datasets</a></li>
                 <li><a href="#" class="clarity-link">Publications</a></li>
                 <li><a href="#" class="clarity-link">Contact</a></li>
             </ul>
-        </nav> -->
+        </nav>
+        -->
     </header>
 
-    <!-- Hero Section -->
-    <main>
+    <!-- Main Content Container -->
+    <main class="main-content" :class="{ 'sidebar-open': sidebarOpen }">
+        
+        <!-- Home Page -->
+        <div v-show="currentPage === 'home'" class="page-content">
+        <!-- Hero Section -->
         <section class="hero">
             <div class="hero-grid">
                 <div class="hero-text">
                     <img class="hide-on-mobile" src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub Logo" width="120" height="125" style="vertical-align: middle; margin-right: 0.5em;">
                     <h1 class="hide-on-mobile" style="display: inline; vertical-align: middle;">NeuroDataHub</h1>
-                    <!-- <p style="margin: 1rem auto 0 auto;">
+                    <!-- Alternative description (currently disabled)
+                    <p style="margin: 1rem auto 0 auto;">
                         An open-access platform to explore, compare, and analyze neuroimaging datasets.
                         Built for researchers, clinicians, and students in neuroscience and AI.
-                    </p> -->
+                    </p>
+                    -->
                     <p style="margin: 1rem auto 0 auto;"> <strong>NeuroDataHub</strong> is an open-access platform designed to help you explore, compare, and analyze neuroimaging datasets with ease. Whether you're a researcher, clinician, or student in neuroscience or AI, this site brings together an extensive collection of <strong>50 carefully curated public datasets</strong>, totaling over <strong>50,000 brain scans</strong>.</p>
                     <p style="margin: 1rem auto 0 auto;"> Each dataset is accompanied by an accessible overview and a summary of potential research directions</p> 
-                     <!-- - from brain age prediction and disease classification to network analysis and representation learning.  -->
+                    <!-- Extended description: from brain age prediction and disease classification to network analysis and representation learning. -->
                     <p style="margin: 1rem auto 0 auto;"> Discover the data that fits your project, and <strong> accelerate your research</strong>.</p>
 
-                    <!-- <p style="margin: 3rem auto 0 auto;"> <strong> ** preprint out soon ** </strong></p> -->
                 </div>
                 <div class="hero-image hide-on-mobile">
                     <img src="./docs/assets/images/brain_hero.png" alt="Brain MRI Illustration" />
@@ -65,11 +140,11 @@
             </div>
         </section>
 
-    <!-- Intro Cards Section -->
-    <section 
-        class="intro-cards hide-on-mobile"
-        style="background: #e9e4e4;" 
-        v-if="window.innerWidth > 768">
+        <!-- Introduction Cards Section (Desktop Only) -->
+        <section 
+            class="intro-cards hide-on-mobile"
+            style="background: #e9e4e4;" 
+            v-if="window.innerWidth > 768">
         <div class="container grid-3" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
             <div class="card">
                 <h3>🧠 Explore Brain Datasets</h3>
@@ -130,7 +205,8 @@
             </button>
         </div>
 
-        <!-- <div v-if="isLoading" style="text-align: center; padding: 3rem; font-size: 1.2em; color: #555;">
+        <!-- Loading States (Currently Disabled)
+        <div v-if="isLoading" style="text-align: center; padding: 3rem; font-size: 1.2em; color: #555;">
             <i class="fas fa-spinner fa-spin"></i> Loading datasets...
         </div>
         <div v-else-if="errorLoading" style="text-align: center; padding: 3rem; color: #d9534f; border: 1px solid #d9534f; border-radius: 4px; background-color: #f2dede;">
@@ -138,7 +214,8 @@
         </div>
         <div v-else-if="filteredDatasets.length === 0" style="text-align: center; padding: 3rem; font-size: 1.1em; color: #777;">
             <i class="fas fa-search"></i> No datasets match the current filters.
-        </div> -->
+        </div>
+        -->
 
         <div v-if="isGridView" class="dataset-grid">
             <div
@@ -215,10 +292,10 @@
         </div>
 
 
-        <!-- Dataset Modal -->
+        <!-- Dataset Details Modal -->
         <div v-if="showModal" class="modal-overlay" @click.self="closeModal">
             <div class="modal">
-                <!-- Top Row: Title + Image -->
+                <!-- Modal Header: Title and Thumbnail -->
                 <div class="modal-header" style="display: flex; align-items: flex-start; justify-content: space-between; position: relative;">
                     <h3 style="margin: 0; flex: 1;">{{ selectedDataset.name }}</h3>
                     <img
@@ -236,7 +313,7 @@
                         title="Close"
                     >&times;</button>
                 </div>
-                <!-- Buttons -->
+                <!-- Action Buttons and Modality Icons -->
                 <div class="modal-buttons">
                     <a v-if="selectedDataset.publication" :href="selectedDataset.publication" target="_blank" class="action-button">
                     <i class="fas fa-link"></i> Publication
@@ -397,8 +474,9 @@
                     </div>
                 </div>
                 
+                <!-- Modal Content: Two Column Layout -->
                 <div class="columns-2">
-                    <!-- Left: Dataset Details -->
+                    <!-- Left Column: Dataset Information -->
                     <div>
                         <ul>
                             <li><strong>Abbreviation:</strong> {{ selectedDataset.abbreviation || 'N/A' }}</li>
@@ -444,14 +522,19 @@
                             <li><strong>Tip 2:</strong> {{ selectedDataset.tip2 || 'N/A' }}</li>
                         </ul>
                     </div>
+                    <!-- Right Column: Charts and Visualizations -->
                     <div class="chart-container">
-                        <div style="text-align: right; margin-bottom: 0.5em;"><strong>Year:</strong> {{ selectedDataset.launchyear || '' }}</div>
+                        <div style="text-align: right; margin-bottom: 0.5em;">
+                            <strong>Launch Year:</strong> {{ selectedDataset.launchyear || 'N/A' }}
+                        </div>
+                        
+                        <!-- Age Distribution Chart -->
                         <h4 style="margin-top: 0; text-align: center;">Age Distribution</h4>
                         <canvas id="ageChart" width="500" height="320"></canvas>
-                        <span></span>
-                        <span></span>
+                        
+                        <!-- Gender Distribution Chart -->
                         <h4 style="margin-top: 2rem; text-align: center;">Gender Distribution</h4>
-                            <canvas id="genderChart" width="100" height="100"></canvas>
+                        <canvas id="genderChart" width="100" height="100"></canvas>
                     </div>
                 </div>
                 <div style="margin-top: 2rem; display: flex; gap: 1.5rem;">
@@ -491,7 +574,215 @@
                 </div>
             </div>
         </div>
-    </section>
+        </section>
+        </div>
+        <!-- End Home Page -->
+
+        <!-- Dataset Helper Page -->
+        <div v-show="currentPage === 'dataset-helper'" class="page-content">
+            <div class="page-header">
+                <h1><i class="fas fa-compass"></i> Dataset Selection Helper</h1>
+                <p>Find the perfect dataset for your research needs based on pathology, accessibility, and quality criteria.</p>
+            </div>
+            
+            <div class="dataset-helper-content">
+                <div v-if="!datasetRecommendations || datasetRecommendations.length === 0" class="loading-state">
+                    <i class="fas fa-spinner fa-spin"></i> Loading dataset recommendations...
+                </div>
+                
+                <div v-else class="recommendations-table">
+                    <div class="table-controls">
+                        <input 
+                            type="text" 
+                            v-model="helperSearchQuery" 
+                            placeholder="Search by pathology, dataset, or reason..."
+                            class="search-input"
+                        >
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="helper-table">
+                            <thead>
+                                <tr>
+                                    <th class="pathology-header">Pathology/Component</th>
+                                    <th class="dataset-header">Dataset</th>
+                                    <th class="benefits-header">Key Benefits</th>
+                                    <th class="cautions-header">Cautions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr v-for="rec in filteredRecommendations" :key="rec.dataset">
+                                    <td class="pathology-cell">
+                                        <span class="pathology-tag">{{ rec.pathology }}</span>
+                                    </td>
+                                    <td class="dataset-cell">
+                                        <a :href="rec.link" 
+                                           target="_blank" 
+                                           rel="noopener noreferrer"
+                                           class="dataset-link-button">
+                                            {{ rec.dataset }}
+                                        </a>
+                                    </td>
+                                    <td class="reasons-cell">
+                                        <ul class="reason-list">
+                                            <li>{{ rec.reason1 }}</li>
+                                            <li>{{ rec.reason2 }}</li>
+                                            <li>{{ rec.reason3 }}</li>
+                                        </ul>
+                                    </td>
+                                    <td class="caution-cell">
+                                        <span class="caution-text">{{ rec.caution }}</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dataset Submission Page -->
+        <div v-show="currentPage === 'submit-dataset'" class="page-content">
+            <div class="page-header">
+                <h1><i class="fas fa-plus-circle"></i> Submit a Dataset</h1>
+                <p>Help expand our database by submitting additional neuroimaging datasets for the community.</p>
+            </div>
+            
+            <div class="submission-options">
+                <!-- Option 1: Google Form Embed (Recommended) -->
+                <div class="submission-method">
+                    <div class="method-header">
+                        <h3><i class="fab fa-google"></i> Submit via Google Form</h3>
+                        <span class="badge recommended">Recommended</span>
+                    </div>
+                    <p>Use our Google Form for the best experience. Your submission will be automatically saved and processed.</p>
+                    
+                    <div class="form-embed-container">
+                        <!-- Replace this URL with your actual Google Form embed URL -->
+                        <iframe 
+                            src="https://docs.google.com/forms/d/e/1FAIpQLSctJ25P_Mtfg1TcnTGO7T5nFJGomrXig9Z3XpoAc42pv503iQ/viewform?usp=header" 
+                            width="100%" 
+                            height="1200" 
+                            frameborder="0" 
+                            marginheight="0" 
+                            marginwidth="0"
+                            class="google-form-embed"
+                            title="Dataset Submission Form">
+                            Loading Google Form...
+                        </iframe>
+                    </div>
+                    
+                    <div class="form-instructions">
+                        <h4>Instructions:</h4>
+                        <ol>
+                            <li>Fill out the form above with your dataset information</li>
+                            <li>All required fields must be completed</li>
+                            <li>Click "Submit" at the bottom of the form</li>
+                            <li>You'll receive a confirmation once submitted</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <!-- Option 2: Alternative Methods -->
+                <div class="submission-alternatives">
+                    <h3><i class="fas fa-envelope"></i> Alternative Submission Methods</h3>
+                    <div class="alt-methods">
+                        <div class="alt-method">
+                            <i class="fas fa-external-link-alt"></i>
+                            <div>
+                                <h4>Open in New Tab</h4>
+                                <p>Prefer to use the form in a separate window?</p>
+                                <a href="https://docs.google.com/forms/d/e/1FAIpQLSctJ25P_Mtfg1TcnTGO7T5nFJGomrXig9Z3XpoAc42pv503iQ/viewform?usp=header" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer" 
+                                   class="btn-secondary">
+                                    <i class="fas fa-external-link-alt"></i> Open Google Form
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="alt-method">
+                            <i class="fab fa-github"></i>
+                            <div>
+                                <h4>GitHub Issues</h4>
+                                <p>Submit via GitHub Issues for transparency and discussion</p>
+                                <a href="https://github.com/blackpearl006/NeuroDataHub/issues/new?assignees=&labels=dataset-submission&template=dataset-submission.md&title=%5BDataset%5D+Your+Dataset+Name" 
+                                   target="_blank" 
+                                   rel="noopener noreferrer" 
+                                   class="btn-secondary">
+                                    <i class="fab fa-github"></i> Create GitHub Issue
+                                </a>
+                            </div>
+                        </div>
+                        
+                        <div class="alt-method">
+                            <i class="fas fa-envelope"></i>
+                            <div>
+                                <h4>Email Submission</h4>
+                                <p>Send us an email with your dataset details</p>
+                                <a href="mailto:reachninadaithal@gmail.com?subject=Dataset Submission - [Dataset Name]&body=Please include:%0A%0A1. Pathology/Component:%0A2. Dataset Name:%0A3. Dataset Link:%0A4. Three key reasons why this dataset is valuable:%0A5. Important cautions/limitations:%0A6. About the condition/disease:" 
+                                   class="btn-secondary">
+                                    <i class="fas fa-envelope"></i> Send Email
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Article Pages -->
+        <div v-show="currentPage === 'article-1'" class="page-content">
+            <div class="page-header">
+                <h1><i class="fas fa-newspaper"></i> Neuroimaging Best Practices</h1>
+                <p>Essential guidelines and methodologies for neuroimaging research.</p>
+            </div>
+            <div class="article-placeholder">
+                <div class="coming-soon">
+                    <i class="fas fa-external-link-alt"></i>
+                    <h3>Coming Soon</h3>
+                    <p>This article will provide comprehensive guidelines for neuroimaging best practices, including data acquisition, preprocessing, and analysis workflows.</p>
+                    <a href="#" class="external-link" target="_blank">
+                        <i class="fab fa-medium"></i> Read on Medium (Link TBD)
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div v-show="currentPage === 'article-2'" class="page-content">
+            <div class="page-header">
+                <h1><i class="fas fa-brain"></i> AI in Neuroscience</h1>
+                <p>Exploring the intersection of artificial intelligence and brain research.</p>
+            </div>
+            <div class="article-placeholder">
+                <div class="coming-soon">
+                    <i class="fas fa-external-link-alt"></i>
+                    <!-- <h3>Coming Soon</h3> -->
+                    <p>Discover how machine learning and deep learning are revolutionizing neuroscience research and clinical applications.</p>
+                    <a href="https://medium.com/@daminininad/intro-to-ai-with-neuroimaging-data-a-end-to-end-tutorial-using-pytorch-f941c6ef547a" class="external-link" target="_blank">
+                        <i class="fab fa-medium"></i> Read on Medium
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div v-show="currentPage === 'article-3'" class="page-content">
+            <div class="page-header">
+                <h1><i class="fas fa-chart-line"></i> Data Harmonization Guide</h1>
+                <p>Strategies for combining and standardizing multi-site neuroimaging data.</p>
+            </div>
+            <div class="article-placeholder">
+                <div class="coming-soon">
+                    <i class="fas fa-external-link-alt"></i>
+                    <!-- <h3>Coming Soon</h3> -->
+                    <p>Learn about techniques and tools for harmonizing neuroimaging data across different sites, scanners, and protocols.</p>
+                    <a href="https://medium.com/@daminininad/multi-site-mri-data-harmonization-67816bfc5596" class="external-link" target="_blank">
+                        <i class="fab fa-medium"></i> Read on Medium
+                    </a>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Footer -->
@@ -503,12 +794,20 @@
             <a href="https://github.com/lorenmt/clarity-template" target="_blank">Clarity Template</a>.
             </p>
             <p>Contact: <a href="mailto:ninadaithal@iisc.ac.in">ninadaithal@iisc.ac.in</a></p>
-            <!-- <div class="visitor-count">
+            <!-- Legacy Visitor Counter Options (Disabled)
+            <div class="visitor-count">
                 <p>
                     Total Visitors: 
                     <img src="https://komarev.com/ghpvc/?username=NeuroDataHub&color=blue" alt="Visitor Count" title="This badge shows the total number of visitors to the NeuroDataHub page." onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<span style=\'color:#888;\'>Unavailable</span>');" />
                 </p>
-            </div> -->
+            </div>
+            <div class="visitor-count">
+                👥 Total Visitors: <span id="view-count">Loading...</span>
+            </div>
+            -->
+            <div class="visitor-counter">
+                👁️ Visitors: <img src="https://komarev.com/ghpvc/?username=blackpearl006-neurodatahub&style=flat-square&color=blue" alt="Visitor Count" style="vertical-align: middle;" />
+            </div>
         </div>
 
     
@@ -516,27 +815,29 @@
         <div class="footer-right">
             <h4>Cite Us</h4>
             <a href="https://doi.org/10.5281/zenodo.15687811"><img src="https://zenodo.org/badge/DOI/10.5281/zenodo.15687811.svg" alt="DOI"></a>
-            <!-- <details>
-            <summary><strong>Vancouver</strong></summary>
-            <p class="citation">
-                preprint out soon
-            </p>
-            </details>
-    
+            <!-- Citation Formats (Coming Soon)
             <details>
-            <summary><strong>APA</strong></summary>
-            <p class="citation">
-                To be updated
-                Ninad Aithal et al., (2025). <em>NeuroDataHub: Curated Multi-Modal Brain Imaging Repository</em>.
-            </p>
+                <summary><strong>Vancouver</strong></summary>
+                <p class="citation">
+                    preprint out soon
+                </p>
             </details>
-    
+            
+            <details>
+                <summary><strong>APA</strong></summary>
+                <p class="citation">
+                    To be updated
+                    Ninad Aithal et al., (2025). <em>NeuroDataHub: Curated Multi-Modal Brain Imaging Repository</em>.
+                </p>
+            </details>
+            
             <details open>
-            <summary><strong>BibTeX</strong></summary>
-            <pre class="bibtex">
-                To be updated
-            </pre>
-            </details> -->
+                <summary><strong>BibTeX</strong></summary>
+                <pre class="bibtex">
+                    To be updated
+                </pre>
+            </details>
+            -->
         </div>
         </div>
     </footer>
@@ -544,5 +845,6 @@
     
 </div>
 <script src="docs/js/app.js"></script>
+
 </body>
 </html>
