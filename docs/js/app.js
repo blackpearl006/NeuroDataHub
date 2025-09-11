@@ -716,6 +716,20 @@ new Vue({
         },
 
         /**
+         * Reset all filters to default values
+         */
+        resetFilters() {
+            this.searchQuery = '';
+            this.selectedPathology = '';
+            this.ageRange = [...APP_CONFIG.AGE_RANGE.DEFAULT];
+            
+            // Reset the slider if it exists
+            if (this.$refs.ageSlider && this.$refs.ageSlider.noUiSlider) {
+                this.$refs.ageSlider.noUiSlider.set(this.ageRange);
+            }
+        },
+
+        /**
          * Handle window resize events
          */
         handleResize() {
@@ -749,19 +763,8 @@ new Vue({
                     }
                 });
 
-                // Style the slider
-                this.$refs.ageSlider.style.display = 'flex';
-                this.$refs.ageSlider.style.justifyContent = 'center';
-                this.$refs.ageSlider.style.alignItems = 'center';
-                this.$refs.ageSlider.style.margin = '0 auto';
-
-                // Customize colors
-                this.$nextTick(() => {
-                    const connect = this.$refs.ageSlider.querySelector('.noUi-connect');
-                    if (connect) {
-                        connect.style.background = '#4caf50';
-                    }
-                });
+                // Add modern slider class for styling
+                this.$refs.ageSlider.classList.add('modern-slider');
 
                 // Listen for changes
                 this.$refs.ageSlider.noUiSlider.on('update', (values) => {

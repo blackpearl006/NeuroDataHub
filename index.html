@@ -62,6 +62,14 @@
                 </a>
             </li>
             <li class="nav-divider"></li>
+            <li class="nav-section-title">Tools</li>
+            <li>
+                <a @click="setCurrentPage('neurodatahub-cli')" :class="{ active: currentPage === 'neurodatahub-cli' }">
+                    <i class="fas fa-terminal"></i>
+                    <span>NeuroDataHub CLI</span>
+                </a>
+            </li>
+            <li class="nav-divider"></li>
             <li class="nav-section-title">Articles</li>
             <li>
                 <a @click="setCurrentPage('article-1')" :class="{ active: currentPage === 'article-1' }">
@@ -170,39 +178,95 @@
 
     <!-- Dataset Viewer Section -->
     <section class="container main dataset-viewer-section" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
-        <h2>🧬 Available Datasets</h2>
-        <div class="filters">
-            <div style="grid-column: span 1; text-align: left; font-size: 1.25rem; margin-top: 1rem;">
-                <label for="pathologyFilter">Search:</label>
-                <input type="text" v-model="searchQuery" placeholder="Search datasets..." style="width: 100%;" />
-            </div>
-            <div style="grid-column: span 1; text-align: left; font-size: 1.25rem; margin-top: 1rem;">
-                <label for="pathologyFilter">Pathology:</label>
-                <select v-model="selectedPathology" id="pathologyFilter" style="width: 100%;">
-                    <option value="">All</option>
-                    <option value="AD">Alzheimer's Disease</option>
-                    <option value="Autism">Autism</option>
-                    <option value="Shiz">Shizophrenia</option>
-                    <option value="HC">Healthy Controls</option>
-                    <option value="Others">Others</option>
-                </select>
-            </div>
-            <div style="grid-column: span 2; text-align: left; font-size: 1.25rem; margin-top: 1rem;">
-                <label for="pathologyFilter">Age Range:</label>
-                <div id="slider-age" ref="ageSlider" style="min-width: 300px; height: 36px;"></div>
+        <div class="section-header">
+            <h2>🧬 Available Datasets</h2>
+            <p class="section-subtitle">Explore our curated collection of neuroimaging datasets with advanced filtering options</p>
+        </div>
+        
+        <div class="modern-filters">
+            <div class="filter-container">
+                <div class="filter-group">
+                    <label for="searchInput" class="filter-label">
+                        <i class="fas fa-search"></i>
+                        Search Datasets
+                    </label>
+                    <div class="input-wrapper">
+                        <input 
+                            type="text" 
+                            id="searchInput"
+                            v-model="searchQuery" 
+                            placeholder="Search by name, description..." 
+                            class="modern-input"
+                        />
+                        <div class="input-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <label for="pathologyFilter" class="filter-label">
+                        <i class="fas fa-filter"></i>
+                        Pathology
+                    </label>
+                    <div class="select-wrapper">
+                        <select v-model="selectedPathology" id="pathologyFilter" class="modern-select">
+                            <option value="">All Pathologies</option>
+                            <option value="AD">Alzheimer's Disease</option>
+                            <option value="Autism">Autism Spectrum</option>
+                            <option value="Shiz">Schizophrenia</option>
+                            <option value="HC">Healthy Controls</option>
+                            <option value="Others">Other Conditions</option>
+                        </select>
+                        <div class="select-icon">
+                            <i class="fas fa-chevron-down"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="filter-group age-filter">
+                    <label class="filter-label">
+                        <i class="fas fa-calendar-alt"></i>
+                        Age Range
+                    </label>
+                    <div class="age-slider-container">
+                        <div class="age-values">
+                            <span class="age-value">{{ ageRange[0] }} years</span>
+                            <span class="age-separator">—</span>
+                            <span class="age-value">{{ ageRange[1] }} years</span>
+                        </div>
+                        <div id="slider-age" ref="ageSlider" class="modern-slider"></div>
+                    </div>
+                </div>
+
+                <div class="filter-actions">
+                    <button 
+                        @click="toggleView"
+                        class="view-toggle-btn"
+                        :class="{ 'grid-active': isGridView, 'table-active': !isGridView }"
+                        title="Switch between grid and table view"
+                    >
+                        <i :class="isGridView ? 'fas fa-table' : 'fas fa-th-large'"></i>
+                        <span>{{ isGridView ? 'Table' : 'Grid' }} View</span>
+                    </button>
+                    
+                    <button 
+                        @click="resetFilters" 
+                        class="reset-btn"
+                        title="Reset all filters"
+                        v-show="searchQuery || selectedPathology || ageRange[0] !== 0 || ageRange[1] !== 105"
+                    >
+                        <i class="fas fa-undo"></i>
+                        Reset
+                    </button>
+                </div>
             </div>
 
-            <button 
-                name="grid_table_button"
-                @click="toggleView"
-                title="Switch View"
-                style="background: #f3f4f6;color: #374151;border: 1px solid #d1d5db;padding: 0.4rem 0.9rem;border-radius: 6px;font-size: 1.15rem;margin-top: 1.2rem;margin-left: 0.5rem;cursor: pointer;display: flex;align-items: center;gap: 0.5em;box-shadow: 0 1px 3px rgba(0,0,0,0.04);transition: background 0.2s, border 0.2s;"
-                @mouseover="event.target.style.background='#e5e7eb'"
-                @mouseout="event.target.style.background='#f3f4f6'"
-            >
-                <i :class="isGridView ? 'fas fa-table' : 'fas fa-th-large'" style="font-size: 1.1em;"></i>
-                <span style="font-size: 1em;">{{ isGridView ? 'Table' : 'Grid' }}</span>
-            </button>
+            <div class="filter-summary" v-show="filteredDatasets.length !== datasets.length">
+                <span class="results-count">
+                    {{ filteredDatasets.length }} of {{ datasets.length }} datasets match your criteria
+                </span>
+            </div>
         </div>
 
         <!-- Loading States (Currently Disabled)
@@ -783,6 +847,277 @@
             </div>
         </div>
 
+        <!-- NeuroDataHub CLI Page -->
+        <div v-show="currentPage === 'neurodatahub-cli'" class="page-content">
+            <div class="page-header">
+                <h1><i class="fas fa-terminal"></i> NeuroDataHub CLI</h1>
+                <p>A powerful command-line interface for downloading neuroimaging datasets with ease!</p>
+            </div>
+            
+            <div class="cli-content">
+                <!-- Hero Section -->
+                <div class="cli-hero">
+                    <div class="cli-hero-grid">
+                        <div class="cli-hero-text">
+                            <h2>🚀 Access 30+ Neuroimaging Datasets from Your Terminal</h2>
+                            <p>NeuroDataHub CLI brings the power of our curated dataset collection to your command line. Download popular neuroimaging datasets from INDI, OpenNeuro, ReproBrainChart, and more with simple commands.</p>
+                            
+                            <div class="cli-badges">
+                                <img src="https://img.shields.io/pypi/v/neurodatahub-cli" alt="PyPI version">
+                                <img src="https://img.shields.io/pypi/pyversions/neurodatahub-cli" alt="Python versions">
+                                <img src="https://img.shields.io/pypi/dm/neurodatahub-cli" alt="Downloads">
+                                <img src="https://img.shields.io/github/license/blackpearl006/neurodatahub-cli" alt="License">
+                            </div>
+                        </div>
+                        <div class="cli-hero-demo">
+                            <div class="terminal-window">
+                                <div class="terminal-header">
+                                    <div class="terminal-buttons">
+                                        <span class="button red"></span>
+                                        <span class="button yellow"></span>
+                                        <span class="button green"></span>
+                                    </div>
+                                    <div class="terminal-title">Terminal</div>
+                                </div>
+                                <div class="terminal-body">
+                                    <div class="terminal-line">
+                                        <span class="prompt">$</span> pip install neurodatahub-cli
+                                    </div>
+                                    <div class="terminal-line">
+                                        <span class="prompt">$</span> neurodatahub --list
+                                    </div>
+                                    <div class="terminal-line output">
+                                        📊 Available Datasets (30+)
+                                    </div>
+                                    <div class="terminal-line">
+                                        <span class="prompt">$</span> neurodatahub pull HBN ./data/HBN
+                                    </div>
+                                    <div class="terminal-line output">
+                                        🚀 Downloading HBN dataset...
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Features Section -->
+                <div class="cli-features">
+                    <h3>✨ Key Features</h3>
+                    <div class="features-grid">
+                        <div class="feature-card">
+                            <div class="feature-icon">🗂️</div>
+                            <h4>30+ Datasets</h4>
+                            <p>Access popular neuroimaging datasets from multiple sources including INDI, OpenNeuro, and ReproBrainChart</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔍</div>
+                            <h4>Smart Search</h4>
+                            <p>Find datasets by name, description, category, or research focus with powerful filtering</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🚀</div>
+                            <h4>Multiple Backends</h4>
+                            <p>Supports AWS CLI, aria2c, DataLad, and more for optimal download performance</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">🔐</div>
+                            <h4>Authentication Support</h4>
+                            <p>Handles various authentication workflows including interactive IDA-LONI processes</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">📊</div>
+                            <h4>Rich UI</h4>
+                            <p>Beautiful tables, progress bars, and interactive prompts for enhanced user experience</p>
+                        </div>
+                        <div class="feature-card">
+                            <div class="feature-icon">⚡</div>
+                            <h4>Resume Support</h4>
+                            <p>Interrupted downloads can be resumed, saving time and bandwidth</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Installation Section -->
+                <div class="cli-installation">
+                    <h3>🔧 Quick Installation</h3>
+                    <div class="install-methods">
+                        <div class="install-method">
+                            <h4><i class="fab fa-python"></i> Via pip</h4>
+                            <div class="code-block">
+                                <code>pip install neurodatahub-cli</code>
+                                <button class="copy-btn" onclick="copyToClipboard('pip install neurodatahub-cli')" title="Copy to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="install-method">
+                            <h4><i class="fas fa-cube"></i> Via conda</h4>
+                            <div class="code-block">
+                                <code>conda install -c conda-forge neurodatahub-cli</code>
+                                <button class="copy-btn" onclick="copyToClipboard('conda install -c conda-forge neurodatahub-cli')" title="Copy to clipboard">
+                                    <i class="fas fa-copy"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Usage Examples Section -->
+                <div class="cli-usage">
+                    <h3>💻 Common Commands</h3>
+                    <div class="usage-examples">
+                        <div class="usage-category">
+                            <h4>📋 List & Search</h4>
+                            <div class="command-list">
+                                <div class="command-item">
+                                    <div class="code-block">
+                                        <code>neurodatahub --list</code>
+                                        <button class="copy-btn" onclick="copyToClipboard('neurodatahub --list')" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <span class="command-desc">List all available datasets</span>
+                                </div>
+                                <div class="command-item">
+                                    <div class="code-block">
+                                        <code>neurodatahub search "brain development"</code>
+                                        <button class="copy-btn" onclick="copyToClipboard('neurodatahub search \"brain development\"')" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <span class="command-desc">Search for specific datasets</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="usage-category">
+                            <h4>📥 Download</h4>
+                            <div class="command-list">
+                                <div class="command-item">
+                                    <div class="code-block">
+                                        <code>neurodatahub pull HBN --path ./data/HBN</code>
+                                        <button class="copy-btn" onclick="copyToClipboard('neurodatahub pull HBN --path ./data/HBN')" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <span class="command-desc">Download a dataset to specified path</span>
+                                </div>
+                                <div class="command-item">
+                                    <div class="code-block">
+                                        <code>neurodatahub info HBN</code>
+                                        <button class="copy-btn" onclick="copyToClipboard('neurodatahub info HBN')" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <span class="command-desc">Get detailed dataset information</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="usage-category">
+                            <h4>🔧 System</h4>
+                            <div class="command-list">
+                                <div class="command-item">
+                                    <div class="code-block">
+                                        <code>neurodatahub check</code>
+                                        <button class="copy-btn" onclick="copyToClipboard('neurodatahub check')" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <span class="command-desc">Check system dependencies</span>
+                                </div>
+                                <div class="command-item">
+                                    <div class="code-block">
+                                        <code>neurodatahub --help</code>
+                                        <button class="copy-btn" onclick="copyToClipboard('neurodatahub --help')" title="Copy to clipboard">
+                                            <i class="fas fa-copy"></i>
+                                        </button>
+                                    </div>
+                                    <span class="command-desc">Show help and all available commands</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Dataset Categories -->
+                <div class="cli-categories">
+                    <h3>📂 Supported Dataset Categories</h3>
+                    <div class="categories-grid">
+                        <div class="category-card">
+                            <h4><i class="fas fa-unlock"></i> INDI Datasets</h4>
+                            <p><strong>No Authentication Required</strong></p>
+                            <ul>
+                                <li>HBN - Healthy Brain Network (2TB)</li>
+                                <li>CORR - Consortium for Reliability (500GB)</li>
+                                <li>ADHD200 - ADHD diagnosis (200GB)</li>
+                                <li>NKI - Nathan Kline Institute (800GB)</li>
+                            </ul>
+                        </div>
+                        <div class="category-card">
+                            <h4><i class="fas fa-globe"></i> OpenNeuro</h4>
+                            <p><strong>Open Platform Datasets</strong></p>
+                            <ul>
+                                <li>AOMIC - Amsterdam Open MRI Collection</li>
+                                <li>Pixar - fMRI responses to movie clips</li>
+                                <li>MPI - Max Planck Institute datasets</li>
+                                <li>Dense sampling - High-resolution subjects</li>
+                            </ul>
+                        </div>
+                        <div class="category-card">
+                            <h4><i class="fas fa-database"></i> Independent</h4>
+                            <p><strong>Direct Access Datasets</strong></p>
+                            <ul>
+                                <li>IXI - Imperial College brain MRI (12GB)</li>
+                                <li>OASIS-1/2 - Aging studies</li>
+                                <li>HCP - Human Connectome Project*</li>
+                                <li>CamCAN - Cambridge aging study*</li>
+                            </ul>
+                            <small>* Requires authentication</small>
+                        </div>
+                        <div class="category-card">
+                            <h4><i class="fas fa-lock"></i> IDA-LONI</h4>
+                            <p><strong>Interactive Authentication</strong></p>
+                            <ul>
+                                <li>ADNI - Alzheimer's Disease Initiative</li>
+                                <li>PPMI - Parkinson's Progression Markers</li>
+                                <li>AIBL - Australian Imaging Biomarkers</li>
+                                <li>MCSA - Mayo Clinic Study of Aging</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Links Section -->
+                <div class="cli-links">
+                    <h3>🔗 Resources & Links</h3>
+                    <div class="links-grid">
+                        <a href="https://pypi.org/project/neurodatahub-cli/" target="_blank" class="link-card">
+                            <i class="fab fa-python"></i>
+                            <h4>PyPI Package</h4>
+                            <p>Official Python package repository</p>
+                        </a>
+                        <a href="https://github.com/blackpearl006/neurodatahub-cli" target="_blank" class="link-card">
+                            <i class="fab fa-github"></i>
+                            <h4>Source Code</h4>
+                            <p>GitHub repository and documentation</p>
+                        </a>
+                        <a href="https://github.com/blackpearl006/neurodatahub-cli/issues" target="_blank" class="link-card">
+                            <i class="fas fa-bug"></i>
+                            <h4>Report Issues</h4>
+                            <p>Bug reports and feature requests</p>
+                        </a>
+                        <a href="https://github.com/blackpearl006/neurodatahub-cli/discussions" target="_blank" class="link-card">
+                            <i class="fas fa-comments"></i>
+                            <h4>Discussions</h4>
+                            <p>Community support and questions</p>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </main>
 
     <!-- Footer -->
@@ -845,6 +1180,54 @@
     
 </div>
 <script src="docs/js/app.js"></script>
+
+<script>
+// Copy to clipboard functionality for CLI page
+function copyToClipboard(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(() => {
+            showCopyFeedback();
+        });
+    } else {
+        // Fallback for older browsers
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        textArea.style.position = 'fixed';
+        textArea.style.left = '-999999px';
+        textArea.style.top = '-999999px';
+        document.body.appendChild(textArea);
+        textArea.focus();
+        textArea.select();
+        
+        try {
+            document.execCommand('copy');
+            showCopyFeedback();
+        } catch (err) {
+            console.error('Failed to copy: ', err);
+        } finally {
+            textArea.remove();
+        }
+    }
+}
+
+function showCopyFeedback() {
+    // Find all copy buttons and briefly change their text/style
+    const event = window.event;
+    if (event && event.target) {
+        const button = event.target.closest('.copy-btn');
+        if (button) {
+            const originalIcon = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i>';
+            button.style.color = '#10b981';
+            
+            setTimeout(() => {
+                button.innerHTML = originalIcon;
+                button.style.color = '';
+            }, 1000);
+        }
+    }
+}
+</script>
 
 </body>
 </html>
