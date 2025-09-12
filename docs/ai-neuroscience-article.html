@@ -140,11 +140,17 @@
             padding: 1.5rem;
             margin: 1.5rem 0;
             overflow-x: auto;
+            color: #ffffff;
         }
 
         .code-section pre {
             margin: 0;
             font-family: 'Fira Code', 'Consolas', monospace;
+            color: #ffffff;
+        }
+        
+        .code-section code {
+            color: #ffffff;
         }
 
         .step-counter {
@@ -191,7 +197,7 @@
         .requirement-card {
             background: white;
             padding: 1.5rem;
-            border-radius: 8px;
+            border-radius: 12px;
             border: 2px solid #e2e8f0;
             box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             transition: all 0.3s ease;
@@ -199,8 +205,8 @@
 
         .requirement-card:hover {
             border-color: #667eea;
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.15);
         }
 
         .requirement-card h4 {
@@ -361,10 +367,11 @@
             line-height: 1.4;
             width: 300px;
             max-width: 80vw;
-            z-index: 1000;
+            z-index: 10000;
             box-shadow: 0 4px 20px rgba(0,0,0,0.3);
             transition: all 0.3s ease;
             font-weight: normal;
+            pointer-events: none;
         }
 
         .tooltip::after {
@@ -394,6 +401,13 @@
             .youtube-buttons,
             .youtube-button {
                 display: none !important;
+            }
+            
+            /* Ensure tooltips still work on mobile */
+            .tooltip {
+                z-index: 20000 !important;
+                position: fixed !important;
+                width: 280px !important;
             }
             
             .requirement-card {
@@ -459,26 +473,44 @@
             color: #333;
         }
 
+        .youtube-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            margin-top: 1rem;
+            justify-content: center;
+        }
+
         .youtube-button {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: #ff0000;
+            background: linear-gradient(135deg, #ff0000 0%, #cc0000 100%);
             color: white;
             text-decoration: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 25px;
-            font-weight: 600;
-            margin: 0.5rem;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-weight: 500;
+            font-size: 0.875rem;
             transition: all 0.3s ease;
-            box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
+            box-shadow: 0 2px 8px rgba(255, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            min-width: 140px;
+            justify-content: center;
         }
 
         .youtube-button:hover {
-            background: #cc0000;
+            background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
             transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4);
+            box-shadow: 0 4px 15px rgba(255, 0, 0, 0.35);
             color: white;
+            text-decoration: none;
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .youtube-button i {
+            font-size: 1rem;
+            flex-shrink: 0;
         }
 
         .expand-button {

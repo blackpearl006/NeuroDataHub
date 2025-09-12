@@ -333,7 +333,9 @@
             <div class="hero-grid">
                 <div class="hero-text">
                     <img class="hide-on-mobile" src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub - Neuroimaging Datasets Platform Logo" width="120" height="125" style="vertical-align: middle; margin-right: 0.5em;">
-                    <h1 class="hide-on-mobile" style="display: inline; vertical-align: middle;">NeuroDataHub: Neuroimaging Datasets & Brain Imaging Research Platform</h1>
+                    <h1 class="hide-on-mobile" style="display: inline; vertical-align: middle;">NeuroDataHub</h1>
+                    <!-- SEO Keywords (hidden but crawlable) -->
+                    <span style="position: absolute; left: -9999px; font-size: 0; color: transparent;">Neuroimaging Datasets Brain Imaging Research Platform</span>
                     <!-- Alternative description (currently disabled)
                     <p style="margin: 1rem auto 0 auto;">
                         An open-access platform to explore, compare, and analyze neuroimaging datasets.
@@ -358,9 +360,9 @@
             v-if="window.innerWidth > 768">
         <div class="container grid-3" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
             <div class="card">
-                <h3>🧠 Explore Neuroimaging Datasets</h3>
+                <h3>🧠 Explore Brain Datasets</h3>
                 <p>
-                    Access <strong>50+ open-access neuroimaging datasets</strong> covering over <strong>50,000 brain scans</strong>, including structural MRI, functional MRI, diffusion imaging, EEG, and PET data. Quickly compare brain imaging datasets, understand their formats, and discover how to use them in neuroscience research and AI applications.
+                    Access <strong>50+ open neuroimaging datasets</strong> covering over <strong>50,000 brain scans</strong>, including structural MRI, functional MRI, and diffusion imaging. Quickly compare datasets, understand their formats, and discover how to use them in real research.
                 </p>
             </div>
             <div class="card">
@@ -382,8 +384,10 @@
     <!-- Dataset Viewer Section -->
     <section class="container main dataset-viewer-section" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
         <div class="section-header">
-            <h2>🧬 Neuroimaging Datasets Collection - 50+ Brain Imaging Research Datasets</h2>
-            <p class="section-subtitle">Explore our curated collection of open-access neuroimaging datasets with advanced filtering options for MRI, fMRI, DWI, EEG, and PET brain imaging data</p>
+            <h2>🧬 Available Datasets</h2>
+            <!-- SEO Keywords (hidden but crawlable) -->
+            <span style="position: absolute; left: -9999px; font-size: 0; color: transparent;">Neuroimaging Datasets Collection 50+ Brain Imaging Research Datasets</span>
+            <p class="section-subtitle">Explore our curated collection of neuroimaging datasets with advanced filtering options</p>
         </div>
         
         <div class="modern-filters">
@@ -1008,10 +1012,10 @@
                 <div class="coming-soon">
                     <i class="fas fa-external-link-alt"></i>
                     <h3>Coming Soon</h3>
-                    <p>This article will provide comprehensive guidelines for neuroimaging best practices, including data acquisition, preprocessing, and analysis workflows.</p>
-                    <a href="#" class="external-link" target="_blank">
+                    <!-- <p>This article will provide comprehensive guidelines for neuroimaging best practices, including data acquisition, preprocessing, and analysis workflows.</p> -->
+                    <!-- <a href="#" class="external-link" target="_blank">
                         <i class="fab fa-medium"></i> Read on Medium (Link TBD)
-                    </a>
+                    </a> -->
                 </div>
             </div>
         </div>
@@ -1325,9 +1329,6 @@
             <a href="https://github.com/lorenmt/clarity-template" target="_blank">Clarity Template</a>.
             </p>
             <p>Contact: <a href="mailto:reachninadaithal@gmail.com">reachninadaithal@gmail.com</a></p>
-            <div class="visitor-counter">
-                👁️ <span id="visitor-count">Tracking visitors...</span> | 📊 Analytics: <a href="https://analytics.google.com" target="_blank" style="color: #4CAF50;">Google Analytics</a>
-            </div>
         </div>
 
     
@@ -1367,46 +1368,6 @@
 <script src="docs/js/app.js" defer></script>
 
 <script>
-// Simple visitor counter using localStorage and a public counter API
-document.addEventListener('DOMContentLoaded', function() {
-    // Initialize visitor counter
-    const visitorCountElement = document.getElementById('visitor-count');
-    
-    // Use a simple approach with localStorage to track unique visits per session
-    const hasVisited = sessionStorage.getItem('neurodatahub-visited');
-    
-    if (!hasVisited) {
-        sessionStorage.setItem('neurodatahub-visited', 'true');
-        
-        // Use CountAPI (free counter service) to track visits
-        fetch('https://api.countapi.xyz/hit/neurodatahub.github.io/visits')
-            .then(response => response.json())
-            .then(data => {
-                if (data.value) {
-                    visitorCountElement.textContent = `${data.value.toLocaleString()} total visits`;
-                } else {
-                    visitorCountElement.textContent = 'Visit tracking active';
-                }
-            })
-            .catch(() => {
-                visitorCountElement.textContent = 'Visit tracking active';
-            });
-    } else {
-        // Just display current count without incrementing
-        fetch('https://api.countapi.xyz/get/neurodatahub.github.io/visits')
-            .then(response => response.json())
-            .then(data => {
-                if (data.value) {
-                    visitorCountElement.textContent = `${data.value.toLocaleString()} total visits`;
-                } else {
-                    visitorCountElement.textContent = 'Visit tracking active';
-                }
-            })
-            .catch(() => {
-                visitorCountElement.textContent = 'Visit tracking active';
-            });
-    }
-});
 
 // Copy to clipboard functionality for CLI page
 function copyToClipboard(text) {
