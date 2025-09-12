@@ -1,0 +1,27 @@
+User-agent: *
+Allow: /
+
+# Allow all pages and assets
+Allow: /docs/
+Allow: /docs/assets/
+Allow: /docs/css/
+Allow: /docs/js/
+
+# Sitemap location
+Sitemap: https://blackpearl006.github.io/NeuroDataHub/sitemap.xml
+
+# Crawl delay (optional, helps with server load)
+Crawl-delay: 1
+
+# Specific search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: Slurp
+Allow: /
+
+# Block specific files if needed (none for now)
+# Disallow: /private/

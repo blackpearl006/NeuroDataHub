@@ -637,10 +637,10 @@
                     <h4><i class="fab fa-python"></i> Python & Data Science</h4>
                     <p>Intermediate Python, NumPy array manipulation, pandas DataFrames, and matplotlib visualization.</p>
                     <div class="youtube-buttons">
-                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('python-basics')">
+                        <a href="https://youtu.be/K5KVEU3aaeQ?si=YsVxTzOq3HyM6V3i" class="youtube-button" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube"></i> Python Fundamentals
                         </a>
-                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('numpy-pandas')">
+                        <a href="https://youtu.be/r-uOLxNrNk8?si=Oe7CENNgUWJFlm2w" class="youtube-button" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube"></i> NumPy & Pandas
                         </a>
                     </div>
@@ -650,10 +650,10 @@
                     <h4><i class="fas fa-brain"></i> Deep Learning & PyTorch</h4>
                     <p>Understanding of <span class="ai-term">backpropagation<div class="tooltip">Backpropagation is the algorithm used to train neural networks by calculating gradients and updating weights to minimize loss.</div></span>, optimizers, and PyTorch tensor operations.</p>
                     <div class="youtube-buttons">
-                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('pytorch-basics')">
+                        <a href="https://youtu.be/V_xro1bcAuA?si=jSpfUJy-QM1iofPv" class="youtube-button" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube"></i> PyTorch Tutorial
                         </a>
-                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('deep-learning')">
+                        <a href="https://youtube.com/playlist?list=PLZ2ps__7DhBZVxMrSkTIcG6zZBDKUXCnM&si=IfUrVE9cwth1H16x" class="youtube-button" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube"></i> Deep Learning Theory
                         </a>
                     </div>
@@ -663,10 +663,10 @@
                     <h4><i class="fas fa-image"></i> Medical Imaging</h4>
                     <p>Familiarity with NIfTI format, 3D image processing, and basic neuroanatomy concepts.</p>
                     <div class="youtube-buttons">
-                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('neuroimaging-basics')">
+                        <a href="https://youtu.be/z6vAZlrl4nI?si=DC62SMUEYuwCB88G" class="youtube-button" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube"></i> Neuroimaging Intro
                         </a>
-                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('brain-anatomy')">
+                        <a href="https://youtube.com/playlist?list=PLUl4u3cNGP60IKRN_pFptIBxeiMc0MCJP&si=fpdYq_22OZd8Gtwv" class="youtube-button" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube"></i> Brain Anatomy
                         </a>
                     </div>
@@ -676,10 +676,10 @@
                     <h4><i class="fas fa-chart-area"></i> Statistics & ML</h4>
                     <p>Cross-validation, <span class="ai-term">confusion matrix<div class="tooltip">A confusion matrix is a table showing correct vs predicted classifications. It shows True Positives, True Negatives, False Positives, and False Negatives.</div></span> interpretation, and statistical significance testing.</p>
                     <div class="youtube-buttons">
-                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('statistics-ml')">
+                        <a href="https://youtube.com/playlist?list=PLblh5JKOoLUICTaGLRoHQDuF_7q2GfuJF&si=BxBHlH00iWz9m71e" class="youtube-button" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube"></i> ML Statistics
                         </a>
-                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('cross-validation')">
+                        <a href="https://youtu.be/fSytzGwwBVw?si=VGha86ljrHsBTMM9" class="youtube-button" target="_blank" rel="noopener noreferrer">
                             <i class="fab fa-youtube"></i> Cross Validation
                         </a>
                     </div>
@@ -1285,27 +1285,32 @@ scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)<
             }
         }
 
-        // YouTube link request function
-        function requestYouTubeLink(topic) {
-            const topicMap = {
-                'python-basics': 'Python Programming Fundamentals',
-                'numpy-pandas': 'NumPy and Pandas for Data Science',
-                'pytorch-basics': 'PyTorch Deep Learning Framework',
-                'deep-learning': 'Deep Learning Theory and Practice',
-                'neuroimaging-basics': 'Introduction to Neuroimaging',
-                'brain-anatomy': 'Basic Brain Anatomy for Neuroimaging',
-                'statistics-ml': 'Statistics for Machine Learning',
-                'cross-validation': 'Cross-Validation Techniques'
-            };
+        // YouTube link analytics (optional - track which tutorials users access)
+        function trackYouTubeClick(topic, url) {
+            // Track educational resource engagement
+            console.log(`User accessed educational resource: ${topic} - ${url}`);
             
-            const topicName = topicMap[topic] || topic;
-            alert(`You clicked to learn about "${topicName}".\n\nThe YouTube tutorial links will be provided by the author. This is a placeholder for the interactive tutorial system.`);
-            
-            // In a real implementation, this could:
-            // - Open a modal with embedded YouTube videos
-            // - Send analytics about which topics users are interested in
-            // - Navigate to a learning path page
+            // Optional: Analytics tracking
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'educational_resource_click', {
+                    'event_category': 'Learning Resources',
+                    'event_label': topic,
+                    'value': 1
+                });
+            }
         }
+        
+        // Add click tracking to YouTube buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const youtubeButtons = document.querySelectorAll('.youtube-button');
+            youtubeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const topic = this.textContent.trim();
+                    const url = this.href;
+                    trackYouTubeClick(topic, url);
+                });
+            });
+        });
 
         // Show modal function (for future use)
         function showModal(modalId) {
