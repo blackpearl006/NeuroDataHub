@@ -3,18 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NeuroDataHub</title>
+    
+    <!-- SEO Meta Tags -->
+    <title>NeuroDataHub - 50+ Neuroimaging Datasets for Brain Imaging Research | 50K+ Brain Scans</title>
+    <meta name="description" content="Explore 50+ curated neuroimaging datasets with 50,000+ brain scans. Open-access platform for researchers, clinicians & students. Find MRI, fMRI, DWI data for neuroscience & AI research.">
+    <meta name="keywords" content="neuroimaging datasets, brain imaging data, neuroscience research, MRI datasets, fMRI data, brain scans, neuroimaging research, medical imaging, AI neuroscience, open data">
+    <meta name="author" content="NeuroDataHub">
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
+    <link rel="canonical" href="https://blackpearl006.github.io/NeuroDataHub/">
+    
+    <!-- Open Graph Meta Tags -->
+    <meta property="og:title" content="NeuroDataHub - 50+ Neuroimaging Datasets for Brain Imaging Research">
+    <meta property="og:description" content="Explore 50+ curated neuroimaging datasets with 50,000+ brain scans. Open-access platform for researchers, clinicians & students in neuroscience and AI.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blackpearl006.github.io/NeuroDataHub/">
+    <meta property="og:image" content="https://blackpearl006.github.io/NeuroDataHub/docs/assets/images/brain_hero.png">
+    <meta property="og:image:alt" content="NeuroDataHub - Brain MRI visualization showing neuroimaging datasets">
+    <meta property="og:site_name" content="NeuroDataHub">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NeuroDataHub - 50+ Neuroimaging Datasets for Research">
+    <meta name="twitter:description" content="Explore 50+ curated neuroimaging datasets with 50,000+ brain scans. Open-access platform for neuroscience & AI research.">
+    <meta name="twitter:image" content="https://blackpearl006.github.io/NeuroDataHub/docs/assets/images/brain_hero.png">
+    <meta name="twitter:image:alt" content="NeuroDataHub brain imaging datasets visualization">
+    
+    <!-- Additional SEO Tags -->
+    <meta name="theme-color" content="#4CAF50">
+    <meta name="msapplication-TileColor" content="#4CAF50">
+    
+    <!-- Performance Optimizations -->
+    <link rel="preload" href="docs/css/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="docs/css/style.css"></noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"></noscript>
+    <link rel="preload" href="./docs/assets/images/logo_nobg.png" as="image">
+    <link rel="preload" href="./docs/assets/images/brain_hero.png" as="image">
+    <link rel="preload" href="docs/js/app.js" as="script">
+    
+    <!-- DNS Prefetch for External Resources -->
+    <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
+    <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
+    <link rel="dns-prefetch" href="//fonts.googleapis.com">
+    <link rel="dns-prefetch" href="//unpkg.com">
+    
+    <!-- Critical CSS loaded first -->
     <link rel="stylesheet" href="docs/css/style.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
     <link rel="icon" href="./docs/assets/images/favicon.ico" type="image/x-icon" />
-    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
-    <script src="https://unpkg.com/niivue@latest/dist/niivue.umd.js"></script>
+    <!-- Critical Scripts loaded first -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2" defer></script>
+    
+    <!-- Non-critical Scripts loaded asynchronously -->
+    <script src="https://unpkg.com/niivue@latest/dist/niivue.umd.js" async></script>
     <link href="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/counterapi/dist/counter.browser.min.js" async></script>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8EN1JBMMYR"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-8EN1JBMMYR');
+    </script>
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "NeuroDataHub",
+        "url": "https://blackpearl006.github.io/NeuroDataHub/",
+        "description": "Open-access platform for exploring and analyzing neuroimaging datasets with 50+ curated public brain imaging datasets containing over 50,000 scans",
+        "publisher": {
+            "@type": "Organization",
+            "name": "NeuroDataHub",
+            "url": "https://blackpearl006.github.io/NeuroDataHub/",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://blackpearl006.github.io/NeuroDataHub/docs/assets/images/logo_nobg.png",
+                "width": 120,
+                "height": 125
+            }
+        },
+        "mainEntity": {
+            "@type": "DataCatalog",
+            "name": "NeuroDataHub Dataset Collection",
+            "description": "Comprehensive collection of 50+ neuroimaging datasets with over 50,000 brain scans for research, education, and clinical applications",
+            "url": "https://blackpearl006.github.io/NeuroDataHub/",
+            "keywords": [
+                "neuroimaging",
+                "brain imaging",
+                "MRI",
+                "fMRI",
+                "DWI",
+                "neuroscience research",
+                "medical imaging",
+                "open data",
+                "brain scans",
+                "neurological disorders"
+            ],
+            "creator": {
+                "@type": "Organization",
+                "name": "NeuroDataHub"
+            },
+            "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+            "includedInDataCatalog": {
+                "@type": "DataCatalog",
+                "name": "NeuroDataHub"
+            }
+        },
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://blackpearl006.github.io/NeuroDataHub/?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": "NeuroDataHub Neuroimaging Dataset Collection",
+        "description": "A comprehensive collection of 50+ curated neuroimaging datasets containing over 50,000 brain scans from various sources including INDI, OpenNeuro, OASIS, HCP, and more. Includes structural MRI, functional MRI, diffusion MRI, EEG, PET, and other neuroimaging modalities for research in neuroscience, AI, and clinical applications.",
+        "url": "https://blackpearl006.github.io/NeuroDataHub/",
+        "sameAs": [
+            "https://github.com/blackpearl006/NeuroDataHub",
+            "https://doi.org/10.5281/zenodo.15687811"
+        ],
+        "keywords": [
+            "neuroimaging datasets",
+            "brain imaging data",
+            "MRI",
+            "fMRI",
+            "DWI",
+            "EEG",
+            "PET",
+            "neuroscience research",
+            "Alzheimer's disease",
+            "autism spectrum disorder",
+            "schizophrenia",
+            "brain development",
+            "medical imaging",
+            "open data"
+        ],
+        "creator": {
+            "@type": "Person",
+            "name": "Ninad Aithal",
+            "email": "reachninadaithal@gmail.com",
+            "affiliation": {
+                "@type": "Organization",
+                "name": "NeuroDataHub"
+            }
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "NeuroDataHub",
+            "url": "https://blackpearl006.github.io/NeuroDataHub/"
+        },
+        "license": "https://creativecommons.org/licenses/by-sa/4.0/",
+        "dateCreated": "2024-01-01",
+        "dateModified": "2025-01-01",
+        "datePublished": "2024-01-01",
+        "version": "2.0",
+        "distribution": [
+            {
+                "@type": "DataDownload",
+                "encodingFormat": "HTML",
+                "contentUrl": "https://blackpearl006.github.io/NeuroDataHub/"
+            }
+        ],
+        "includedInDataCatalog": {
+            "@type": "DataCatalog",
+            "name": "NeuroDataHub",
+            "url": "https://blackpearl006.github.io/NeuroDataHub/"
+        },
+        "measurementTechnique": [
+            "Magnetic Resonance Imaging (MRI)",
+            "Functional Magnetic Resonance Imaging (fMRI)",
+            "Diffusion Weighted Imaging (DWI)",
+            "Electroencephalography (EEG)",
+            "Positron Emission Tomography (PET)"
+        ],
+        "variableMeasured": [
+            "Brain structure",
+            "Brain function",
+            "White matter integrity",
+            "Neural connectivity",
+            "Brain metabolism"
+        ]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            {
+                "@type": "ListItem",
+                "position": 1,
+                "name": "Home",
+                "item": "https://blackpearl006.github.io/NeuroDataHub/"
+            }
+        ]
+    }
+    </script>
 </head>
 <body>
 <div id="app">
@@ -128,22 +332,21 @@
         <section class="hero">
             <div class="hero-grid">
                 <div class="hero-text">
-                    <img class="hide-on-mobile" src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub Logo" width="120" height="125" style="vertical-align: middle; margin-right: 0.5em;">
-                    <h1 class="hide-on-mobile" style="display: inline; vertical-align: middle;">NeuroDataHub</h1>
+                    <img class="hide-on-mobile" src="./docs/assets/images/logo_nobg.png" alt="NeuroDataHub - Neuroimaging Datasets Platform Logo" width="120" height="125" style="vertical-align: middle; margin-right: 0.5em;">
+                    <h1 class="hide-on-mobile" style="display: inline; vertical-align: middle;">NeuroDataHub: Neuroimaging Datasets & Brain Imaging Research Platform</h1>
                     <!-- Alternative description (currently disabled)
                     <p style="margin: 1rem auto 0 auto;">
                         An open-access platform to explore, compare, and analyze neuroimaging datasets.
                         Built for researchers, clinicians, and students in neuroscience and AI.
                     </p>
                     -->
-                    <p style="margin: 1rem auto 0 auto;"> <strong>NeuroDataHub</strong> is an open-access platform designed to help you explore, compare, and analyze neuroimaging datasets with ease. Whether you're a researcher, clinician, or student in neuroscience or AI, this site brings together an extensive collection of <strong>50 carefully curated public datasets</strong>, totaling over <strong>50,000 brain scans</strong>.</p>
-                    <p style="margin: 1rem auto 0 auto;"> Each dataset is accompanied by an accessible overview and a summary of potential research directions</p> 
-                    <!-- Extended description: from brain age prediction and disease classification to network analysis and representation learning. -->
-                    <p style="margin: 1rem auto 0 auto;"> Discover the data that fits your project, and <strong> accelerate your research</strong>.</p>
+                    <p style="margin: 1rem auto 0 auto;"> <strong>NeuroDataHub</strong> is the leading open-access neuroimaging datasets platform designed to help researchers, clinicians, and students explore, compare, and analyze brain imaging data with ease. This comprehensive brain imaging research hub brings together an extensive collection of <strong>50+ carefully curated public neuroimaging datasets</strong>, containing over <strong>50,000 brain scans</strong> from multiple modalities including MRI, fMRI, DWI, EEG, and PET.</p>
+                    <p style="margin: 1rem auto 0 auto;"> Each neuroimaging dataset is accompanied by detailed metadata, accessibility information, and research applications spanning from <strong>brain age prediction and neurological disease classification</strong> to network analysis and AI-driven neuroscience research.</p> 
+                    <p style="margin: 1rem auto 0 auto;"> Find the perfect brain imaging datasets for your neuroscience research project and <strong>accelerate your neuroimaging studies</strong> with our comprehensive dataset collection.</p>
 
                 </div>
                 <div class="hero-image hide-on-mobile">
-                    <img src="./docs/assets/images/brain_hero.png" alt="Brain MRI Illustration" />
+                    <img src="./docs/assets/images/brain_hero.png" alt="Neuroimaging Dataset Visualization - Brain MRI Research Data" loading="eager" />
                 </div>
             </div>
         </section>
@@ -155,9 +358,9 @@
             v-if="window.innerWidth > 768">
         <div class="container grid-3" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
             <div class="card">
-                <h3>🧠 Explore Brain Datasets</h3>
+                <h3>🧠 Explore Neuroimaging Datasets</h3>
                 <p>
-                    Access <strong>50 open neuroimaging datasets</strong> covering over <strong>50,000 brain scans</strong>, including structural MRI, functional MRI, and diffusion imaging. Quickly compare datasets, understand their formats, and discover how to use them in real research.
+                    Access <strong>50+ open-access neuroimaging datasets</strong> covering over <strong>50,000 brain scans</strong>, including structural MRI, functional MRI, diffusion imaging, EEG, and PET data. Quickly compare brain imaging datasets, understand their formats, and discover how to use them in neuroscience research and AI applications.
                 </p>
             </div>
             <div class="card">
@@ -179,8 +382,8 @@
     <!-- Dataset Viewer Section -->
     <section class="container main dataset-viewer-section" style="max-width: 1600px; margin: auto; padding: 2rem 1rem;">
         <div class="section-header">
-            <h2>🧬 Available Datasets</h2>
-            <p class="section-subtitle">Explore our curated collection of neuroimaging datasets with advanced filtering options</p>
+            <h2>🧬 Neuroimaging Datasets Collection - 50+ Brain Imaging Research Datasets</h2>
+            <p class="section-subtitle">Explore our curated collection of open-access neuroimaging datasets with advanced filtering options for MRI, fMRI, DWI, EEG, and PET brain imaging data</p>
         </div>
         
         <div class="modern-filters">
@@ -814,19 +1017,12 @@
         </div>
 
         <div v-show="currentPage === 'article-2'" class="page-content">
-            <div class="page-header">
-                <h1><i class="fas fa-brain"></i> AI in Neuroscience</h1>
-                <p>Exploring the intersection of artificial intelligence and brain research.</p>
-            </div>
-            <div class="article-placeholder">
-                <div class="coming-soon">
-                    <i class="fas fa-external-link-alt"></i>
-                    <!-- <h3>Coming Soon</h3> -->
-                    <p>Discover how machine learning and deep learning are revolutionizing neuroscience research and clinical applications.</p>
-                    <a href="https://medium.com/@daminininad/intro-to-ai-with-neuroimaging-data-a-end-to-end-tutorial-using-pytorch-f941c6ef547a" class="external-link" target="_blank">
-                        <i class="fab fa-medium"></i> Read on Medium
-                    </a>
-                </div>
+            <div style="width: 100%; height: calc(100vh - 100px); overflow: hidden;">
+                <iframe 
+                    src="docs/ai-neuroscience-article.html" 
+                    style="width: 100%; height: 100%; border: none; background: white;"
+                    title="AI in Neuroscience Article">
+                </iframe>
             </div>
         </div>
 
@@ -952,10 +1148,10 @@
                             </div>
                         </div>
                         <div class="install-method">
-                            <h4><i class="fas fa-cube"></i> Via conda</h4>
+                            <h4><i class="fas fa-cube"></i> Via conda (coming soon)</h4>
                             <div class="code-block">
-                                <code>conda install -c conda-forge neurodatahub-cli</code>
-                                <button class="copy-btn" onclick="copyToClipboard('conda install -c conda-forge neurodatahub-cli')" title="Copy to clipboard">
+                                <code># conda install -c conda-forge neurodatahub-cli</code>
+                                <button class="copy-btn" onclick="copyToClipboard('# conda install -c conda-forge neurodatahub-cli')" title="Copy to clipboard" disabled style="opacity: 0.5; cursor: not-allowed;">
                                     <i class="fas fa-copy"></i>
                                 </button>
                             </div>
@@ -1128,20 +1324,9 @@
             <p>© 2025 <strong>NeuroDataHub</strong>. Built using the 
             <a href="https://github.com/lorenmt/clarity-template" target="_blank">Clarity Template</a>.
             </p>
-            <p>Contact: <a href="mailto:ninadaithal@iisc.ac.in">ninadaithal@iisc.ac.in</a></p>
-            <!-- Legacy Visitor Counter Options (Disabled)
-            <div class="visitor-count">
-                <p>
-                    Total Visitors: 
-                    <img src="https://komarev.com/ghpvc/?username=NeuroDataHub&color=blue" alt="Visitor Count" title="This badge shows the total number of visitors to the NeuroDataHub page." onerror="this.style.display='none'; this.insertAdjacentHTML('afterend', '<span style=\'color:#888;\'>Unavailable</span>');" />
-                </p>
-            </div>
-            <div class="visitor-count">
-                👥 Total Visitors: <span id="view-count">Loading...</span>
-            </div>
-            -->
+            <p>Contact: <a href="mailto:reachninadaithal@gmail.com">reachninadaithal@gmail.com</a></p>
             <div class="visitor-counter">
-                👁️ Visitors: <img src="https://komarev.com/ghpvc/?username=blackpearl006-neurodatahub&style=flat-square&color=blue" alt="Visitor Count" style="vertical-align: middle;" />
+                👁️ <span id="visitor-count">Tracking visitors...</span> | 📊 Analytics: <a href="https://analytics.google.com" target="_blank" style="color: #4CAF50;">Google Analytics</a>
             </div>
         </div>
 
@@ -1179,9 +1364,50 @@
   
     
 </div>
-<script src="docs/js/app.js"></script>
+<script src="docs/js/app.js" defer></script>
 
 <script>
+// Simple visitor counter using localStorage and a public counter API
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize visitor counter
+    const visitorCountElement = document.getElementById('visitor-count');
+    
+    // Use a simple approach with localStorage to track unique visits per session
+    const hasVisited = sessionStorage.getItem('neurodatahub-visited');
+    
+    if (!hasVisited) {
+        sessionStorage.setItem('neurodatahub-visited', 'true');
+        
+        // Use CountAPI (free counter service) to track visits
+        fetch('https://api.countapi.xyz/hit/neurodatahub.github.io/visits')
+            .then(response => response.json())
+            .then(data => {
+                if (data.value) {
+                    visitorCountElement.textContent = `${data.value.toLocaleString()} total visits`;
+                } else {
+                    visitorCountElement.textContent = 'Visit tracking active';
+                }
+            })
+            .catch(() => {
+                visitorCountElement.textContent = 'Visit tracking active';
+            });
+    } else {
+        // Just display current count without incrementing
+        fetch('https://api.countapi.xyz/get/neurodatahub.github.io/visits')
+            .then(response => response.json())
+            .then(data => {
+                if (data.value) {
+                    visitorCountElement.textContent = `${data.value.toLocaleString()} total visits`;
+                } else {
+                    visitorCountElement.textContent = 'Visit tracking active';
+                }
+            })
+            .catch(() => {
+                visitorCountElement.textContent = 'Visit tracking active';
+            });
+    }
+});
+
 // Copy to clipboard functionality for CLI page
 function copyToClipboard(text) {
     if (navigator.clipboard && window.isSecureContext) {

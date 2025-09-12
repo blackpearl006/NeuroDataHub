@@ -1,0 +1,1340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI in Neuroscience - NeuroDataHub</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/themes/prism-tomorrow.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-core.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+    <style>
+        .article-container {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 2rem;
+            line-height: 1.7;
+            color: #333;
+        }
+
+        .article-header {
+            text-align: center;
+            margin-bottom: 3rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 3rem 2rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+
+        .article-header h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .article-header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+        }
+
+        .article-header .author-info {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .medium-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255,255,255,0.2);
+            padding: 0.75rem 1.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            color: white;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+
+        .medium-link:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .section {
+            margin: 3rem 0;
+        }
+
+        .section h2 {
+            color: #2d3748;
+            font-size: 1.8rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 3px solid #667eea;
+            position: relative;
+        }
+
+        .section h3 {
+            color: #4a5568;
+            font-size: 1.4rem;
+            font-weight: 600;
+            margin: 2rem 0 1rem 0;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #f7fafc 0%, #edf2f7 100%);
+            border-left: 4px solid #667eea;
+            padding: 1.5rem;
+            border-radius: 8px;
+            margin: 1.5rem 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .highlight-box.warning {
+            border-left-color: #f56565;
+            background: linear-gradient(135deg, #fef5e7 0%, #fed7d7 100%);
+        }
+
+        .highlight-box.success {
+            border-left-color: #48bb78;
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+        }
+
+        .image-container {
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .image-container img:hover {
+            transform: scale(1.02);
+        }
+
+        .image-caption {
+            font-style: italic;
+            color: #666;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .code-section {
+            background: #1e1e1e;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .code-section pre {
+            margin: 0;
+            font-family: 'Fira Code', 'Consolas', monospace;
+        }
+
+        .step-counter {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 2rem;
+            height: 2rem;
+            background: #667eea;
+            color: white;
+            border-radius: 50%;
+            font-weight: 600;
+            margin-right: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .step-item {
+            display: flex;
+            align-items: flex-start;
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: #f8f9fa;
+            border-radius: 8px;
+            border-left: 3px solid #667eea;
+        }
+
+        .step-content {
+            flex: 1;
+        }
+
+        .step-content h4 {
+            margin: 0 0 0.5rem 0;
+            color: #2d3748;
+            font-weight: 600;
+        }
+
+        .requirements-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+
+        .requirement-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .requirement-card:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.1);
+        }
+
+        .requirement-card h4 {
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .result-showcase {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 12px;
+            margin: 2rem 0;
+            text-align: center;
+        }
+
+        .result-showcase h3 {
+            color: white;
+            margin-bottom: 1rem;
+        }
+
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .result-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1.5rem;
+            border-radius: 8px;
+            backdrop-filter: blur(10px);
+        }
+
+        .result-metric {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #90cdf4;
+            display: block;
+        }
+
+        .toc {
+            background: #f8f9fa;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 2rem 0;
+        }
+
+        .toc h3 {
+            margin-top: 0;
+            color: #2d3748;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .toc ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .toc li {
+            margin: 0.5rem 0;
+        }
+
+        .toc a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+
+        .toc a:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        @media (max-width: 768px) {
+            .article-container {
+                padding: 0 1rem;
+            }
+            
+            .article-header h1 {
+                font-size: 2rem;
+            }
+            
+            .requirements-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .back-button {
+            position: fixed;
+            top: 1rem;
+            left: 1rem;
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 500;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            z-index: 100;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+        }
+
+        .back-button:hover {
+            background: #5a67d8;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        /* Interactive Tooltip Styles */
+        .ai-term {
+            color: #667eea;
+            cursor: help;
+            text-decoration: underline;
+            text-decoration-style: dotted;
+            font-weight: 600;
+            position: relative;
+        }
+
+        .ai-term:hover {
+            color: #5a67d8;
+        }
+
+        .tooltip {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2d3748;
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+            width: 300px;
+            max-width: 80vw;
+            z-index: 1000;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            font-weight: normal;
+        }
+
+        .tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #2d3748;
+        }
+
+        .ai-term:hover .tooltip {
+            visibility: visible;
+            opacity: 1;
+        }
+
+        /* Mobile content optimization - hide extra sections on mobile */
+        @media (max-width: 768px) {
+            .mobile-hide {
+                display: none !important;
+            }
+            
+            .pitfall-card,
+            .expand-button,
+            .expandable-content,
+            .youtube-buttons,
+            .youtube-button {
+                display: none !important;
+            }
+            
+            .requirement-card {
+                padding: 1rem;
+                margin-bottom: 1rem;
+            }
+            
+            .requirements-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+
+            /* Also hide specific sections by ID for extra assurance */
+            #prerequisites,
+            #preprocessing, 
+            #model,
+            #training {
+                display: none !important;
+            }
+        }
+
+        /* Modal Styles for Detailed Explanations */
+        .modal-backdrop {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem;
+            border-radius: 12px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+            transition: color 0.2s ease;
+        }
+
+        .modal-close:hover {
+            color: #333;
+        }
+
+        .youtube-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: #ff0000;
+            color: white;
+            text-decoration: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            margin: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 2px 10px rgba(255, 0, 0, 0.3);
+        }
+
+        .youtube-button:hover {
+            background: #cc0000;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(255, 0, 0, 0.4);
+            color: white;
+        }
+
+        .expand-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin: 0.5rem 0;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .expand-button:hover {
+            background: #5a67d8;
+            transform: translateY(-1px);
+        }
+
+        .expandable-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease;
+        }
+
+        .expandable-content.expanded {
+            max-height: 500px;
+        }
+
+        .pitfall-card {
+            background: linear-gradient(135deg, #fef5e7 0%, #fed7d7 100%);
+            border: 1px solid #f56565;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(245, 101, 101, 0.1);
+        }
+
+        .pitfall-card h4 {
+            color: #c53030;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .best-practice-card {
+            background: linear-gradient(135deg, #f0fff4 0%, #c6f6d5 100%);
+            border: 1px solid #48bb78;
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin: 1rem 0;
+            box-shadow: 0 2px 10px rgba(72, 187, 120, 0.1);
+        }
+
+        .best-practice-card h4 {
+            color: #2f855a;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .technical-detail {
+            background: #f8f9fa;
+            border-left: 4px solid #667eea;
+            padding: 1rem;
+            margin: 1rem 0;
+            font-family: 'Consolas', monospace;
+            font-size: 0.9rem;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back-button">
+        <i class="fas fa-arrow-left"></i>
+        Back to Home
+    </a>
+
+    <div class="article-container">
+        <header class="article-header">
+            <div class="image-container">
+                <img src="assets/neuroAI_images/neurolight_logo_brain_riding_a_lightning_wearing_helmet.png" 
+                     alt="NeuroLight - AI Brain Logo" 
+                     style="max-width: 150px; margin-bottom: 1rem;">
+            </div>
+            <h1>Intro to AI with Neuroimaging Data</h1>
+            <p class="subtitle">A Complete End-to-End Tutorial Using PyTorch</p>
+            <div class="author-info">
+                <a href="https://medium.com/@daminininad/intro-to-ai-with-neuroimaging-data-a-end-to-end-tutorial-using-pytorch-f941c6ef547a" 
+                   class="medium-link" target="_blank">
+                    <i class="fab fa-medium"></i>
+                    Read Full Article on Medium
+                </a>
+            </div>
+        </header>
+
+        <!-- Table of Contents -->
+        <div class="toc">
+            <h3><i class="fas fa-list"></i> Table of Contents</h3>
+            <ul>
+                <li><a href="#introduction"><i class="fas fa-play-circle"></i> Introduction</a></li>
+                <li><a href="#prerequisites"><i class="fas fa-tools"></i> Prerequisites & Setup</a></li>
+                <li><a href="#dataset"><i class="fas fa-database"></i> Understanding the Dataset</a></li>
+                <li><a href="#preprocessing"><i class="fas fa-cogs"></i> Data Preprocessing</a></li>
+                <li><a href="#model"><i class="fas fa-brain"></i> Building the Neural Network</a></li>
+                <li><a href="#training"><i class="fas fa-dumbbell"></i> Training Process</a></li>
+                <li><a href="#evaluation"><i class="fas fa-chart-line"></i> Model Evaluation</a></li>
+                <li><a href="#results"><i class="fas fa-trophy"></i> Results & Discussion</a></li>
+                <li><a href="#conclusion"><i class="fas fa-flag-checkered"></i> Conclusion</a></li>
+            </ul>
+        </div>
+
+        <!-- Introduction Section -->
+        <section id="introduction" class="section">
+            <h2><i class="fas fa-play-circle"></i> Introduction</h2>
+            <p>
+                <span class="ai-term">Artificial Intelligence<div class="tooltip">AI refers to computer systems that can perform tasks typically requiring human intelligence, such as pattern recognition, decision-making, and learning from data.</div></span> has revolutionized neuroscience research, enabling us to extract meaningful patterns from complex brain imaging data. This tutorial demonstrates how <span class="ai-term">deep learning<div class="tooltip">Deep learning uses artificial neural networks with multiple layers to automatically learn hierarchical features from data, mimicking how the brain processes information.</div></span> can classify biological sex from structural MRI scans with remarkable accuracy.
+            </p>
+            
+            <div class="highlight-box">
+                <h4><i class="fas fa-lightbulb"></i> What You'll Master</h4>
+                <ul>
+                    <li><strong>Neuroimaging Data Handling:</strong> Load, preprocess, and normalize 3D MRI volumes using nibabel and PyTorch</li>
+                    <li><strong>SFCN Architecture:</strong> Understand the <span class="ai-term">Simple Fully Convolutional Network<div class="tooltip">SFCN is a 3D CNN architecture specifically designed for neuroimaging, using only convolutional layers without fully connected layers to reduce overfitting.</div></span> designed for brain imaging</li>
+                    <li><strong>Advanced Training Techniques:</strong> Implement k-fold cross-validation, early stopping, and stratified sampling</li>
+                    <li><strong>Performance Evaluation:</strong> Calculate <span class="ai-term">sensitivity<div class="tooltip">Sensitivity (also called recall) measures the proportion of actual positive cases that are correctly identified. Formula: True Positives / (True Positives + False Negatives)</div></span>, <span class="ai-term">specificity<div class="tooltip">Specificity measures the proportion of actual negative cases that are correctly identified. Formula: True Negatives / (True Negatives + False Positives)</div></span>, and interpret confusion matrices</li>
+                    <li><strong>Research Ethics:</strong> Understand bias considerations and reproducible research practices</li>
+                </ul>
+            </div>
+
+            <div class="technical-detail">
+                <strong>Technical Achievement:</strong> This tutorial achieves 87.5% accuracy on sex classification using HCP (Human Connectome Project) T1-weighted MRI data, demonstrating that structural brain differences are detectable using AI methods.
+            </div>
+
+            <p>
+                We'll work with real <strong>HCP dataset</strong> containing 848 subjects with T1-weighted structural MRI scans. The tutorial covers the complete pipeline from raw NIfTI files to trained model, including common pitfalls and solutions that took months to discover through trial and error.
+            </p>
+        </section>
+
+        <!-- Prerequisites Section -->
+        <section id="prerequisites" class="section mobile-hide">
+            <h2><i class="fas fa-tools"></i> Prerequisites & Setup</h2>
+            
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <h4><i class="fab fa-python"></i> Python & Data Science</h4>
+                    <p>Intermediate Python, NumPy array manipulation, pandas DataFrames, and matplotlib visualization.</p>
+                    <div class="youtube-buttons">
+                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('python-basics')">
+                            <i class="fab fa-youtube"></i> Python Fundamentals
+                        </a>
+                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('numpy-pandas')">
+                            <i class="fab fa-youtube"></i> NumPy & Pandas
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="requirement-card">
+                    <h4><i class="fas fa-brain"></i> Deep Learning & PyTorch</h4>
+                    <p>Understanding of <span class="ai-term">backpropagation<div class="tooltip">Backpropagation is the algorithm used to train neural networks by calculating gradients and updating weights to minimize loss.</div></span>, optimizers, and PyTorch tensor operations.</p>
+                    <div class="youtube-buttons">
+                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('pytorch-basics')">
+                            <i class="fab fa-youtube"></i> PyTorch Tutorial
+                        </a>
+                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('deep-learning')">
+                            <i class="fab fa-youtube"></i> Deep Learning Theory
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="requirement-card">
+                    <h4><i class="fas fa-image"></i> Medical Imaging</h4>
+                    <p>Familiarity with NIfTI format, 3D image processing, and basic neuroanatomy concepts.</p>
+                    <div class="youtube-buttons">
+                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('neuroimaging-basics')">
+                            <i class="fab fa-youtube"></i> Neuroimaging Intro
+                        </a>
+                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('brain-anatomy')">
+                            <i class="fab fa-youtube"></i> Brain Anatomy
+                        </a>
+                    </div>
+                </div>
+                
+                <div class="requirement-card">
+                    <h4><i class="fas fa-chart-area"></i> Statistics & ML</h4>
+                    <p>Cross-validation, <span class="ai-term">confusion matrix<div class="tooltip">A confusion matrix is a table showing correct vs predicted classifications. It shows True Positives, True Negatives, False Positives, and False Negatives.</div></span> interpretation, and statistical significance testing.</p>
+                    <div class="youtube-buttons">
+                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('statistics-ml')">
+                            <i class="fab fa-youtube"></i> ML Statistics
+                        </a>
+                        <a href="#" class="youtube-button" onclick="requestYouTubeLink('cross-validation')">
+                            <i class="fab fa-youtube"></i> Cross Validation
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <h3>System Requirements & Installation</h3>
+            <div class="technical-detail">
+                <strong>Hardware Requirements:</strong> Minimum 16GB RAM (32GB recommended), NVIDIA GPU with 6GB+ VRAM for training, 100GB+ free disk space for datasets.
+            </div>
+
+            <div class="code-section">
+                <pre><code class="language-bash"># Core dependencies - exact versions from tutorial
+pip install torch==1.13.1 torchvision==0.14.1
+pip install nibabel==4.0.2 numpy==1.23.5 pandas==1.5.2
+pip install scikit-learn==1.2.0 matplotlib==3.6.2 seaborn==0.12.1
+pip install torchinfo==1.7.1  # For model architecture visualization
+pip install jupyter notebook ipywidgets  # Interactive development
+
+# Verify CUDA availability (optional but recommended)
+python -c "import torch; print(f'CUDA available: {torch.cuda.is_available()}')"</code></pre>
+            </div>
+
+            <div class="pitfall-card">
+                <h4><i class="fas fa-exclamation-triangle"></i> Common Installation Pitfall</h4>
+                <p><strong>Problem:</strong> PyTorch CUDA version mismatch causing slow CPU training.</p>
+                <p><strong>Solution:</strong> Check your CUDA version with <code>nvidia-smi</code> and install matching PyTorch version from <a href="https://pytorch.org/get-started/locally/" target="_blank">pytorch.org</a>.</p>
+                
+                <button class="expand-button" onclick="toggleExpand(this)">
+                    <i class="fas fa-chevron-down"></i> Show Troubleshooting Steps
+                </button>
+                <div class="expandable-content">
+                    <div class="code-section">
+                        <pre><code># Check CUDA version
+nvidia-smi
+
+# For CUDA 11.7, install:
+pip install torch torchvision --index-url https://download.pytorch.org/whl/cu117
+
+# Verify installation
+python -c "import torch; print(torch.cuda.get_device_name(0) if torch.cuda.is_available() else 'CPU only')"</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="best-practice-card">
+                <h4><i class="fas fa-check-circle"></i> Pro Tips for Setup</h4>
+                <ul>
+                    <li><strong>Use conda environments</strong> to avoid dependency conflicts</li>
+                    <li><strong>Test with small data</strong> first to verify installation before downloading large datasets</li>
+                    <li><strong>Monitor GPU memory</strong> with <code>nvidia-smi -l 1</code> during training</li>
+                    <li><strong>Set random seeds</strong> for reproducible results: <code>torch.manual_seed(42)</code></li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Dataset Section -->
+        <section id="dataset" class="section">
+            <h2><i class="fas fa-database"></i> Understanding the Dataset</h2>
+            
+            <p>
+                We use the <strong>Human Connectome Project (HCP)</strong> dataset containing <strong>848 subjects</strong> with high-quality T1-weighted structural MRI scans. This dataset demonstrates how AI can detect subtle <span class="ai-term">sexual dimorphism<div class="tooltip">Sexual dimorphism refers to differences in characteristics between males and females of the same species, beyond reproductive organs. In neuroimaging, this includes structural brain differences.</div></span> in brain structure that are invisible to the human eye.
+            </p>
+
+            <div class="image-container">
+                <img src="assets/neuroAI_images/sample_metadata_csv_as_present_in_kaggle_dataset.png" 
+                     alt="Sample metadata CSV showing dataset structure">
+                <div class="image-caption">HCP metadata structure showing Subject ID, Gender (M/F), and Age ranges for 848 participants</div>
+            </div>
+
+            <div class="technical-detail">
+                <strong>Dataset Statistics:</strong> Total: 848 subjects | Males: 395 (46.6%) | Females: 453 (53.4%) | Age range: 22-37 years | Class ratio: 1:1.28 (Male:Female)
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">1</div>
+                <div class="step-content">
+                    <h4>Data Structure & Preprocessing</h4>
+                    <p>Each subject has a preprocessed T1-weighted scan (91×109×91 voxels) already skull-stripped and normalized to MNI152 space. The compact size enables efficient training while preserving anatomical detail.</p>
+                    <button class="expand-button" onclick="toggleExpand(this)">
+                        <i class="fas fa-chevron-down"></i> Show Technical Details
+                    </button>
+                    <div class="expandable-content">
+                        <div class="code-section">
+                            <pre><code class="language-python"># Actual data loading from tutorial
+RANDOM_IMAGE_PATH = '/data/ninad/fieldmaps/HCP_T1w/sub-100610.nii.gz'
+raw_image = nib.load(RANDOM_IMAGE_PATH).get_fdata()
+print(f'Raw image shape: {raw_image.shape}')  # (91, 109, 91)
+
+# After dataset processing
+train_image = train_dataset.__getitem__(1)[0]
+print(f'Train image shape: {train_image.shape}')  # torch.Size([1, 91, 109, 91])
+
+# Batch processing
+train_batch = next(iter(train_dl))
+print(f'Batch shape: {train_batch[0].shape}')  # torch.Size([16, 1, 91, 109, 91])</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">2</div>
+                <div class="step-content">
+                    <h4>Label Encoding & Data Splits</h4>
+                    <p>Gender labels are encoded as Male=0, Female=1. Age ranges (e.g., "22-25") are converted to midpoint values for potential regression tasks.</p>
+                    <div class="code-section">
+                        <pre><code class="language-python"># Label preprocessing from the actual code
+df['Gender'] = df['Gender'].map({'M': 0, 'F': 1}).astype(int)
+df['Age'] = df['Age'].apply(lambda x: 
+    (int(x.split('-')[0]) + int(x.split('-')[1])) // 2 
+    if '-' in x else int(x[:-1])).astype(float)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pitfall-card">
+                <h4><i class="fas fa-exclamation-triangle"></i> Critical Data Pitfall: Class Imbalance</h4>
+                <p><strong>Problem:</strong> Initial training showed poor performance due to ignoring the 1:1.28 class ratio.</p>
+                <p><strong>Solution:</strong> Implement <span class="ai-term">stratified sampling<div class="tooltip">Stratified sampling ensures that training, validation, and test sets maintain the same class distribution as the original dataset.</div></span> and consider weighted loss functions.</p>
+                
+                <button class="expand-button" onclick="toggleExpand(this)">
+                    <i class="fas fa-chevron-down"></i> Show Implementation
+                </button>
+                <div class="expandable-content">
+                    <div class="code-section">
+                        <pre><code class="language-python"># Stratified splitting to maintain class balance
+def stratified_split_classification(dataset, test_size):
+    labels = [dataset[i][-1] for i in range(len(dataset))]
+    train_indices, test_indices = train_test_split(
+        range(len(dataset)), test_size=test_size, stratify=labels
+    )
+    return Subset(dataset, train_indices), Subset(dataset, test_indices)
+
+# Alternative: Use weighted loss for imbalanced classes
+pos_weight = torch.tensor(1.28, dtype=torch.float32)  # Female/Male ratio
+criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)</code></pre>
+                    </div>
+                </div>
+            </div>
+
+            <div class="best-practice-card">
+                <h4><i class="fas fa-check-circle"></i> Data Quality Checks</h4>
+                <ul>
+                    <li><strong>Verify data integrity:</strong> Check for corrupt NIfTI files and missing labels</li>
+                    <li><strong>Inspect intensity distributions:</strong> Ensure proper normalization across subjects</li>
+                    <li><strong>Validate splits:</strong> Confirm stratification maintains class ratios in all splits</li>
+                    <li><strong>Monitor for data leakage:</strong> Ensure no subject appears in multiple splits</li>
+                </ul>
+            </div>
+
+            <div class="highlight-box">
+                <h4><i class="fas fa-info-circle"></i> What Makes This Dataset Ideal for Learning?</h4>
+                <ul>
+                    <li><strong>High Quality:</strong> HCP uses standardized protocols and rigorous quality control</li>
+                    <li><strong>Preprocessed:</strong> Data is already skull-stripped, registered, and normalized</li>
+                    <li><strong>Balanced Task:</strong> Sex classification is challenging but achievable (~85-90% accuracy ceiling)</li>
+                    <li><strong>Clear Ground Truth:</strong> Biological sex is unambiguous and well-documented</li>
+                    <li><strong>Reasonable Size:</strong> Large enough for deep learning but manageable for learning</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Preprocessing Section -->
+        <section id="preprocessing" class="section mobile-hide">
+            <h2><i class="fas fa-cogs"></i> Data Preprocessing</h2>
+            
+            <p>
+                Proper preprocessing is crucial for neuroimaging data. MRI scans need to be normalized, potentially resized, and prepared for deep learning models.
+            </p>
+
+            <h3>Key Preprocessing Steps</h3>
+            
+            <div class="step-item">
+                <div class="step-counter">1</div>
+                <div class="step-content">
+                    <h4>Data Loading</h4>
+                    <p>Load NIfTI files using nibabel and extract the volumetric data arrays.</p>
+                </div>
+            </div>
+
+            <div class="code-section">
+                <pre><code class="language-python">import nibabel as nib
+import numpy as np
+import torch
+
+def load_nifti(file_path):
+    """Load NIfTI file and return the data array"""
+    nii = nib.load(file_path)
+    data = nii.get_fdata()
+    return data</code></pre>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">2</div>
+                <div class="step-content">
+                    <h4>Normalization</h4>
+                    <p>Normalize intensity values to ensure consistent input ranges across different scans.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">3</div>
+                <div class="step-content">
+                    <h4>Resizing</h4>
+                    <p>Resize volumes to a consistent shape suitable for your neural network architecture.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box success">
+                <h4><i class="fas fa-check-circle"></i> Preprocessing Best Practices</h4>
+                <ul>
+                    <li>Always normalize your data to prevent training instabilities</li>
+                    <li>Consider data augmentation for better generalization</li>
+                    <li>Ensure consistent preprocessing across training and test sets</li>
+                    <li>Monitor memory usage when working with large 3D volumes</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Model Section -->
+        <section id="model" class="section mobile-hide">
+            <h2><i class="fas fa-brain"></i> Building the Neural Network</h2>
+            
+            <p>
+                For neuroimaging data, we'll use a 3D Convolutional Neural Network (3D CNN) that can effectively process volumetric brain data.
+            </p>
+
+            <div class="image-container">
+                <img src="assets/neuroAI_images/deatiled_SFCN_model_summary_using_torchinfo.png" 
+                     alt="Detailed SFCN model architecture summary">
+                <div class="image-caption">Detailed model architecture showing the SFCN (Simple Fully Convolutional Network) structure</div>
+            </div>
+
+            <h3>Model Architecture</h3>
+            <p>
+                The Simple Fully Convolutional Network (SFCN) is designed specifically for neuroimaging data. It uses 3D convolutions to capture spatial relationships in brain volumes.
+            </p>
+
+            <div class="code-section">
+                <pre><code class="language-python">import torch
+import torch.nn as nn
+import torch.nn.functional as F
+
+class SFCN(nn.Module):
+    def __init__(self, num_classes=2):
+        super(SFCN, self).__init__()
+        
+        # 3D Convolutional layers
+        self.conv1 = nn.Conv3d(1, 32, kernel_size=3, padding=1)
+        self.conv2 = nn.Conv3d(32, 64, kernel_size=3, padding=1)
+        self.conv3 = nn.Conv3d(64, 128, kernel_size=3, padding=1)
+        
+        # Pooling and dropout
+        self.pool = nn.MaxPool3d(2, 2)
+        self.dropout = nn.Dropout3d(0.5)
+        
+        # Global average pooling
+        self.global_avg_pool = nn.AdaptiveAvgPool3d(1)
+        
+        # Final classifier
+        self.classifier = nn.Linear(128, num_classes)
+    
+    def forward(self, x):
+        # Convolutional layers with activation and pooling
+        x = F.relu(self.conv1(x))
+        x = self.pool(x)
+        
+        x = F.relu(self.conv2(x))
+        x = self.pool(x)
+        
+        x = F.relu(self.conv3(x))
+        x = self.pool(x)
+        
+        # Apply dropout
+        x = self.dropout(x)
+        
+        # Global average pooling
+        x = self.global_avg_pool(x)
+        x = x.view(x.size(0), -1)
+        
+        # Final classification
+        x = self.classifier(x)
+        
+        return x</code></pre>
+            </div>
+
+            <div class="highlight-box">
+                <h4><i class="fas fa-cogs"></i> Architecture Highlights</h4>
+                <ul>
+                    <li><strong>3D Convolutions:</strong> Capture spatial relationships in 3D brain volumes</li>
+                    <li><strong>Progressive Feature Learning:</strong> Increasing filter numbers (32→64→128)</li>
+                    <li><strong>Global Average Pooling:</strong> Reduces overfitting compared to fully connected layers</li>
+                    <li><strong>Dropout:</strong> Regularization technique to improve generalization</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Training Section -->
+        <section id="training" class="section mobile-hide">
+            <h2><i class="fas fa-dumbbell"></i> Training Process</h2>
+            
+            <p>
+                Training a neural network on neuroimaging data requires careful consideration of batch size, learning rate, and regularization techniques.
+            </p>
+
+            <h3>Training Configuration</h3>
+            <div class="code-section">
+                <pre><code class="language-python"># Training configuration
+BATCH_SIZE = 8  # Small batch size due to memory constraints
+LEARNING_RATE = 0.001
+NUM_EPOCHS = 50
+DEVICE = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+
+# Model, loss, and optimizer
+model = SFCN(num_classes=2).to(DEVICE)
+criterion = nn.CrossEntropyLoss()
+optimizer = torch.optim.Adam(model.parameters(), lr=LEARNING_RATE)
+
+# Learning rate scheduler
+scheduler = torch.optim.lr_scheduler.StepLR(optimizer, step_size=20, gamma=0.5)</code></pre>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">1</div>
+                <div class="step-content">
+                    <h4>Data Loading</h4>
+                    <p>Create DataLoaders with appropriate batch sizes for memory-efficient training.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">2</div>
+                <div class="step-content">
+                    <h4>Training Loop</h4>
+                    <p>Implement forward pass, loss calculation, backpropagation, and parameter updates.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">3</div>
+                <div class="step-content">
+                    <h4>Validation</h4>
+                    <p>Regular evaluation on validation set to monitor overfitting and model performance.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box warning">
+                <h4><i class="fas fa-memory"></i> Memory Considerations</h4>
+                <p>3D neuroimaging data is memory-intensive. Use smaller batch sizes (typically 4-8) and consider gradient accumulation if needed. Monitor GPU memory usage during training.</p>
+            </div>
+        </section>
+
+        <!-- Evaluation Section -->
+        <section id="evaluation" class="section">
+            <h2><i class="fas fa-chart-line"></i> Model Evaluation</h2>
+            
+            <p>
+                Proper evaluation is crucial for understanding model performance and ensuring reliable results in neuroimaging applications.
+            </p>
+
+            <div class="results-grid">
+                <div class="image-container">
+                    <img src="assets/neuroAI_images/initiail_confusion_matrix_without_cross_val_early_stoppoing_or_anything_very_bad_results.png" 
+                         alt="Initial confusion matrix with poor results">
+                    <div class="image-caption">Initial confusion matrix showing poor performance without proper training techniques</div>
+                </div>
+                
+                <div class="image-container">
+                    <img src="assets/neuroAI_images/final_confusion_matrix.png" 
+                         alt="Final confusion matrix with improved results">
+                    <div class="image-caption">Final confusion matrix after implementing cross-validation and early stopping</div>
+                </div>
+            </div>
+
+            <h3>Key Evaluation Metrics</h3>
+            <div class="requirements-grid">
+                <div class="requirement-card">
+                    <h4><i class="fas fa-percent"></i> Accuracy</h4>
+                    <p>Overall percentage of correct predictions across all classes.</p>
+                </div>
+                
+                <div class="requirement-card">
+                    <h4><i class="fas fa-balance-scale"></i> Precision</h4>
+                    <p>Proportion of positive identifications that were actually correct.</p>
+                </div>
+                
+                <div class="requirement-card">
+                    <h4><i class="fas fa-search"></i> Recall</h4>
+                    <p>Proportion of actual positives that were correctly identified.</p>
+                </div>
+                
+                <div class="requirement-card">
+                    <h4><i class="fas fa-chart-bar"></i> F1-Score</h4>
+                    <p>Harmonic mean of precision and recall, useful for imbalanced datasets.</p>
+                </div>
+            </div>
+
+            <div class="highlight-box success">
+                <h4><i class="fas fa-trophy"></i> Model Improvements</h4>
+                <ul>
+                    <li><strong>Cross-Validation:</strong> Implemented k-fold cross-validation for robust evaluation</li>
+                    <li><strong>Early Stopping:</strong> Prevented overfitting by stopping when validation loss plateaued</li>
+                    <li><strong>Data Augmentation:</strong> Increased dataset diversity with geometric transformations</li>
+                    <li><strong>Regularization:</strong> Used dropout and weight decay for better generalization</li>
+                </ul>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section id="results" class="section">
+            <h2><i class="fas fa-trophy"></i> Results & Discussion</h2>
+            
+            <div class="result-showcase">
+                <h3>Final Model Performance</h3>
+                <div class="results-grid">
+                    <div class="result-card">
+                        <span class="result-metric">87.5%</span>
+                        <p>Final Accuracy</p>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-metric">0.89</span>
+                        <p>F1-Score</p>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-metric">92.1%</span>
+                        <p>Precision</p>
+                    </div>
+                    <div class="result-card">
+                        <span class="result-metric">85.3%</span>
+                        <p>Recall</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="image-container">
+                <img src="assets/neuroAI_images/sample_output.png" 
+                     alt="Sample model predictions on test data">
+                <div class="image-caption">Sample predictions showing the model's performance on test brain scans</div>
+            </div>
+
+            <h3>Key Findings</h3>
+            <ul>
+                <li><strong>Sex Differences:</strong> The model successfully learned to identify sex-related differences in brain structure</li>
+                <li><strong>Feature Learning:</strong> 3D convolutions effectively captured spatial patterns in brain volumes</li>
+                <li><strong>Generalization:</strong> Cross-validation showed consistent performance across different data splits</li>
+                <li><strong>Computational Efficiency:</strong> The SFCN architecture balanced performance with computational requirements</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4><i class="fas fa-brain"></i> Biological Insights</h4>
+                <p>
+                    The successful classification suggests that there are measurable structural differences between male and female brains that can be detected by deep learning models. This has implications for understanding brain development and potential clinical applications.
+                </p>
+            </div>
+        </section>
+
+        <!-- Conclusion Section -->
+        <section id="conclusion" class="section">
+            <h2><i class="fas fa-flag-checkered"></i> Conclusion</h2>
+            
+            <p>
+                This tutorial demonstrated a complete workflow for applying AI to neuroimaging data using PyTorch. We covered essential aspects from data preprocessing to model evaluation, showing how deep learning can extract meaningful patterns from brain MRI scans.
+            </p>
+
+            <h3>Key Takeaways</h3>
+            <div class="step-item">
+                <div class="step-counter">1</div>
+                <div class="step-content">
+                    <h4>Data Preprocessing is Critical</h4>
+                    <p>Proper normalization and preprocessing significantly impact model performance in neuroimaging applications.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">2</div>
+                <div class="step-content">
+                    <h4>3D CNNs are Powerful</h4>
+                    <p>3D convolutional networks can effectively learn from volumetric brain data, capturing spatial relationships.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">3</div>
+                <div class="step-content">
+                    <h4>Proper Evaluation Matters</h4>
+                    <p>Cross-validation and multiple metrics provide a comprehensive view of model performance.</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-counter">4</div>
+                <div class="step-content">
+                    <h4>Regularization Improves Generalization</h4>
+                    <p>Techniques like dropout and early stopping help prevent overfitting on neuroimaging data.</p>
+                </div>
+            </div>
+
+            <h3>Future Directions</h3>
+            <ul>
+                <li><strong>Multi-modal Integration:</strong> Combine structural and functional MRI data</li>
+                <li><strong>Transfer Learning:</strong> Leverage pre-trained models for better performance</li>
+                <li><strong>Explainable AI:</strong> Develop methods to understand what the model learns</li>
+                <li><strong>Clinical Applications:</strong> Apply these techniques to disease diagnosis and prognosis</li>
+            </ul>
+
+            <div class="highlight-box">
+                <h4><i class="fas fa-rocket"></i> Ready to Explore Further?</h4>
+                <p>
+                    This tutorial provides a foundation for AI in neuroscience. Consider exploring our curated neuroimaging datasets on NeuroDataHub to apply these techniques to different research questions and brain disorders.
+                </p>
+            </div>
+
+            <div style="text-align: center; margin: 3rem 0;">
+                <a href="https://medium.com/@daminininad/intro-to-ai-with-neuroimaging-data-a-end-to-end-tutorial-using-pytorch-f941c6ef547a" 
+                   class="medium-link" target="_blank" style="display: inline-flex;">
+                    <i class="fab fa-medium"></i>
+                    Read the Complete Tutorial on Medium
+                </a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Add scroll-to-top functionality
+        window.addEventListener('scroll', function() {
+            const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if (scrollTop > 300) {
+                if (!document.querySelector('.scroll-top')) {
+                    const scrollBtn = document.createElement('button');
+                    scrollBtn.className = 'scroll-top';
+                    scrollBtn.innerHTML = '<i class="fas fa-arrow-up"></i>';
+                    scrollBtn.style.cssText = `
+                        position: fixed;
+                        bottom: 2rem;
+                        right: 2rem;
+                        background: #667eea;
+                        color: white;
+                        border: none;
+                        border-radius: 50%;
+                        width: 50px;
+                        height: 50px;
+                        cursor: pointer;
+                        font-size: 1rem;
+                        box-shadow: 0 2px 10px rgba(102, 126, 234, 0.3);
+                        transition: all 0.3s ease;
+                        z-index: 100;
+                    `;
+                    scrollBtn.addEventListener('click', () => {
+                        window.scrollTo({ top: 0, behavior: 'smooth' });
+                    });
+                    scrollBtn.addEventListener('mouseenter', () => {
+                        scrollBtn.style.transform = 'scale(1.1)';
+                        scrollBtn.style.background = '#5a67d8';
+                    });
+                    scrollBtn.addEventListener('mouseleave', () => {
+                        scrollBtn.style.transform = 'scale(1)';
+                        scrollBtn.style.background = '#667eea';
+                    });
+                    document.body.appendChild(scrollBtn);
+                }
+            } else {
+                const scrollBtn = document.querySelector('.scroll-top');
+                if (scrollBtn) {
+                    scrollBtn.remove();
+                }
+            }
+        });
+
+        // Toggle expandable content
+        function toggleExpand(button) {
+            const content = button.nextElementSibling;
+            const icon = button.querySelector('i');
+            
+            if (content.classList.contains('expanded')) {
+                content.classList.remove('expanded');
+                icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
+                button.innerHTML = '<i class="fas fa-chevron-down"></i> Show ' + 
+                    (button.textContent.includes('Troubleshooting') ? 'Troubleshooting Steps' : 
+                     button.textContent.includes('Technical') ? 'Technical Details' : 
+                     button.textContent.includes('Implementation') ? 'Implementation' : 'Details');
+            } else {
+                content.classList.add('expanded');
+                icon.classList.replace('fa-chevron-down', 'fa-chevron-up');
+                button.innerHTML = '<i class="fas fa-chevron-up"></i> Hide ' + 
+                    (button.textContent.includes('Troubleshooting') ? 'Troubleshooting Steps' : 
+                     button.textContent.includes('Technical') ? 'Technical Details' : 
+                     button.textContent.includes('Implementation') ? 'Implementation' : 'Details');
+            }
+        }
+
+        // YouTube link request function
+        function requestYouTubeLink(topic) {
+            const topicMap = {
+                'python-basics': 'Python Programming Fundamentals',
+                'numpy-pandas': 'NumPy and Pandas for Data Science',
+                'pytorch-basics': 'PyTorch Deep Learning Framework',
+                'deep-learning': 'Deep Learning Theory and Practice',
+                'neuroimaging-basics': 'Introduction to Neuroimaging',
+                'brain-anatomy': 'Basic Brain Anatomy for Neuroimaging',
+                'statistics-ml': 'Statistics for Machine Learning',
+                'cross-validation': 'Cross-Validation Techniques'
+            };
+            
+            const topicName = topicMap[topic] || topic;
+            alert(`You clicked to learn about "${topicName}".\n\nThe YouTube tutorial links will be provided by the author. This is a placeholder for the interactive tutorial system.`);
+            
+            // In a real implementation, this could:
+            // - Open a modal with embedded YouTube videos
+            // - Send analytics about which topics users are interested in
+            // - Navigate to a learning path page
+        }
+
+        // Show modal function (for future use)
+        function showModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'block';
+            }
+        }
+
+        // Close modal function
+        function closeModal(modalId) {
+            const modal = document.getElementById(modalId);
+            if (modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Close modal when clicking backdrop
+        document.addEventListener('click', function(e) {
+            if (e.target.classList.contains('modal-backdrop')) {
+                e.target.style.display = 'none';
+            }
+        });
+
+        // Initialize tooltips and interactive elements
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('AI in Neuroscience Tutorial Loaded');
+            console.log('Interactive elements ready: tooltips, expandable sections, YouTube buttons');
+        });
+    </script>
+</body>
+</html>
