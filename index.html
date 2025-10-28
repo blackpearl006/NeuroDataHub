@@ -50,6 +50,7 @@
     
     <!-- Critical CSS loaded first -->
     <link rel="stylesheet" href="docs/css/style.css">
+    <link rel="stylesheet" href="docs/css/version-history.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
@@ -271,6 +272,12 @@
                 <a @click="setCurrentPage('neurodatahub-cli')" :class="{ active: currentPage === 'neurodatahub-cli' }">
                     <i class="fas fa-terminal"></i>
                     <span>NeuroDataHub CLI</span>
+                </a>
+            </li>
+            <li>
+                <a @click="setCurrentPage('version-history')" :class="{ active: currentPage === 'version-history' }">
+                    <i class="fas fa-code-branch"></i>
+                    <span>Version History</span>
                 </a>
             </li>
             <li class="nav-divider"></li>
@@ -1332,6 +1339,257 @@
                             <h4>Discussions</h4>
                             <p>Community support and questions</p>
                         </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Version History Page -->
+        <div v-show="currentPage === 'version-history'" class="page-content">
+            <div class="cli-section">
+                <div class="cli-content">
+                    <div class="cli-header">
+                        <h1><i class="fas fa-code-branch"></i> CLI Version History</h1>
+                        <p class="subtitle">Track the evolution of NeuroDataHub CLI through each release</p>
+                    </div>
+
+                    <!-- Version Timeline -->
+                    <div class="version-timeline">
+
+                        <!-- Version 1.1.0 -->
+                        <div class="version-card" :class="{ expanded: expandedVersion === 'v1.1.0' }">
+                            <div class="version-header" @click="toggleVersion('v1.1.0')">
+                                <div class="version-info">
+                                    <div class="version-badge v110">
+                                        <i class="fas fa-chart-line"></i>
+                                        <span>v1.1.0</span>
+                                    </div>
+                                    <h2>Privacy-First Telemetry & Feedback System</h2>
+                                    <p class="version-date"><i class="far fa-calendar-alt"></i> October 28, 2024</p>
+                                </div>
+                                <div class="expand-icon">
+                                    <i class="fas" :class="expandedVersion === 'v1.1.0' ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                                </div>
+                            </div>
+
+                            <div class="version-details" v-show="expandedVersion === 'v1.1.0'">
+                                <div class="version-grid">
+                                    <!-- Key Features -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-star"></i> Key Features</h3>
+                                        <ul class="feature-list">
+                                            <li><i class="fas fa-shield-alt"></i> Privacy-first design: No PII collected</li>
+                                            <li><i class="fas fa-user-check"></i> Opt-in telemetry with clear consent</li>
+                                            <li><i class="fas fa-clock"></i> Scheduled feedback (runs 1, 3, 10, 30, 50, then every 50)</li>
+                                            <li><i class="fas fa-server"></i> Google Apps Script backend with JSON storage</li>
+                                            <li><i class="fas fa-tachometer-alt"></i> Rate limiting: 10 events/min client-side</li>
+                                            <li><i class="fas fa-lock"></i> Cross-platform atomic file operations</li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- New Modules -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-cube"></i> New Modules</h3>
+                                        <div class="module-chips">
+                                            <span class="module-chip"><i class="fas fa-database"></i> state.py</span>
+                                            <span class="module-chip"><i class="fas fa-broadcast-tower"></i> telemetry.py</span>
+                                            <span class="module-chip"><i class="fas fa-comments"></i> feedback.py</span>
+                                        </div>
+                                        <p class="module-desc">Local state management, privacy-first event tracking, and user feedback collection</p>
+                                    </div>
+
+                                    <!-- CLI Enhancements -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-terminal"></i> CLI Enhancements</h3>
+                                        <div class="command-list">
+                                            <code>--note</code> <span>Add notes to download events</span><br>
+                                            <code>--feedback</code> <span>Manually trigger feedback prompt</span><br>
+                                            <code>feedback</code> <span>New subcommand for feedback</span>
+                                        </div>
+                                    </div>
+
+                                    <!-- Tests -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-vial"></i> Testing</h3>
+                                        <div class="stats-badges">
+                                            <span class="stat-badge success"><i class="fas fa-check-circle"></i> 234 tests passing</span>
+                                            <span class="stat-badge info"><i class="fas fa-plus"></i> 56 new unit tests</span>
+                                            <span class="stat-badge primary"><i class="fas fa-code"></i> +6,406 lines</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Version 1.0.3 -->
+                        <div class="version-card" :class="{ expanded: expandedVersion === 'v1.0.3' }">
+                            <div class="version-header" @click="toggleVersion('v1.0.3')">
+                                <div class="version-info">
+                                    <div class="version-badge v103">
+                                        <i class="fas fa-brain"></i>
+                                        <span>v1.0.3</span>
+                                    </div>
+                                    <h2>Brain Atlas Management System</h2>
+                                    <p class="version-date"><i class="far fa-calendar-alt"></i> October 2024</p>
+                                </div>
+                                <div class="expand-icon">
+                                    <i class="fas" :class="expandedVersion === 'v1.0.3' ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                                </div>
+                            </div>
+
+                            <div class="version-details" v-show="expandedVersion === 'v1.0.3'">
+                                <div class="version-grid">
+                                    <!-- Atlas Types -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-project-diagram"></i> 10 Brain Atlases</h3>
+                                        <div class="atlas-grid">
+                                            <div class="atlas-type">
+                                                <h4><i class="fas fa-microscope"></i> Anatomical (4)</h4>
+                                                <span class="atlas-chip">AAL90</span>
+                                                <span class="atlas-chip">Destrieux</span>
+                                                <span class="atlas-chip">Destrieux_SCGM</span>
+                                                <span class="atlas-chip">DK82</span>
+                                            </div>
+                                            <div class="atlas-type">
+                                                <h4><i class="fas fa-network-wired"></i> Functional (4)</h4>
+                                                <span class="atlas-chip">Power264</span>
+                                                <span class="atlas-chip">Dosenbach160</span>
+                                                <span class="atlas-chip">Gordon333</span>
+                                                <span class="atlas-chip">Craddock200</span>
+                                            </div>
+                                            <div class="atlas-type">
+                                                <h4><i class="fas fa-layer-group"></i> Multimodal (1)</h4>
+                                                <span class="atlas-chip">HCP_MMP_Glasser_360</span>
+                                            </div>
+                                            <div class="atlas-type">
+                                                <h4><i class="fas fa-sitemap"></i> Connectivity (1)</h4>
+                                                <span class="atlas-chip">Brainnetome</span>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- New Commands -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-terminal"></i> New CLI Commands</h3>
+                                        <div class="command-list">
+                                            <code>neurodatahub atlas list</code><br>
+                                            <code>neurodatahub atlas info &lt;ATLAS_ID&gt;</code><br>
+                                            <code>neurodatahub atlas download &lt;ATLAS_ID&gt;</code><br>
+                                            <code>neurodatahub atlas download-all</code><br>
+                                            <code>neurodatahub atlas types</code>
+                                        </div>
+                                    </div>
+
+                                    <!-- Features -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-tags"></i> Atlas Metadata</h3>
+                                        <ul class="feature-list compact">
+                                            <li><i class="fas fa-hashtag"></i> ROI counts & resolution levels</li>
+                                            <li><i class="fas fa-users"></i> Age range recommendations</li>
+                                            <li><i class="fas fa-book"></i> Reference citations & DOIs</li>
+                                            <li><i class="fas fa-file-csv"></i> CSV format with coordinates</li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Stats -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-chart-bar"></i> Statistics</h3>
+                                        <div class="stats-badges">
+                                            <span class="stat-badge success"><i class="fas fa-check-circle"></i> 153 tests passing</span>
+                                            <span class="stat-badge info"><i class="fas fa-atlas"></i> 10 atlases included</span>
+                                            <span class="stat-badge primary"><i class="fas fa-file"></i> atlas.py module</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Version 1.0.2 -->
+                        <div class="version-card" :class="{ expanded: expandedVersion === 'v1.0.2' }">
+                            <div class="version-header" @click="toggleVersion('v1.0.2')">
+                                <div class="version-info">
+                                    <div class="version-badge v102">
+                                        <i class="fas fa-folder-open"></i>
+                                        <span>v1.0.2</span>
+                                    </div>
+                                    <h2>Enhanced Metadata Support & Folder Organization</h2>
+                                    <p class="version-date"><i class="far fa-calendar-alt"></i> September 2024</p>
+                                </div>
+                                <div class="expand-icon">
+                                    <i class="fas" :class="expandedVersion === 'v1.0.2' ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+                                </div>
+                            </div>
+
+                            <div class="version-details" v-show="expandedVersion === 'v1.0.2'">
+                                <div class="version-grid">
+                                    <!-- Major Features -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-star"></i> Major Features</h3>
+                                        <ul class="feature-list">
+                                            <li><i class="fas fa-folder"></i> Organized downloads into anat/ and metadata/</li>
+                                            <li><i class="fas fa-database"></i> Metadata support for 34/39 datasets (87.2%)</li>
+                                            <li><i class="fas fa-download"></i> Automatic BIDS metadata for OpenNeuro</li>
+                                            <li><i class="fas fa-eye"></i> Visual metadata indicators in listings</li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Dataset Coverage -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-th"></i> Metadata Coverage</h3>
+                                        <div class="metadata-grid">
+                                            <div class="metadata-item">
+                                                <span class="count">11</span>
+                                                <span class="label">OpenNeuro</span>
+                                                <small>AWS S3 BIDS metadata</small>
+                                            </div>
+                                            <div class="metadata-item">
+                                                <span class="count">9</span>
+                                                <span class="label">INDI</span>
+                                                <small>Phenotypic data</small>
+                                            </div>
+                                            <div class="metadata-item">
+                                                <span class="count">6</span>
+                                                <span class="label">IDA-LONI</span>
+                                                <small>CSV metadata</small>
+                                            </div>
+                                            <div class="metadata-item">
+                                                <span class="count">3</span>
+                                                <span class="label">RBC</span>
+                                                <small>DataLad support</small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Technical -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-cogs"></i> Technical Improvements</h3>
+                                        <ul class="feature-list compact">
+                                            <li><i class="fas fa-code"></i> Enhanced BaseDownloader class</li>
+                                            <li><i class="fas fa-cloud"></i> Updated AwsS3Downloader</li>
+                                            <li><i class="fas fa-database"></i> Enhanced DataladDownloader</li>
+                                            <li><i class="fas fa-book"></i> Comprehensive IDA workflow</li>
+                                        </ul>
+                                    </div>
+
+                                    <!-- Stats -->
+                                    <div class="feature-section">
+                                        <h3><i class="fas fa-chart-pie"></i> Statistics</h3>
+                                        <div class="stats-badges">
+                                            <span class="stat-badge success"><i class="fas fa-check-circle"></i> 58 passing tests</span>
+                                            <span class="stat-badge info"><i class="fas fa-percentage"></i> 76% coverage</span>
+                                            <span class="stat-badge primary"><i class="fas fa-code"></i> +1,153 lines</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- Footer Note -->
+                    <div class="version-footer">
+                        <p><i class="fas fa-info-circle"></i> This is a learning project tracking the development journey of NeuroDataHub CLI</p>
+                        <p>View full changelog on <a href="https://github.com/blackpearl006/neurodatahub-cli/commits/main" target="_blank"><i class="fab fa-github"></i> GitHub</a></p>
                     </div>
                 </div>
             </div>

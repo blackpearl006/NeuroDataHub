@@ -94,6 +94,9 @@ new Vue({
             currentPage: 'home',
             sidebarClosing: false,
 
+            // Version History
+            expandedVersion: null,
+
             // Dataset Helper Page
             datasetRecommendations: [],
             helperSearchQuery: '',
@@ -818,6 +821,17 @@ new Vue({
                 this.sidebarOpen = false;
                 this.sidebarClosing = false;
             }, 200);
+        },
+
+        /**
+         * Toggle version expansion in version history
+         */
+        toggleVersion(version) {
+            if (this.expandedVersion === version) {
+                this.expandedVersion = null;
+            } else {
+                this.expandedVersion = version;
+            }
         },
 
         /**
