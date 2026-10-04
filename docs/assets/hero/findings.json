@@ -1,0 +1,66 @@
+{
+  "_readme": "Findings shown one by one on the animated hero brain (docs/js/hero-brain.js). regions = Brainnetome-246 region ids (1-246) to light up; anchor = the region the callout line points to (defaults to the first id); datasets = DATASET names from docs/assets/data_updated.tsv (clicking the chip opens that dataset). Only state what the cited paper reports. Run scripts/build_hero_brain.py to check the region ids.",
+  "atlas": "Brainnetome atlas · Fan et al. 2016",
+  "findings": [
+    {
+      "id": "pcc-mci",
+      "condition": "Alzheimer's disease",
+      "region": "Posterior cingulate cortex",
+      "regions": [175, 176, 181, 182, 185, 186],
+      "anchor": 176,
+      "finding": "Default-mode hub whose network topology flags mild cognitive impairment, the precursor stage of Alzheimer's.",
+      "citation": "Bhattacharya, Kaur, Aithal et al. · Frontiers in Neuroscience · 2025",
+      "link": "https://doi.org/10.3389/fnins.2025.1518984",
+      "datasets": ["ADNI"],
+      "color": "#E4572E"
+    },
+    {
+      "id": "amygdala-ideology",
+      "condition": "Political ideology",
+      "region": "Amygdala",
+      "regions": [211, 212, 213, 214],
+      "anchor": 214,
+      "finding": "Amygdala volume shows a small positive association with political conservatism in a preregistered replication (n = 928).",
+      "citation": "iScience · 2024",
+      "link": "https://doi.org/10.1016/j.isci.2024.110532",
+      "datasets": ["AOMIC_ID1000"],
+      "color": "#D97706"
+    },
+    {
+      "id": "entorhinal-tau",
+      "condition": "Alzheimer's disease",
+      "region": "Entorhinal cortex",
+      "regions": [115, 116],
+      "anchor": 116,
+      "finding": "Tau-PET in the entorhinal cortex best separated Alzheimer's neuropathologic change from primary age-related tauopathy.",
+      "citation": "Science Translational Medicine · 2024",
+      "link": "https://doi.org/10.1126/scitranslmed.ado8076",
+      "datasets": ["MCSA"],
+      "color": "#E4572E"
+    },
+    {
+      "id": "ifg-mtg-arithmetic",
+      "condition": "Arithmetic skills",
+      "region": "Left inferior frontal & middle temporal gyri",
+      "regions": [29, 31, 33, 35, 37, 39, 81, 83, 85, 87],
+      "anchor": 33,
+      "finding": "Arithmetic skill is linked to gray-matter volume in the left inferior frontal and middle temporal gyri (n = 536).",
+      "citation": "npj Science of Learning · 2023",
+      "link": "https://doi.org/10.1038/s41539-023-00201-x",
+      "datasets": ["Lexical"],
+      "color": "#6366F1"
+    },
+    {
+      "id": "thalamus-development",
+      "condition": "Brain development",
+      "region": "Thalamus",
+      "regions": [231, 232, 233, 234, 235, 236, 237, 238, 239, 240, 241, 242, 243, 244, 245, 246],
+      "anchor": 232,
+      "finding": "Thalamocortical connectivity shifts from sensorimotor to salience networks between infancy and childhood.",
+      "citation": "Nature Neuroscience · 2024",
+      "link": "https://doi.org/10.1038/s41593-024-01679-3",
+      "datasets": ["NKI"],
+      "color": "#0D9488"
+    }
+  ]
+}
