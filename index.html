@@ -39,15 +39,13 @@
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"></noscript>
     <link rel="preload" href="./docs/assets/images/logo_nobg.png" as="image">
-    <link rel="preload" href="./docs/assets/images/brain_hero.png" as="image">
     <link rel="preload" href="docs/js/app.js" as="script">
     
     <!-- DNS Prefetch for External Resources -->
     <link rel="dns-prefetch" href="//cdn.jsdelivr.net">
     <link rel="dns-prefetch" href="//cdnjs.cloudflare.com">
     <link rel="dns-prefetch" href="//fonts.googleapis.com">
-    <link rel="dns-prefetch" href="//unpkg.com">
-    
+
     <!-- Critical CSS loaded first -->
     <link rel="stylesheet" href="docs/css/style.css">
     <link rel="stylesheet" href="docs/css/version-history.css">
@@ -59,7 +57,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vue@2" defer></script>
     
     <!-- Non-critical Scripts loaded asynchronously -->
-    <script src="https://unpkg.com/niivue@latest/dist/niivue.umd.js" async></script>
     <link href="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/nouislider@15.6.1/dist/nouislider.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
@@ -373,9 +370,8 @@
                     </div>
 
                 </div>
-                <div class="hero-image hide-on-mobile">
-                    <img src="./docs/assets/images/brain_hero.png" alt="Neuroimaging Dataset Visualization - Brain MRI Research Data" loading="eager" />
-                </div>
+                <!-- Animated brain with research findings, filled in by docs/js/hero-brain.js -->
+                <div class="hero-brain hide-on-mobile" ref="heroBrain"></div>
             </div>
         </section>
 
@@ -1642,6 +1638,7 @@
   
     
 </div>
+<script src="docs/js/hero-brain.js" defer></script>
 <script src="docs/js/app.js" defer></script>
 
 <script>
