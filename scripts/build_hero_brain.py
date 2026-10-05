@@ -102,11 +102,13 @@ def taubin_smooth(verts, faces, iterations, lam=0.5, mu=-0.53):
     return verts
 
 
-def simplify_regions(regions, reduction, min_tris, smooth):
+def simplify_regions(regions, reduction, min_tris, smooth, featured=(), feature_reduction=None):
     """Simplify each region and concatenate them into one region-contiguous mesh.
 
-    Vertices are renumbered in order of first use by the index buffer, which is
-    what makes the delta / high-watermark coding below compress well.
+    Regions in `featured` (the ones findings.json lights up) keep more detail,
+    since they are the ones drawn solid and lit. Vertices are renumbered in
+    order of first use by the index buffer, which is what makes the delta /
+    high-watermark coding below compress well.
     """
     verts_out, faces_out, table = [], [], []
     v_off = t_off = 0
@@ -116,7 +118,8 @@ def simplify_regions(regions, reduction, min_tris, smooth):
         verts, faces = regions[rid]
         if smooth:
             verts = taubin_smooth(verts, faces, smooth)
-        target = min(reduction, max(0.0, 1.0 - min_tris / len(faces)))
+        keep = feature_reduction if rid in featured and feature_reduction is not None else reduction
+        target = min(keep, max(0.0, 1.0 - min_tris / len(faces)))
         v2, f2 = fast_simplification.simplify(verts, faces, target_reduction=target)
         v2, f2 = np.asarray(v2), np.asarray(f2, np.int64)
         # The renderer culls back faces, so make sure triangles wind outward (CCW).
@@ -223,14 +226,21 @@ def main():
     parser.add_argument("--findings", default=str(ROOT / "docs/assets/hero/findings.json"))
     parser.add_argument("--out", default=str(ROOT / "docs/assets/hero/brain.bin.gz"))
     parser.add_argument("--reduction", type=float, default=0.9, help="fraction of triangles to remove per region")
+    parser.add_argument("--feature-reduction", type=float, default=0.7,
+                        help="fraction removed from regions used in findings.json (they are drawn lit, so keep more)")
     parser.add_argument("--min-tris", type=int, default=48, help="never simplify a region below this many triangles")
-    parser.add_argument("--smooth", type=int, default=10, help="Taubin smoothing iterations before simplifying")
+    parser.add_argument("--smooth", type=int, default=30, help="Taubin smoothing iterations before simplifying")
     parser.add_argument("--step", type=float, default=0.1, help="quantisation step in mm")
     parser.add_argument("--max-kb", type=float, default=200, help="fail if the gzipped output is larger than this")
     args = parser.parse_args()
 
     regions = read_regions(args.src)
-    verts, faces, table = simplify_regions(regions, args.reduction, args.min_tris, args.smooth)
+    featured = set()
+    if Path(args.findings).exists():
+        for f in json.loads(Path(args.findings).read_text())["findings"]:
+            featured.update(f["regions"])
+    verts, faces, table = simplify_regions(regions, args.reduction, args.min_tris, args.smooth,
+                                           featured, args.feature_reduction)
     if len(verts) > 0xFFFF:
         sys.exit(f"{len(verts)} vertices exceed 16-bit indices; raise --reduction")
     raw, _ = encode(verts, faces, table, args.step)
@@ -245,7 +255,8 @@ def main():
     out.write_bytes(packed)
     src_tris = sum(len(f) for _, f in regions.values())
     print(f"{len(regions)} regions: {src_tris:,} → {len(faces):,} triangles, {len(verts):,} vertices")
-    print(f"wrote {out.relative_to(ROOT)}: {len(packed) / 1024:.1f} KB gzipped ({len(raw) / 1024:.1f} KB raw)")
+    shown = out.relative_to(ROOT) if out.resolve().is_relative_to(ROOT) else out
+    print(f"wrote {shown}: {len(packed) / 1024:.1f} KB gzipped ({len(raw) / 1024:.1f} KB raw)")
 
     if Path(args.findings).exists():
         print("findings:")

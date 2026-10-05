@@ -587,6 +587,7 @@
 
 /* Animated hero brain (built by docs/js/hero-brain.js) */
 .hero-brain {
+  --hb-accent: #E4572E;
   flex: 1 1 400px;
   min-width: 0;
   position: relative;
@@ -599,23 +600,29 @@
   position: absolute;
   top: 0;
   left: 0;
-  z-index: 2;
-  display: flex;
+  z-index: 3;
+  display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   margin: 0;
-  font-size: 0.7rem;
+  padding: 0.32rem 0.8rem 0.32rem 0.6rem;
+  font-size: 0.68rem;
   font-weight: 600;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: #475569;
+  color: #334155;
+  background: rgba(255, 255, 255, 0.78);
+  border: 1px solid rgba(15, 23, 42, 0.07);
+  border-radius: 999px;
+  box-shadow: 0 6px 18px -12px rgba(15, 23, 42, 0.35);
 }
 
 .hero-brain__kicker-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
-  background: #E4572E;
+  background: var(--hb-accent);
+  transition: background-color 0.6s ease;
   animation: hero-brain-glow 2.4s ease-in-out infinite;
 }
 
@@ -632,6 +639,30 @@
 .hero-brain[data-state="fallback"] .hero-brain__stage,
 .hero-brain[data-state="poster"] .hero-brain__stage {
   opacity: 1;
+}
+
+/* Soft glow behind the brain, tinted with the current finding's colour */
+.hero-brain__aura {
+  position: absolute;
+  top: 16%;
+  left: 20%;
+  width: 60%;
+  height: 62%;
+  border-radius: 50%;
+  background-color: var(--hb-accent);
+  opacity: 0.09;
+  filter: blur(48px);
+  transition: background-color 0.9s ease;
+}
+
+.hero-brain__floor {
+  position: absolute;
+  right: 24%;
+  bottom: 3%;
+  left: 24%;
+  height: 8%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgba(15, 23, 42, 0.14), rgba(15, 23, 42, 0));
 }
 
 .hero-brain__canvas,
@@ -659,20 +690,56 @@
 
 .hero-brain__leader {
   fill: none;
-  stroke-width: 1.5;
+  stroke-width: 1.25;
   stroke-linecap: round;
   stroke-dasharray: 1 1;
   stroke-dashoffset: 1;
 }
 
-.hero-brain__anchor {
+/* A bead of light that runs down the callout line */
+.hero-brain__pulse,
+.hero-brain__pulse-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 0.07 1;
   opacity: 0;
+}
+
+.hero-brain__pulse-glow {
+  stroke: var(--hb-accent);
+  stroke-width: 9;
+  stroke-opacity: 0.22;
+}
+
+.hero-brain__pulse {
+  stroke: #ffffff;
+  stroke-width: 2;
+}
+
+.hero-brain__cap {
+  fill: var(--hb-accent);
+  stroke: #ffffff;
+  stroke-width: 1.5;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.hero-brain__anchor {
+  color: var(--hb-accent);
+  opacity: 0;
+}
+
+.hero-brain__ring {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.2;
+  stroke-opacity: 0.55;
 }
 
 .hero-brain__dot {
   fill: currentColor;
   stroke: #ffffff;
-  stroke-width: 2;
+  stroke-width: 1.75;
 }
 
 .hero-brain__ping {
@@ -688,22 +755,41 @@
   position: relative;
   z-index: 2;
   display: grid;
-  width: min(100%, 460px);
-  margin: -1.5rem 0 0 auto;
+  width: min(100%, 470px);
+  margin: -3rem 0 0 auto;
 }
 
+/* Frosted card; the brain shows through where they overlap */
 .hero-brain__card {
   grid-area: 1 / 1;
-  padding: 0.85rem 1.1rem 0.9rem;
-  background: rgba(255, 255, 255, 0.92);
-  border: 1px solid rgba(15, 23, 42, 0.08);
-  border-top: 2px solid var(--hb-accent, #E4572E);
-  border-radius: 12px;
-  box-shadow: 0 14px 30px -16px rgba(15, 23, 42, 0.35);
+  position: relative;
+  overflow: hidden;
+  padding: 0.95rem 1.2rem 1rem 1.4rem;
+  background: rgba(255, 255, 255, 0.74);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 14px;
+  box-shadow:
+    0 0 0 1px rgba(15, 23, 42, 0.06),
+    0 20px 40px -24px rgba(15, 23, 42, 0.45),
+    0 14px 36px -26px var(--hb-accent, #E4572E);
   opacity: 0;
   visibility: hidden;
   transform: translateY(6px);
   transition: opacity 0.45s ease, transform 0.45s ease, visibility 0s linear 0.45s;
+}
+
+.hero-brain__card::before {
+  content: "";
+  position: absolute;
+  top: 14px;
+  bottom: 14px;
+  left: 0;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--hb-accent, #E4572E);
+  background: linear-gradient(to bottom, var(--hb-accent, #E4572E), color-mix(in srgb, var(--hb-accent, #E4572E) 15%, transparent));
 }
 
 .hero-brain__card.is-active {
@@ -713,35 +799,70 @@
   transition: opacity 0.45s ease, transform 0.45s ease, visibility 0s;
 }
 
+/* Card contents ease in line by line */
+.hero-brain__card > * {
+  opacity: 0;
+  transform: translateY(5px);
+  transition: opacity 0.35s ease, transform 0.35s ease;
+}
+
+.hero-brain__card.is-active > * {
+  opacity: 1;
+  transform: none;
+}
+
+.hero-brain__card.is-active > :nth-child(2) { transition-delay: 60ms; }
+.hero-brain__card.is-active > :nth-child(3) { transition-delay: 120ms; }
+.hero-brain__card.is-active > :nth-child(4) { transition-delay: 180ms; }
+.hero-brain__card.is-active > :nth-child(5) { transition-delay: 240ms; }
+
 .hero-brain__eyebrow {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 1rem;
-  margin: 0 0 0.3rem;
-  font-size: 0.68rem;
+  margin: 0 0 0.35rem;
+  font-size: 0.66rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--hb-accent, #E4572E);
+}
+
+.hero-brain__condition {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.hero-brain__condition::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+  box-shadow: 0 0 0 3px color-mix(in srgb, currentColor 18%, transparent);
 }
 
 .hero-brain__count {
   color: #94a3b8;
   font-variant-numeric: tabular-nums;
+  letter-spacing: 0.08em;
 }
 
 .hero-brain__region {
-  margin: 0 0 0.25rem;
-  font-size: 1.05rem;
+  margin: 0 0 0.3rem;
+  font-size: 1.14rem;
   font-weight: 600;
-  line-height: 1.3;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   color: #0f172a;
 }
 
 .hero-brain__finding {
-  margin: 0 0 0.5rem;
-  font-size: 0.88rem;
-  line-height: 1.5;
+  margin: 0 0 0.6rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
   color: #334155;
 }
 
@@ -769,14 +890,14 @@
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 0.4rem;
-  margin: 0.55rem 0 0;
+  gap: 0.45rem;
+  margin: 0.6rem 0 0;
 }
 
 .hero-brain__data-label {
-  font-size: 0.66rem;
+  font-size: 0.64rem;
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: #94a3b8;
 }
@@ -784,8 +905,8 @@
 .hero-brain__chip {
   display: inline-flex;
   align-items: center;
-  gap: 0.35rem;
-  padding: 0.2rem 0.65rem;
+  gap: 0.4rem;
+  padding: 0.2rem 0.7rem;
   font: inherit;
   font-size: 0.76rem;
   font-weight: 600;
@@ -794,12 +915,24 @@
   border: 1px solid rgba(99, 102, 241, 0.3);
   border-radius: 999px;
   cursor: pointer;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  transition: transform 0.2s ease, background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .hero-brain__chip:hover {
-  background: rgba(99, 102, 241, 0.16);
+  transform: translateY(-1px);
+  background: rgba(99, 102, 241, 0.14);
   border-color: rgba(99, 102, 241, 0.55);
+  box-shadow: 0 8px 16px -10px rgba(67, 56, 202, 0.55);
+}
+
+.hero-brain__chip-logo {
+  width: 18px;
+  height: 18px;
+  margin-left: -0.5rem;
+  border-radius: 50%;
+  object-fit: contain;
+  background: #ffffff;
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.1);
 }
 
 .hero-brain__footer {
@@ -860,7 +993,7 @@
 .hero-brain__step span {
   position: absolute;
   inset: 0;
-  background: #475569;
+  background: var(--hb-accent);
   transform: scaleX(0);
   transform-origin: left;
 }
@@ -892,7 +1025,9 @@
 .hero-brain--poster .hero-brain__kicker,
 .hero-brain--poster .hero-brain__overlay,
 .hero-brain--poster .hero-brain__cards,
-.hero-brain--poster .hero-brain__footer {
+.hero-brain--poster .hero-brain__footer,
+.hero-brain--poster .hero-brain__aura,
+.hero-brain--poster .hero-brain__floor {
   display: none;
 }
 
@@ -907,8 +1042,8 @@
 }
 
 @keyframes hero-brain-glow {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(228, 87, 46, 0.45); }
-  50% { box-shadow: 0 0 0 5px rgba(228, 87, 46, 0); }
+  0%, 100% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--hb-accent) 45%, transparent); }
+  50% { box-shadow: 0 0 0 5px color-mix(in srgb, var(--hb-accent) 0%, transparent); }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -925,6 +1060,13 @@
 
   .hero-brain__card.is-active {
     transition: opacity 0.3s ease, visibility 0s;
+  }
+
+  .hero-brain__card > *,
+  .hero-brain__card.is-active > * {
+    opacity: 1;
+    transform: none;
+    transition: none;
   }
 }
 
