@@ -332,6 +332,17 @@
         
         <!-- Home Page -->
         <div v-show="currentPage === 'home'" class="page-content">
+        <!-- Under-construction notice -->
+        <aside class="construction-banner" role="status">
+            <i class="fas fa-hard-hat" aria-hidden="true"></i>
+            <p>
+                <strong>This website is undergoing major changes.</strong>
+                For now, please use the stable version at
+                <a href="https://neurodatahub.github.io/" rel="noopener">neurodatahub.github.io</a>.
+            </p>
+            <a class="construction-banner__btn" href="https://neurodatahub.github.io/" rel="noopener">Go to stable site &rarr;</a>
+        </aside>
+
         <!-- Hero Section -->
         <section class="hero">
             <div class="hero-grid">
