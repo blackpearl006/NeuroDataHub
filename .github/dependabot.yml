@@ -1,0 +1,12 @@
+version: 2
+updates:
+
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    labels:
+      - "T.2 - Maintenance"
+      - "bot"
+    commit-message:
+      prefix: "[MAINT] "
