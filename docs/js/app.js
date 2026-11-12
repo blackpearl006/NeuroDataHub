@@ -403,6 +403,16 @@ new Vue({
         },
 
         /**
+         * Open a dataset's details modal by its DATASET name (used by the hero brain cards)
+         */
+        openDatasetByName(name) {
+            const dataset = this.datasets.find(d => d.name === name);
+            if (dataset) {
+                this.viewDetails(dataset);
+            }
+        },
+
+        /**
          * Close dataset details modal
          */
         closeModal() {
@@ -932,9 +942,14 @@ new Vue({
         this.handleResize();
         window.addEventListener('resize', this.handleResize);
         
-        // Initialize age slider
+        // Initialize age slider and the animated hero brain (docs/js/hero-brain.js)
         this.$nextTick(() => {
             this.initializeAgeSlider();
+            if (window.HeroBrain) {
+                window.HeroBrain.mount(this.$refs.heroBrain, {
+                    onDatasetClick: (name) => this.openDatasetByName(name)
+                });
+            }
         });
         
         // Close sidebar on escape key

@@ -1,0 +1,37 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: neurodatahub
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Ninad
+    family-names: Aithal
+    email: reachninadaithal@gmail.com
+    name-particle: Ninad
+    affiliation: McGill
+    orcid: 'https://orcid.org/0009-0003-1916-1090'
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.15687811
+repository-code: 'https://github.com/blackpearl006/NeuroDataHub'
+url: 'https://blackpearl006.github.io/NeuroDataHub/'
+abstract: >-
+  NeuroDataHub is the open-access neuroimaging datasets
+  platform designed to help researchers, clinicians, and
+  students explore, compare, and analyze brain imaging data
+  with ease. This comprehensive brain imaging research hub
+  brings together an extensive collection of 50+ carefully
+  curated public neuroimaging datasets, containing over
+  50,000 brain scans from multiple modalities including MRI,
+  fMRI, DWI, EEG, and PET.
+keywords:
+  - dataset discovery
+  - neuroimaging
+license: MIT
+commit: 792a46cace3c527cd4aef7203a1f97de47f61824
+version: '2'
+date-released: '2025-10-28'

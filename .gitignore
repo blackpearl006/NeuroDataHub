@@ -1,1 +1,6 @@
+
+# Documentation build
+documentation/_build/
+documentation/datasets/pages/
+
 .DS_Store
